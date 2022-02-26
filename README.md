@@ -1,3 +1,3 @@
 # zaique
 
-A faster(?) API Gateway
+Blockchain-powered authentication service
