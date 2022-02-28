@@ -1,2 +1,2 @@
-from app.models.domains.user.users import CreateUser as CreateUser
-from app.models.domains.user.users import User as User
+from app.models.domains.users import CreateUser as CreateUser
+from app.models.domains.users import User as User
