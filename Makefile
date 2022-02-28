@@ -47,7 +47,7 @@ format-black: ## format code using black
 	black app/
 
 format-import: ## sort imports in codebase
-	isort app/
+	isort --profile black app/
 
 setup-dev: ## setup development environment
 	poetry shell

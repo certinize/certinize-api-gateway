@@ -6,6 +6,8 @@ authors = ["Hju Kneyck Flores <hjucode@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+uvicorn = {extras = ["standard"], version = "^0.17.5"}
+pydantic = {extras = ["email"], version = "^1.9.0"}
 starlite = "^1.2.3"
 
 [tool.poetry.dev-dependencies]

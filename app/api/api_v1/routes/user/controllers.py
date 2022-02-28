@@ -4,15 +4,18 @@ from typing import List, Optional
 from pydantic import UUID4
 from starlite import Controller, Partial, delete, get, patch, post, put
 
-from app.models import User
+from app.models import CreateUser, User
 
 
 class UserController(Controller):
     path = "/users"
 
     @post()
-    async def create_user(self, data: User) -> User:
-        ...
+    async def create_user(self, data: CreateUser) -> CreateUser:
+        # TODO:
+        # - Create/register user to database
+        # - Secure user account by hiding information (i.e. mask email and password)
+        return data
 
     @get()
     async def list_users(self) -> List[User]:
