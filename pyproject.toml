@@ -9,6 +9,7 @@ python = "^3.10"
 uvicorn = {extras = ["standard"], version = "^0.17.5"}
 pydantic = {extras = ["email"], version = "^1.9.0"}
 starlite = "^1.2.3"
+asyncpg = "^0.25.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
