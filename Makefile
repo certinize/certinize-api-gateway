@@ -52,3 +52,6 @@ format-import: ## sort imports in codebase
 setup-dev: ## setup development environment
 	poetry shell
 	poetry install
+
+start-dev: ## start the app on dev
+	uvicorn app.main:app --reload

@@ -1,6 +1,9 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,venv,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,venv,dotenv
+
+### dotenv ###
+.env
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -117,7 +120,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -156,6 +158,18 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+pip-selfcheck.json
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -177,4 +191,4 @@ cython_debug/
 
 # Support for Project snippet scope
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,venv,dotenv

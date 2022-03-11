@@ -12,9 +12,6 @@ class UserController(Controller):
 
     @post()
     async def create_user(self, data: CreateUser) -> CreateUser:
-        # TODO:
-        # - Create/register user to database
-        # - Secure user account by hiding information (i.e. mask email and password)
         return data
 
     @get()
