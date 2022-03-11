@@ -1,9 +1,13 @@
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any, Callable
+from typing import Any, Callable, Coroutine
 
 
-def exec_async(fn: Callable[[Any], Any], *args: Any, **kwargs: Any) -> Any:
+def exec_async(
+    fn: Callable[[Any], Any] | Callable[..., Coroutine[Any, Any, str]],
+    *args: Any,
+    **kwargs: Any
+) -> Any:
     """Asynchronously run sync functions or methods outside an event loop.
 
     Args:
