@@ -1,15 +1,13 @@
-from pydantic import BaseConfig, BaseModel, EmailStr, validator
+from pydantic import EmailStr, validator
 
+from app.models.domain.appmodel import AppModel
 from app.utils import exec_async
 
 
-class User(BaseModel):
+class User(AppModel):
     email: EmailStr
     password: str
     username: str
-
-    class Config(BaseConfig):
-        anystr_strip_whitespace = True
 
 
 class CreateUser(User):
