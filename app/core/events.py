@@ -2,7 +2,7 @@ from typing import Any, Callable, Coroutine
 
 from starlite import State
 
-from app.db.events import create_db_engine, dispose_db_engine, create_db_tables
+from app.db.events import create_db_engine, create_db_tables, dispose_db_engine
 
 
 def get_start_app_handler(
