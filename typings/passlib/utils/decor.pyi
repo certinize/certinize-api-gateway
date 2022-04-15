@@ -8,36 +8,35 @@ from passlib.utils.compat import PY3
 passlib.utils.decor -- helper decorators & properties
 """
 log = ...
-__all__ = ["classproperty", "hybrid_method", "memoize_single_value", "memoized_property", "deprecated_function", "deprecated_method"]
+__all__ = [
+    "classproperty",
+    "hybrid_method",
+    "memoize_single_value",
+    "memoized_property",
+    "deprecated_function",
+    "deprecated_method",
+]
+
 class classproperty:
     """Function decorator which acts like a combination of classmethod+property (limited to read-only properties)"""
-    def __init__(self, func) -> None:
-        ...
-    
-    def __get__(self, obj, cls):
-        ...
-    
+
+    def __init__(self, func) -> None: ...
+    def __get__(self, obj, cls): ...
     @property
-    def __func__(self): # -> Unknown:
+    def __func__(self):  # -> Unknown:
         """py3 compatible alias"""
         ...
-    
-
 
 class hybrid_method:
     """
     decorator which invokes function with class if called as class method,
     and with object if called at instance level.
     """
-    def __init__(self, func) -> None:
-        ...
-    
-    def __get__(self, obj, cls): # -> MethodType:
-        ...
-    
 
+    def __init__(self, func) -> None: ...
+    def __get__(self, obj, cls): ...
 
-def memoize_single_value(func): # -> () -> Unknown:
+def memoize_single_value(func):  # -> () -> Unknown:
     """
     decorator for function which takes no args,
     and memoizes result.  exposes a ``.clear_cache`` method
@@ -49,26 +48,22 @@ class memoized_property:
     """
     decorator which invokes method once, then replaces attr with result
     """
-    def __init__(self, func) -> None:
-        ...
-    
-    def __get__(self, obj, cls): # -> Self@memoized_property:
-        ...
-    
+
+    def __init__(self, func) -> None: ...
+    def __get__(self, obj, cls): ...
+
     if notPY3:
         @property
-        def im_func(self): # -> Unknown:
+        def im_func(self):  # -> Unknown:
             """py2 alias"""
             ...
-        
-    def clear_cache(self, obj): # -> None:
+    def clear_cache(self, obj):  # -> None:
         """
         class-level helper to clear stored value (if any).
 
         usage: :samp:`type(self).{attr}.clear_cache(self)`
         """
         ...
-    
     def peek_cache(self, obj, default=...):
         """
         class-level helper to peek at stored value
@@ -76,10 +71,16 @@ class memoized_property:
         usage: :samp:`value = type(self).{attr}.clear_cache(self)`
         """
         ...
-    
 
-
-def deprecated_function(msg=..., deprecated=..., removed=..., updoc=..., replacement=..., _is_method=..., func_module=...): # -> (func: Unknown) -> ((*args: Unknown, **kwds: Unknown) -> (Unknown | Any)):
+def deprecated_function(
+    msg=...,
+    deprecated=...,
+    removed=...,
+    updoc=...,
+    replacement=...,
+    _is_method=...,
+    func_module=...,
+):  # -> (func: Unknown) -> ((*args: Unknown, **kwds: Unknown) -> (Unknown | Any)):
     """decorator to deprecate a function.
 
     :arg msg: optional msg, default chosen if omitted
@@ -90,7 +91,9 @@ def deprecated_function(msg=..., deprecated=..., removed=..., updoc=..., replace
     """
     ...
 
-def deprecated_method(msg=..., deprecated=..., removed=..., updoc=..., replacement=...): # -> (func: Unknown) -> ((*args: Unknown, **kwds: Unknown) -> (Unknown | Any)):
+def deprecated_method(
+    msg=..., deprecated=..., removed=..., updoc=..., replacement=...
+):  # -> (func: Unknown) -> ((*args: Unknown, **kwds: Unknown) -> (Unknown | Any)):
     """decorator to deprecate a method.
 
     :arg msg: optional msg, default chosen if omitted
@@ -100,4 +103,3 @@ def deprecated_method(msg=..., deprecated=..., removed=..., updoc=..., replaceme
     :kwd updoc: add notice to docstring (default ``True``)
     """
     ...
-

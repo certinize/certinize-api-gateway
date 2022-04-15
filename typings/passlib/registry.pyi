@@ -6,7 +6,13 @@ from passlib.utils.decor import memoize_single_value
 
 """passlib.registry - registry for password hash handlers"""
 log = ...
-__all__ = ["register_crypt_handler_path", "register_crypt_handler", "get_crypt_handler", "list_crypt_handlers"]
+__all__ = [
+    "register_crypt_handler_path",
+    "register_crypt_handler",
+    "get_crypt_handler",
+    "list_crypt_handlers",
+]
+
 class _PasslibRegistryProxy:
     """proxy module passlib.hash
 
@@ -14,21 +20,13 @@ class _PasslibRegistryProxy:
     the requested password hash algorithm from wherever it has been stored.
     it acts as a thin wrapper around :func:`passlib.registry.get_crypt_handler`.
     """
+
     __name__ = ...
     __package__ = ...
-    def __getattr__(self, attr): # -> Any:
-        ...
-    
-    def __setattr__(self, attr, value): # -> None:
-        ...
-    
-    def __repr__(self): # -> Literal['<proxy module \'passlib.hash\'>']:
-        ...
-    
-    def __dir__(self): # -> list[str]:
-        ...
-    
-
+    def __getattr__(self, attr): ...
+    def __setattr__(self, attr, value): ...
+    def __repr__(self): ...
+    def __dir__(self): ...
 
 _proxy = ...
 _UNSET = ...
@@ -36,7 +34,8 @@ _handlers = ...
 _locations = ...
 _name_re = ...
 _forbidden_names = ...
-def register_crypt_handler_path(name, path): # -> None:
+
+def register_crypt_handler_path(name, path):  # -> None:
     """register location to lazy-load handler when requested.
 
     custom hashes may be registered via :func:`register_crypt_handler`,
@@ -64,7 +63,7 @@ def register_crypt_handler_path(name, path): # -> None:
     """
     ...
 
-def register_crypt_handler(handler, force=..., _attr=...): # -> None:
+def register_crypt_handler(handler, force=..., _attr=...):  # -> None:
     """register password hash handler.
 
     this method immediately registers a handler with the internal passlib registry,
@@ -105,7 +104,7 @@ def get_crypt_handler(name, default=...):
     """
     ...
 
-def list_crypt_handlers(loaded_only=...): # -> list[str]:
+def list_crypt_handlers(loaded_only=...):  # -> list[str]:
     """return sorted list of all known crypt handler names.
 
     :param loaded_only: if ``True``, only returns names of handlers which have actually been loaded.
@@ -117,6 +116,7 @@ def list_crypt_handlers(loaded_only=...): # -> list[str]:
 ANY = ...
 BUILTIN = ...
 OS_CRYPT = ...
+
 def has_backend(hasher, backend=..., safe=...):
     """
     Test if specified backend is available for hasher.
@@ -144,13 +144,13 @@ def has_backend(hasher, backend=..., safe=...):
     ...
 
 @memoize_single_value
-def get_supported_os_crypt_schemes(): # -> tuple[()] | tuple[str, ...]:
+def get_supported_os_crypt_schemes():  # -> tuple[()] | tuple[str, ...]:
     """
     return tuple of schemes which :func:`crypt.crypt` natively supports.
     """
     ...
 
-def has_os_crypt_support(hasher): # -> Literal[False]:
+def has_os_crypt_support(hasher):  # -> Literal[False]:
     """
     check if hash is supported by native :func:`crypt.crypt` function.
     if :func:`crypt.crypt` is not present, will always return False.
@@ -162,4 +162,3 @@ def has_os_crypt_support(hasher): # -> Literal[False]:
         True if hash format is supported by OS, else False.
     """
     ...
-

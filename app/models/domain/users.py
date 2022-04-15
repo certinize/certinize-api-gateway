@@ -1,6 +1,6 @@
 from pydantic import EmailStr, validator
 
-from app.models.domain.appmodel import AppModel
+from app.models.domain.app_model import AppModel
 from app.utils import exec_async
 
 

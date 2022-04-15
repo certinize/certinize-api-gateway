@@ -6,12 +6,13 @@ from passlib.utils.decor import deprecated_method, memoized_property
 
 """passlib.context - CryptContext implementation"""
 log = ...
-__all__ = ['CryptContext', 'LazyCryptContext', 'CryptPolicy']
+__all__ = ["CryptContext", "LazyCryptContext", "CryptPolicy"]
 _UNSET = ...
 _forbidden_scheme_options = ...
 _coerce_scheme_options = ...
 _global_settings = ...
 _preamble = ...
+
 class CryptPolicy:
     """
     .. deprecated:: 1.6
@@ -70,8 +71,9 @@ class CryptPolicy:
 
     .. deprecated:: 1.6
     """
+
     @classmethod
-    def from_path(cls, path, section=..., encoding=...): # -> Self@CryptPolicy:
+    def from_path(cls, path, section=..., encoding=...):  # -> Self@CryptPolicy:
         """create a CryptPolicy instance from a local file.
 
         .. deprecated:: 1.6
@@ -87,9 +89,8 @@ class CryptPolicy:
         See :meth:`CryptContext.load_path` for details.
         """
         ...
-    
     @classmethod
-    def from_string(cls, source, section=..., encoding=...): # -> Self@CryptPolicy:
+    def from_string(cls, source, section=..., encoding=...):  # -> Self@CryptPolicy:
         """create a CryptPolicy instance from a string.
 
         .. deprecated:: 1.6
@@ -105,9 +106,8 @@ class CryptPolicy:
         See :meth:`CryptContext.load` for details.
         """
         ...
-    
     @classmethod
-    def from_source(cls, source, _warn=...): # -> CryptPolicy | Self@CryptPolicy:
+    def from_source(cls, source, _warn=...):  # -> CryptPolicy | Self@CryptPolicy:
         """create a CryptPolicy instance from some source.
 
         this method autodetects the source type, and invokes
@@ -129,9 +129,8 @@ class CryptPolicy:
         or :meth:`CryptContext.load`.
         """
         ...
-    
     @classmethod
-    def from_sources(cls, sources, _warn=...): # -> CryptPolicy | Self@CryptPolicy:
+    def from_sources(cls, sources, _warn=...):  # -> CryptPolicy | Self@CryptPolicy:
         """create a CryptPolicy instance by merging multiple sources.
 
         each source is interpreted as by :meth:`from_source`,
@@ -143,8 +142,7 @@ class CryptPolicy:
             the multiple sources merged together via :meth:`CryptContext.load`.
         """
         ...
-    
-    def replace(self, *args, **kwds): # -> CryptPolicy:
+    def replace(self, *args, **kwds):  # -> CryptPolicy:
         """create a new CryptPolicy, optionally updating parts of the
         existing configuration.
 
@@ -153,13 +151,10 @@ class CryptPolicy:
             :meth:`CryptContext.copy` instead.
         """
         ...
-    
     _context = ...
     _stub_policy = ...
-    def __init__(self, *args, **kwds) -> None:
-        ...
-    
-    def has_schemes(self): # -> bool:
+    def __init__(self, *args, **kwds) -> None: ...
+    def has_schemes(self):  # -> bool:
         """return True if policy defines *any* schemes for use.
 
         .. deprecated:: 1.6
@@ -167,8 +162,7 @@ class CryptPolicy:
             see :meth:`CryptContext.schemes`.
         """
         ...
-    
-    def iter_handlers(self): # -> tuple[Unknown, ...] | None:
+    def iter_handlers(self):  # -> tuple[Unknown, ...] | None:
         """return iterator over handlers defined in policy.
 
         .. deprecated:: 1.6
@@ -176,16 +170,14 @@ class CryptPolicy:
             see :meth:`CryptContext.schemes`.
         """
         ...
-    
-    def schemes(self, resolve=...): # -> list[Unknown]:
+    def schemes(self, resolve=...):  # -> list[Unknown]:
         """return list of schemes defined in policy.
 
         .. deprecated:: 1.6
             applications should use :meth:`CryptContext.schemes` instead.
         """
         ...
-    
-    def get_handler(self, name=..., category=..., required=...): # -> None:
+    def get_handler(self, name=..., category=..., required=...):  # -> None:
         """return handler as specified by name, or default handler.
 
         .. deprecated:: 1.6
@@ -194,8 +186,7 @@ class CryptPolicy:
             and the new method will always act as if ``required=True``.
         """
         ...
-    
-    def get_min_verify_time(self, category=...): # -> Literal[0]:
+    def get_min_verify_time(self, category=...):  # -> Literal[0]:
         """get min_verify_time setting for policy.
 
         .. deprecated:: 1.6
@@ -207,8 +198,7 @@ class CryptPolicy:
             any value specified by policy is ignored.
         """
         ...
-    
-    def get_options(self, name, category=...): # -> dict[Unknown, Unknown]:
+    def get_options(self, name, category=...):  # -> dict[Unknown, Unknown]:
         """return dictionary of options specific to a given handler.
 
         .. deprecated:: 1.6
@@ -217,7 +207,6 @@ class CryptPolicy:
             :meth:`CryptContext.to_dict` should serve as the closest alternative.
         """
         ...
-    
     def handler_is_deprecated(self, name, category=...):
         """check if handler has been deprecated by policy.
 
@@ -227,24 +216,23 @@ class CryptPolicy:
             :meth:`CryptContext.to_dict` should serve as the closest alternative.
         """
         ...
-    
-    def iter_config(self, ini=..., resolve=...): # -> Generator[tuple[str | Unknown, str | Unknown], None, None]:
+    def iter_config(
+        self, ini=..., resolve=...
+    ):  # -> Generator[tuple[str | Unknown, str | Unknown], None, None]:
         """iterate over key/value pairs representing the policy object.
 
         .. deprecated:: 1.6
             applications should use :meth:`CryptContext.to_dict` instead.
         """
         ...
-    
-    def to_dict(self, resolve=...): # -> dict[str | Unknown, Unknown]:
+    def to_dict(self, resolve=...):  # -> dict[str | Unknown, Unknown]:
         """export policy object as dictionary of options.
 
         .. deprecated:: 1.6
             applications should use :meth:`CryptContext.to_dict` instead.
         """
         ...
-    
-    def to_file(self, stream, section=...): # -> None:
+    def to_file(self, stream, section=...):  # -> None:
         """export policy to file.
 
         .. deprecated:: 1.6
@@ -252,7 +240,6 @@ class CryptPolicy:
             and then write the output to a file as desired.
         """
         ...
-    
     def to_string(self, section=..., encoding=...):
         """export policy to file.
 
@@ -260,8 +247,6 @@ class CryptPolicy:
             applications should use :meth:`CryptContext.to_string` instead.
         """
         ...
-    
-
 
 class _CryptConfig:
     """parses, validates, and stores CryptContext config
@@ -273,6 +258,7 @@ class _CryptConfig:
 
     :arg source: config as dict mapping ``(cat,scheme,option) -> value``
     """
+
     _scheme_options = ...
     _context_options = ...
     handlers = ...
@@ -282,57 +268,46 @@ class _CryptConfig:
     _default_schemes = ...
     _records = ...
     _record_lists = ...
-    def __init__(self, source) -> None:
-        ...
-    
+    def __init__(self, source) -> None: ...
     def get_context_optionmap(self, key, _default=...):
         """return dict mapping category->value for specific context option.
 
         .. warning:: treat return value as readonly!
         """
         ...
-    
     def get_context_option_with_flag(self, category, key):
         """return value of specific option, handling category inheritance.
         also returns flag indicating whether value is category-specific.
         """
         ...
-    
-    def get_base_handler(self, scheme):
-        ...
-    
+    def get_base_handler(self, scheme): ...
     @staticmethod
-    def expand_settings(handler):
-        ...
-    
-    def get_scheme_options_with_flag(self, scheme, category): # -> tuple[Unknown | dict[Unknown, Unknown], bool]:
+    def expand_settings(handler): ...
+    def get_scheme_options_with_flag(
+        self, scheme, category
+    ):  # -> tuple[Unknown | dict[Unknown, Unknown], bool]:
         """return composite dict of all options set for scheme.
         includes options inherited from 'all' and from default category.
         result can be modified.
         returns (kwds, has_cat_specific_options)
         """
         ...
-    
     def default_scheme(self, category):
         """return default scheme for specific category"""
         ...
-    
-    def is_deprecated_with_flag(self, scheme, category): # -> tuple[Unknown | bool, Literal[True]] | tuple[Unknown | bool, Literal[False]]:
+    def is_deprecated_with_flag(
+        self, scheme, category
+    ):  # -> tuple[Unknown | bool, Literal[True]] | tuple[Unknown | bool, Literal[False]]:
         """is scheme deprecated under particular category?"""
         ...
-    
     def get_record(self, scheme, category):
         """return record for specific scheme & category (cached)"""
         ...
-    
-    def identify_record(self, hash, category, required=...): # -> None:
+    def identify_record(self, hash, category, required=...):  # -> None:
         """internal helper to identify appropriate custom handler for hash"""
         ...
-    
     @memoized_property
-    def disabled_record(self):
-        ...
-    
+    def disabled_record(self): ...
     def iter_config(self, resolve=...):
         """regenerate original config.
 
@@ -345,8 +320,6 @@ class _CryptConfig:
         serialization methods.
         """
         ...
-    
-
 
 class CryptContext:
     """Helper for hashing & verifying passwords using multiple algorithms.
@@ -363,11 +336,12 @@ class CryptContext:
 
     See the Passlib online documentation for details and full documentation.
     """
+
     _config = ...
     _get_record = ...
     _identify_record = ...
     @classmethod
-    def from_string(cls, source, section=..., encoding=...): # -> Self@CryptContext:
+    def from_string(cls, source, section=..., encoding=...):  # -> Self@CryptContext:
         """create new CryptContext instance from an INI-formatted string.
 
         :type source: unicode or bytes
@@ -400,9 +374,8 @@ class CryptContext:
         .. seealso:: :meth:`to_string`, the inverse of this constructor.
         """
         ...
-    
     @classmethod
-    def from_path(cls, path, section=..., encoding=...): # -> Self@CryptContext:
+    def from_path(cls, path, section=..., encoding=...):  # -> Self@CryptContext:
         """create new CryptContext instance from an INI-formatted file.
 
         this functions exactly the same as :meth:`from_string`,
@@ -429,8 +402,7 @@ class CryptContext:
         .. seealso:: :meth:`from_string` for an equivalent usage example.
         """
         ...
-    
-    def copy(self, **kwds): # -> CryptContext:
+    def copy(self, **kwds):  # -> CryptContext:
         """Return copy of existing CryptContext instance.
 
         This function returns a new CryptContext instance whose configuration
@@ -460,25 +432,19 @@ class CryptContext:
         .. seealso:: :meth:`update`
         """
         ...
-    
-    def using(self, **kwds): # -> CryptContext:
+    def using(self, **kwds):  # -> CryptContext:
         """
         alias for :meth:`copy`, to match PasswordHash.using()
         """
         ...
-    
-    def replace(self, **kwds): # -> CryptContext:
+    def replace(self, **kwds):  # -> CryptContext:
         """deprecated alias of :meth:`copy`"""
         ...
-    
-    def __init__(self, schemes=..., policy=..., _autoload=..., **kwds) -> None:
-        ...
-    
-    def __repr__(self): # -> str:
-        ...
-    
+    def __init__(self, schemes=..., policy=..., _autoload=..., **kwds) -> None: ...
+    def __repr__(self): ...
+
     policy = ...
-    def load_path(self, path, update=..., section=..., encoding=...): # -> None:
+    def load_path(self, path, update=..., section=..., encoding=...):  # -> None:
         """Load new configuration into CryptContext from a local file.
 
         This function is a wrapper for :meth:`load` which
@@ -490,7 +456,6 @@ class CryptContext:
         .. versionadded:: 1.6
         """
         ...
-    
     def load(self, source, update=..., section=..., encoding=...):
         """Load new configuration into CryptContext, replacing existing config.
 
@@ -553,8 +518,7 @@ class CryptContext:
         .. versionadded:: 1.6
         """
         ...
-    
-    def update(self, *args, **kwds): # -> None:
+    def update(self, *args, **kwds):  # -> None:
         """Helper for quickly changing configuration.
 
         This acts much like the :meth:`!dict.update` method:
@@ -569,8 +533,9 @@ class CryptContext:
         .. seealso:: :meth:`copy`
         """
         ...
-    
-    def schemes(self, resolve=..., category=..., unconfigured=...): # -> tuple[Unknown, ...] | None:
+    def schemes(
+        self, resolve=..., category=..., unconfigured=...
+    ):  # -> tuple[Unknown, ...] | None:
         """return schemes loaded into this CryptContext instance.
 
         :type resolve: bool
@@ -588,7 +553,6 @@ class CryptContext:
         .. seealso:: the :ref:`schemes <context-schemes-option>` option for usage example.
         """
         ...
-    
     def default_scheme(self, category=..., resolve=..., unconfigured=...):
         """return name of scheme that :meth:`hash` will use by default.
 
@@ -616,7 +580,6 @@ class CryptContext:
             the base hasher from :mod:`passlib.hash`.
         """
         ...
-    
     def handler(self, scheme=..., category=..., unconfigured=...):
         """helper to resolve name of scheme -> :class:`~passlib.ifc.PasswordHash` object used by scheme.
 
@@ -656,9 +619,8 @@ class CryptContext:
             the base hasher from :mod:`passlib.hash`.
         """
         ...
-    
     @property
-    def context_kwds(self): # -> set[Unknown] | None:
+    def context_kwds(self):  # -> set[Unknown] | None:
         """
         return :class:`!set` containing union of all :ref:`contextual keywords <context-keywords>`
         supported by the handlers in this context.
@@ -666,8 +628,7 @@ class CryptContext:
         .. versionadded:: 1.6.6
         """
         ...
-    
-    def to_dict(self, resolve=...): # -> dict[str | Unknown, Unknown]:
+    def to_dict(self, resolve=...):  # -> dict[str | Unknown, Unknown]:
         """Return current configuration as a dictionary.
 
         :type resolve: bool
@@ -697,7 +658,6 @@ class CryptContext:
         .. seealso:: the :ref:`context-serialization-example` example in the tutorial.
         """
         ...
-    
     def to_string(self, section=...):
         """serialize to INI format and return as unicode string.
 
@@ -725,16 +685,13 @@ class CryptContext:
         .. seealso:: the :ref:`context-serialization-example` example in the tutorial.
         """
         ...
-    
     mvt_estimate_max_samples = ...
     mvt_estimate_min_samples = ...
     mvt_estimate_max_time = ...
     mvt_estimate_resolution = ...
     harden_verify = ...
     min_verify_time = ...
-    def reset_min_verify_time(self): # -> None:
-        ...
-    
+    def reset_min_verify_time(self): ...
     def needs_update(self, hash, scheme=..., category=..., secret=...):
         """Check if hash needs to be replaced for some reason,
         in which case the secret should be re-hashed.
@@ -795,8 +752,9 @@ class CryptContext:
         .. seealso:: the :ref:`context-migration-example` example in the tutorial.
         """
         ...
-    
-    @deprecated_method(deprecated="1.6", removed="2.0", replacement="CryptContext.needs_update()")
+    @deprecated_method(
+        deprecated="1.6", removed="2.0", replacement="CryptContext.needs_update()"
+    )
     def hash_needs_update(self, hash, scheme=..., category=...):
         """Legacy alias for :meth:`needs_update`.
 
@@ -806,7 +764,6 @@ class CryptContext:
             be used for compatibility with Passlib 1.3 - 1.5.
         """
         ...
-    
     @deprecated_method(deprecated="1.7", removed="2.0")
     def genconfig(self, scheme=..., category=..., **settings):
         """Generate a config string for specified scheme.
@@ -817,7 +774,6 @@ class CryptContext:
             be used for compatibility with Passlib 1.3 - 1.6.
         """
         ...
-    
     @deprecated_method(deprecated="1.7", removed="2.0")
     def genhash(self, secret, config, scheme=..., category=..., **kwds):
         """Generate hash for the specified secret using another hash.
@@ -828,8 +784,9 @@ class CryptContext:
             be used for compatibility with Passlib 1.3 - 1.6.
         """
         ...
-    
-    def identify(self, hash, category=..., resolve=..., required=..., unconfigured=...): # -> None:
+    def identify(
+        self, hash, category=..., resolve=..., required=..., unconfigured=...
+    ):  # -> None:
         """Attempt to identify which algorithm the hash belongs to.
 
         Note that this will only consider the algorithms
@@ -863,7 +820,6 @@ class CryptContext:
             or ``None`` if none of the algorithms identify the hash.
         """
         ...
-    
     def hash(self, secret, scheme=..., category=..., **kwds):
         """run secret through selected algorithm, returning resulting hash.
 
@@ -907,8 +863,9 @@ class CryptContext:
         .. seealso:: the :ref:`context-basic-example` example in the tutorial
         """
         ...
-    
-    @deprecated_method(deprecated="1.7", removed="2.0", replacement="CryptContext.hash()")
+    @deprecated_method(
+        deprecated="1.7", removed="2.0", replacement="CryptContext.hash()"
+    )
     def encrypt(self, *args, **kwds):
         """
         Legacy alias for :meth:`hash`.
@@ -919,8 +876,9 @@ class CryptContext:
             be used for compatibility with Passlib 1.3 - 1.6.
         """
         ...
-    
-    def verify(self, secret, hash, scheme=..., category=..., **kwds): # -> Literal[False]:
+    def verify(
+        self, secret, hash, scheme=..., category=..., **kwds
+    ):  # -> Literal[False]:
         """verify secret against an existing hash.
 
         If no scheme is specified, this will attempt to identify
@@ -978,8 +936,9 @@ class CryptContext:
         .. seealso:: the :ref:`context-basic-example` example in the tutorial
         """
         ...
-    
-    def verify_and_update(self, secret, hash, scheme=..., category=..., **kwds): # -> tuple[Literal[False], None] | tuple[Literal[True], Unknown] | tuple[Literal[True], None]:
+    def verify_and_update(
+        self, secret, hash, scheme=..., category=..., **kwds
+    ):  # -> tuple[Literal[False], None] | tuple[Literal[True], Unknown] | tuple[Literal[True], None]:
         """verify password and re-hash the password if needed, all in a single call.
 
         This is a convenience method which takes care of all the following:
@@ -1043,9 +1002,8 @@ class CryptContext:
         .. seealso:: the :ref:`context-migration-example` example in the tutorial.
         """
         ...
-    
     _dummy_secret = ...
-    def dummy_verify(self, elapsed=...): # -> Literal[False]:
+    def dummy_verify(self, elapsed=...):  # -> Literal[False]:
         """
         Helper that applications can call when user wasn't found,
         in order to simulate time it would take to hash a password.
@@ -1062,8 +1020,7 @@ class CryptContext:
         .. versionadded:: 1.7
         """
         ...
-    
-    def is_enabled(self, hash): # -> bool:
+    def is_enabled(self, hash):  # -> bool:
         """
         test if hash represents a usuable password --
         i.e. does not represent an unusuable password such as ``"!"``,
@@ -1074,7 +1031,6 @@ class CryptContext:
             (typically solved by adding ``unix_disabled`` to the list of schemes).
         """
         ...
-    
     def disable(self, hash=...):
         """
         return a string to disable logins for user,
@@ -1096,7 +1052,6 @@ class CryptContext:
             but is guaranteed to not validate against *any* password.
         """
         ...
-    
     def enable(self, hash):
         """
         inverse of :meth:`disable` --
@@ -1112,8 +1067,6 @@ class CryptContext:
             the original hash.
         """
         ...
-    
-
 
 class LazyCryptContext(CryptContext):
     """CryptContext subclass which doesn't load handlers until needed.
@@ -1158,7 +1111,7 @@ class LazyCryptContext(CryptContext):
     but using :func:`!onload()` to provide dynamic configuration
     at *application-run* time.
 
-    .. note:: 
+    .. note::
         This class is only useful if you're referencing handler objects by name,
         and don't want them imported until runtime. If you want to have the config
         validated before your application runs, or are passing in already-imported
@@ -1166,12 +1119,7 @@ class LazyCryptContext(CryptContext):
 
     .. versionadded:: 1.4
     """
+
     _lazy_kwds = ...
-    def __init__(self, schemes=..., **kwds) -> None:
-        ...
-    
-    def __getattribute__(self, attr): # -> Any:
-        ...
-    
-
-
+    def __init__(self, schemes=..., **kwds) -> None: ...
+    def __getattribute__(self, attr): ...

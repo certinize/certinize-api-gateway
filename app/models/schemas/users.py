@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pydantic import EmailStr
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel  # type: ignore
 
 
 class User(SQLModel, table=True):

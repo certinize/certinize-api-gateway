@@ -6,10 +6,9 @@ from . import connresource, cursor
 
 class PreparedStatement(connresource.ConnectionResource):
     """A representation of a prepared statement."""
+
     __slots__ = ...
-    def __init__(self, connection, query, state) -> None:
-        ...
-    
+    def __init__(self, connection, query, state) -> None: ...
     @connresource.guarded
     def get_name(self) -> str:
         """Return the name of this prepared statement.
@@ -17,7 +16,6 @@ class PreparedStatement(connresource.ConnectionResource):
         .. versionadded:: 0.25.0
         """
         ...
-    
     @connresource.guarded
     def get_query(self) -> str:
         """Return the text of the query for this prepared statement.
@@ -28,7 +26,6 @@ class PreparedStatement(connresource.ConnectionResource):
             assert stmt.get_query() == "SELECT $1::int"
         """
         ...
-    
     @connresource.guarded
     def get_statusmsg(self) -> str:
         """Return the status of the executed command.
@@ -40,7 +37,6 @@ class PreparedStatement(connresource.ConnectionResource):
             assert stmt.get_statusmsg() == "CREATE TABLE"
         """
         ...
-    
     @connresource.guarded
     def get_parameters(self):
         """Return a description of statement parameters types.
@@ -57,7 +53,6 @@ class PreparedStatement(connresource.ConnectionResource):
             #    Type(oid=25, name='text', kind='scalar', schema='pg_catalog'))
         """
         ...
-    
     @connresource.guarded
     def get_attributes(self):
         """Return a description of relation attributes (columns).
@@ -82,7 +77,6 @@ class PreparedStatement(connresource.ConnectionResource):
             #                 schema='pg_catalog')))
         """
         ...
-    
     @connresource.guarded
     def cursor(self, *args, prefetch=..., timeout=...) -> cursor.CursorFactory:
         """Return a *cursor factory* for the prepared statement.
@@ -95,9 +89,8 @@ class PreparedStatement(connresource.ConnectionResource):
         :return: A :class:`~cursor.CursorFactory` object.
         """
         ...
-    
     @connresource.guarded
-    async def explain(self, *args, analyze=...): # -> Any:
+    async def explain(self, *args, analyze=...):  # -> Any:
         """Return the execution plan of the statement.
 
         :param args: Query arguments.
@@ -109,7 +102,6 @@ class PreparedStatement(connresource.ConnectionResource):
                  ``EXPLAIN`` command.
         """
         ...
-    
     @connresource.guarded
     async def fetch(self, *args, timeout=...):
         r"""Execute the statement and return a list of :class:`Record` objects.
@@ -121,9 +113,8 @@ class PreparedStatement(connresource.ConnectionResource):
         :return: A list of :class:`Record` instances.
         """
         ...
-    
     @connresource.guarded
-    async def fetchval(self, *args, column=..., timeout=...): # -> None:
+    async def fetchval(self, *args, column=..., timeout=...):  # -> None:
         """Execute the statement and return a value in the first row.
 
         :param args: Query arguments.
@@ -137,9 +128,8 @@ class PreparedStatement(connresource.ConnectionResource):
         :return: The value of the specified column of the first record.
         """
         ...
-    
     @connresource.guarded
-    async def fetchrow(self, *args, timeout=...): # -> None:
+    async def fetchrow(self, *args, timeout=...):  # -> None:
         """Execute the statement and return the first row.
 
         :param str query: Query text
@@ -149,7 +139,6 @@ class PreparedStatement(connresource.ConnectionResource):
         :return: The first row as a :class:`Record` instance.
         """
         ...
-    
     @connresource.guarded
     async def executemany(self, args, *, timeout: float = ...):
         """Execute the statement for each sequence of arguments in *args*.
@@ -161,9 +150,4 @@ class PreparedStatement(connresource.ConnectionResource):
         .. versionadded:: 0.22.0
         """
         ...
-    
-    def __del__(self): # -> None:
-        ...
-    
-
-
+    def __del__(self): ...
