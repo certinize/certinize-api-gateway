@@ -11,7 +11,6 @@ pydantic = {extras = ["email"], version = "^1.9.0"}
 starlite = "^1.2.3"
 asyncpg = "^0.25.0"
 aiosql = "^3.4.1"
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 sqlmodel = "^0.0.6"
 
 [tool.poetry.dev-dependencies]
