@@ -8,18 +8,19 @@ from app.models.schemas import users as users
 
 
 async def create_db_engine(state: State) -> None:
-    state.pool = create_async_engine(
+    state.engine = create_async_engine(
         settings.database_url, **settings.sqlalchemy_kwargs
     )
 
 
 async def dispose_db_engine(state: State) -> None:
-    await state.pool.dispose()
+    await state.engine.dispose()
 
 
 async def create_db_tables(state: State) -> None:
-    if isinstance(state.pool, AsyncEngine):
-        async with state.pool.begin() as conn:
+    engine = state.engine
+    if isinstance(engine, AsyncEngine):
+        async with engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
     else:
         raise TypeError(
