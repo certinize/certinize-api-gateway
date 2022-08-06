@@ -24,9 +24,7 @@ class UserController(starlite.Controller):
         user_service: user.UserService,
         solana_user_schema: type[users.SolanaUser],
         database: crud.DatabaseImpl,
-        data: domain.SolanaUser = starlite.Body(
-            media_type=starlite.RequestEncodingType.JSON
-        ),
+        data: domain.SolanaUser,
     ) -> typing.Any:
         solana_user = await user_service.auth(
             data.wallet_address, solana_user_schema, database

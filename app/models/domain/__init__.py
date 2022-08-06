@@ -1,1 +1,1 @@
-from app.models.domain.users import SolanaUser as SolanaUser
+from app.models.domain.user import SolanaUser as SolanaUser

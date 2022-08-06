@@ -16,6 +16,6 @@ class SolanaUser(app_model.AppModel):
         )
 
         if not valid_point:
-            raise exceptions.OnCurveException("The point must be on the curve")
+            raise exceptions.OnCurveException("the point must be on the curve")
 
         return wallet_address
