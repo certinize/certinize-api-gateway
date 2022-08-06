@@ -6,7 +6,7 @@ from app.models import domain
 class UserController(starlite.Controller):
     path = "/users"
 
-    @starlite.post()
+    @starlite.post(path="/auth")
     async def auth(
         self,
         data: domain.SolanaUser = starlite.Body(
