@@ -6,7 +6,7 @@ from app.core.settings.base import BaseAppSettings
 
 class AppSettings(BaseAppSettings):
     debug: bool = False
-    title: str = "Blockchain-powered authentication service"
+    title: str = "Certinize client back-end"
     version: str = "0.1.0"
     openapi_config = OpenAPIConfig(title=title, version=version)
 

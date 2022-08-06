@@ -24,5 +24,5 @@ async def create_db_tables(state: State) -> None:
             await conn.run_sync(SQLModel.metadata.create_all)
     else:
         raise TypeError(
-            "sqlalchemy.ext.asyncio.engine.AsyncEngine missing from app state."
+            "sqlalchemy.ext.asyncio.engine.AsyncEngine is missing from starlite.State"
         )
