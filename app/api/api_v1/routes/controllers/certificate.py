@@ -39,16 +39,14 @@ class CertificateController(starlite.Controller):
 
         return certificate_config
 
-        # return response.CertificateStorageResponse(
-        #     template_config_id=uuid.uuid1(),
-        #     template_id=uuid.uuid1(),
-        #     recipient_name={},
-        #     issuance_date={},
-        # )
-
-    # @starlite.get(path="configure")
-    # async def configure(self):
-    #     ...
+    @starlite.get(path="configure")
+    async def configure(
+        self, template_config_id: typing.Optional[uuid.UUID] = None
+    ) -> typing.Any:
+        if template_config_id is not None:
+            return template_config_id
+        else:
+            return {"list": "configs"}
 
     # @starlite.post(path="generate")
     # async def generate(self):
