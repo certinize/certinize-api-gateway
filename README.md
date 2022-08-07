@@ -21,3 +21,7 @@ Fork the [zaique](https://github.com/certinize/zaique) repo on GitHub, then [clo
 5. Run the app: `uvicorn app.main:app`.
 
 6. Go to `http://127.0.0.1:8000/schema`.
+
+## Contributing
+
+Check the [contributing guide](https://github.com/certinize/zaique/blob/main/.github/CONTRIBUTING.md) to learn more about the development process and how you can test your changes.
