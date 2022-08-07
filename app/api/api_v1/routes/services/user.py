@@ -1,8 +1,10 @@
-import typing
 import uuid
 
+import starlite
 from sqlalchemy import exc
 
+from app import utils
+from app.core import exceptions
 from app.db import crud
 from app.models.schemas import users
 
@@ -13,7 +15,16 @@ class UserService:
         wallet_address: str,
         solana_user_schema: type[users.SolanaUser],
         database: crud.DatabaseImpl,
-    ) -> typing.Any:
+        utils: utils.Utils,
+    ) -> users.SolanaUser:
+
+        try:
+            wallet_address = await utils.wallet_address_must_be_on_curve(
+                wallet_address=wallet_address
+            )
+        except (ValueError, exceptions.OnCurveException) as err:
+            raise starlite.ValidationException(str(err))
+
         try:
             solana_user = await database.select_row(
                 solana_user_schema(wallet_address=wallet_address, api_key=uuid.uuid1()),
@@ -24,13 +35,10 @@ class UserService:
         except exc.NoResultFound:
             user_id = uuid.uuid1()
             api_key = uuid.uuid5(uuid.uuid4(), wallet_address)
-            await database.add_row(
-                solana_user_schema(
-                    user_id=user_id, wallet_address=wallet_address, api_key=api_key
-                )
+            schema = solana_user_schema(
+                user_id=user_id, wallet_address=wallet_address, api_key=api_key
             )
-            return {
-                "wallet_address": wallet_address,
-                "api_key": api_key,
-                "id": id,
-            }
+
+            await database.add_row(schema)
+
+            return schema

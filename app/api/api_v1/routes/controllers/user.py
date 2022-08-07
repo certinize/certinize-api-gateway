@@ -2,10 +2,10 @@ import typing
 
 import starlite
 
-from app.api.api_v1.dependencies import database, response
+from app import utils
+from app.api.api_v1.dependencies import database
 from app.api.api_v1.routes.services import user
 from app.db import crud
-from app.models import domain
 from app.models.schemas import users
 
 
@@ -15,23 +15,28 @@ class UserController(starlite.Controller):
     dependencies: typing.Optional[dict[str, "starlite.Provide"]] = {
         "user_service": starlite.Provide(user.UserService),
         "database": starlite.Provide(database.get_db_impl),
+        "utils": starlite.Provide(utils.Utils),
     }
 
-    @starlite.post(
-        path="/auth",
+    @starlite.get(
+        path="/{wallet_address:str}",
         dependencies={
             "solana_user_schema": starlite.Provide(database.get_solana_user_schema)
         },
     )
-    async def auth(
+    async def auth_solana_user(
         self,
-        data: domain.SolanaUser,
         user_service: user.UserService,
         solana_user_schema: type[users.SolanaUser],
         database: crud.DatabaseImpl,
-    ) -> response.AuthResponse:
+        utils: utils.Utils,
+        wallet_address: str = starlite.Parameter(
+            title="Auth Solana User",
+            description="Authenticate and authorize solana user and provide API key",
+        ),
+    ) -> users.SolanaUser | starlite.ValidationException:
         solana_user = await user_service.auth(
-            data.wallet_address, solana_user_schema, database
+            wallet_address, solana_user_schema, database, utils
         )
 
         return solana_user

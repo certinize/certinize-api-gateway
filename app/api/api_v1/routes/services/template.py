@@ -4,15 +4,15 @@ import uuid
 from sqlalchemy import exc
 
 from app.db import crud
-from app.models.domain import certificate
-from app.models.schemas import certificates
+from app.models.domain import template
+from app.models.schemas import templates
 
 
-class CertificateService:
+class TemplateService:
     async def save(
         self,
-        data: certificate.CertificateConfigSave,
-        certificate_config_schema: type[certificates.CertificateConfiguration],
+        data: template.TemplateConfigSave,
+        certificate_config_schema: type[templates.TemplateConfiguration],
         database: crud.DatabaseImpl,
     ) -> dict[str, uuid.UUID | typing.Any]:
         config_meta = data.__dict__
@@ -44,15 +44,3 @@ class CertificateService:
                     "template_id": config_meta["template_id"],
                 },
             }
-
-    async def configure(self):
-        ...
-
-    async def generate(self):
-        ...
-
-    async def transfer(self):
-        ...
-
-    async def verify(self):
-        ...

@@ -6,7 +6,7 @@ from app.api.api_v1.dependencies import database
 from app.api.api_v1.routes.services import template as service
 
 
-class CertificateController(starlite.Controller):
+class IssuanceController(starlite.Controller):
     path = "/certificates"
 
     dependencies: typing.Optional[dict[str, "starlite.Provide"]] = {
@@ -15,5 +15,5 @@ class CertificateController(starlite.Controller):
     }
 
     @starlite.post()
-    async def generate_certificate(self, data: typing.Any) -> typing.Any:
+    async def transfer_certificate(self, data: typing.Any) -> typing.Any:
         return data

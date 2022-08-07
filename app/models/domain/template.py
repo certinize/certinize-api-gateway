@@ -6,7 +6,7 @@ import pydantic
 from app.models.domain import app_model
 
 
-class CertificateConfigSave(app_model.AppModel):
+class TemplateConfigSave(app_model.AppModel):
     recipient_name: dict[str, dict[str, int] | int]
     issuance_date: dict[str, dict[str, int] | int]
     template_id: uuid.UUID
@@ -44,19 +44,3 @@ class CertificateConfigSave(app_model.AppModel):
                 "font size key(s) is missing from the request body"
             ) from key_err
         return values
-
-
-class CertificateConfiguration(app_model.AppModel):
-    ...
-
-
-class CertificateGeneration(app_model.AppModel):
-    ...
-
-
-class CertificateTransfer(app_model.AppModel):
-    ...
-
-
-class CertificateVerification(app_model.AppModel):
-    ...
