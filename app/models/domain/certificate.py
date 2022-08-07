@@ -1,5 +1,4 @@
 import typing
-import uuid
 
 import pydantic
 
@@ -9,7 +8,7 @@ from app.models.domain import app_model
 class CertificateStorage(app_model.AppModel):
     recipient_name: dict[str, dict[str, int] | int]
     issuance_date: dict[str, dict[str, int] | int]
-    template_id: uuid.UUID
+    template_id: str
 
     @pydantic.root_validator(pre=True)
     def check_recipient_name_has_position(cls, values: dict[str, typing.Any]):
