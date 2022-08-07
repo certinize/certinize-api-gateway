@@ -1,4 +1,5 @@
 import typing
+import uuid
 
 import starlite
 
@@ -27,11 +28,11 @@ class CertificateController(starlite.Controller):
     )
     async def save(
         self,
-        data: certificate.CertificateStorage,
+        data: certificate.CertificateConfigSave,
         certificate_service: service.CertificateService,
         certificate_config_schema: type[certificates.CertificateConfiguration],
         database: crud.DatabaseImpl,
-    ) -> typing.Any:
+    ) -> dict[str, uuid.UUID | typing.Any]:
         certificate_config = await certificate_service.save(
             data, certificate_config_schema, database
         )
