@@ -5,20 +5,22 @@ import starlite
 from sqlalchemy import exc
 
 from app.db import crud
-from app.models.domain import template
-from app.models.schemas import templates
+from app.models.domain import configuration
+from app.models.schemas import configurations
 
 
 class ConfigurationService:
     async def create_template_config(
         self,
-        data: template.TemplateConfigSave,
-        certificate_config_schema: type[templates.TemplateConfiguration],
+        data: configuration.TemplateConfiguration,
+        certificate_config_schema: type[configurations.TemplateConfiguration],
         database: crud.DatabaseImpl,
     ) -> dict[str, uuid.UUID | typing.Any]:
         config_meta = data.__dict__
         template_config_id = uuid.uuid1()
         template_config_name = config_meta["template_config_name"]
+
+        config_meta["template_id"] = str(config_meta["template_id"])
         del config_meta["template_config_name"]
 
         try:
@@ -49,7 +51,7 @@ class ConfigurationService:
     async def get_template_config(
         self,
         template_config_id: str,
-        certificate_config_schema: type[templates.TemplateConfiguration],
+        certificate_config_schema: type[configurations.TemplateConfiguration],
         database: crud.DatabaseImpl,
     ):
         try:

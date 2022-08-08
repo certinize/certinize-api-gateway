@@ -6,7 +6,7 @@ import pydantic
 from app.models.domain import app_model
 
 
-class TemplateConfigSave(app_model.AppModel):
+class TemplateConfiguration(app_model.AppModel):
     recipient_name: dict[str, dict[str, int] | int]
     issuance_date: dict[str, dict[str, int] | int]
     template_id: uuid.UUID
