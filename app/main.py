@@ -1,6 +1,6 @@
 from starlite import Starlite
 
-from app.api.api_v1.routes.router import certificate_router, user_router
+from app.api.api_v1.routes.router import api_v1_router
 from app.core.config import settings
 from app.core.events import get_start_app_handler, get_stop_app_handler
 
@@ -10,7 +10,7 @@ def get_application() -> Starlite:
     stop_app = get_stop_app_handler()
 
     app = Starlite(
-        route_handlers=[user_router, certificate_router],
+        route_handlers=[api_v1_router],
         debug=settings.debug,
         on_shutdown=[stop_app],
         on_startup=[

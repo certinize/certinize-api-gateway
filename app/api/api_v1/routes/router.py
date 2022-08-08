@@ -1,8 +1,20 @@
 from starlite import Router
 
-from app.api.api_v1.routes.controllers import certificate, user
+from app.api.api_v1.routes.controllers import (
+    certificate,
+    configuration,
+    issuance,
+    template,
+    user,
+)
 
-user_router = Router(path="/", route_handlers=[user.UserController])
-certificate_router = Router(
-    path="/", route_handlers=[certificate.CertificateController]
+api_v1_router = Router(
+    path="/",
+    route_handlers=[
+        certificate.CertificateController,
+        configuration.ConfigurationController,
+        issuance.IssuanceController,
+        template.TemplateController,
+        user.UserController,
+    ],
 )

@@ -1,6 +1,7 @@
 import typing
 import uuid
 
+import starlite
 from sqlalchemy import exc
 
 from app.db import crud
@@ -8,8 +9,8 @@ from app.models.domain import template
 from app.models.schemas import templates
 
 
-class TemplateService:
-    async def save(
+class ConfigurationService:
+    async def create_template_config(
         self,
         data: template.TemplateConfigSave,
         certificate_config_schema: type[templates.TemplateConfiguration],
@@ -22,7 +23,7 @@ class TemplateService:
 
         try:
             certificate_config = await database.select_row(
-                certificate_config_schema(template_config_name=template_config_name),
+                certificate_config_schema(template_config_name=""),
                 "template_config_name",
                 template_config_name,
             )
@@ -44,3 +45,19 @@ class TemplateService:
                     "template_id": config_meta["template_id"],
                 },
             }
+
+    async def get_template_config(
+        self,
+        template_config_id: str,
+        certificate_config_schema: type[templates.TemplateConfiguration],
+        database: crud.DatabaseImpl,
+    ):
+        try:
+            certificate_config = await database.select_row(
+                certificate_config_schema(template_config_name=""),
+                "template_config_id",
+                template_config_id,
+            )
+            return certificate_config.one()
+        except exc.NoResultFound as err:
+            raise starlite.NotFoundException(err) from err
