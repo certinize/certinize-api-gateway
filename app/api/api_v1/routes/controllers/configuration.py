@@ -30,11 +30,9 @@ class ConfigurationController(starlite.Controller):
         configuration_service: service.ConfigurationService,
         certificate_config_schema: type[configurations.TemplateConfigurations],
     ) -> dict[str, uuid.UUID | typing.Any]:
-        template_config = await configuration_service.create_template_config(
+        return await configuration_service.create_template_config(
             data, certificate_config_schema, database
         )
-
-        return template_config
 
     @starlite.get(path="/{template_config_id:uuid}")
     async def get_template_config(
@@ -44,11 +42,9 @@ class ConfigurationController(starlite.Controller):
         configuration_service: service.ConfigurationService,
         certificate_config_schema: type[configurations.TemplateConfigurations],
     ) -> typing.Any:
-        template_config = await configuration_service.get_template_config(
+        return await configuration_service.get_template_config(
             template_config_id, certificate_config_schema, database
         )
-
-        return template_config
 
     @starlite.get()
     async def list_template_config(self) -> typing.Any:
