@@ -20,8 +20,8 @@ async def get_db_impl(state: starlite.State):
 
 
 async def get_solana_user_schema():
-    return users.SolanaUser
+    return users.SolanaUsers
 
 
 async def get_certificate_config_schema():
-    return configurations.TemplateConfiguration
+    return configurations.TemplateConfigurations

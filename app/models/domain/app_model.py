@@ -1,6 +1,6 @@
-from pydantic import BaseConfig, BaseModel
+import pydantic
 
 
-class AppModel(BaseModel):
-    class Config(BaseConfig):
+class AppModel(pydantic.BaseModel):
+    class Config(pydantic.BaseConfig):
         anystr_strip_whitespace = True

@@ -13,10 +13,10 @@ class UserService:
     async def auth(
         self,
         wallet_address: str,
-        solana_user_schema: type[users.SolanaUser],
+        solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
         utils: utils.Utils,
-    ) -> users.SolanaUser:
+    ) -> users.SolanaUsers:
 
         try:
             wallet_address = await utils.wallet_address_must_be_on_curve(

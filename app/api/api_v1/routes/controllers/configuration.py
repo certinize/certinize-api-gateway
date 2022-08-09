@@ -28,7 +28,7 @@ class ConfigurationController(starlite.Controller):
         data: configuration.TemplateConfiguration,
         database: crud.DatabaseImpl,
         configuration_service: service.ConfigurationService,
-        certificate_config_schema: type[configurations.TemplateConfiguration],
+        certificate_config_schema: type[configurations.TemplateConfigurations],
     ) -> dict[str, uuid.UUID | typing.Any]:
         template_config = await configuration_service.create_template_config(
             data, certificate_config_schema, database
@@ -42,7 +42,7 @@ class ConfigurationController(starlite.Controller):
         template_config_id: pydantic.UUID1,
         database: crud.DatabaseImpl,
         configuration_service: service.ConfigurationService,
-        certificate_config_schema: type[configurations.TemplateConfiguration],
+        certificate_config_schema: type[configurations.TemplateConfigurations],
     ) -> typing.Any:
         template_config = await configuration_service.get_template_config(
             template_config_id, certificate_config_schema, database

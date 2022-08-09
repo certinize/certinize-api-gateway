@@ -14,7 +14,7 @@ class ConfigurationService:
     async def create_template_config(
         self,
         data: configuration.TemplateConfiguration,
-        certificate_config_schema: type[configurations.TemplateConfiguration],
+        certificate_config_schema: type[configurations.TemplateConfigurations],
         database: crud.DatabaseImpl,
     ) -> dict[str, uuid.UUID | typing.Any]:
         config_meta = data.__dict__
@@ -52,7 +52,7 @@ class ConfigurationService:
     async def get_template_config(
         self,
         template_config_id: pydantic.UUID1,
-        certificate_config_schema: type[configurations.TemplateConfiguration],
+        certificate_config_schema: type[configurations.TemplateConfigurations],
         database: crud.DatabaseImpl,
     ):
         try:
