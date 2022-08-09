@@ -1,6 +1,7 @@
 import typing
 import uuid
 
+import pydantic
 import starlite
 from sqlalchemy import exc
 
@@ -50,7 +51,7 @@ class ConfigurationService:
 
     async def get_template_config(
         self,
-        template_config_id: str,
+        template_config_id: pydantic.UUID1,
         certificate_config_schema: type[configurations.TemplateConfiguration],
         database: crud.DatabaseImpl,
     ):
@@ -58,8 +59,8 @@ class ConfigurationService:
             certificate_config = await database.select_row(
                 certificate_config_schema(template_config_name=""),
                 "template_config_id",
-                template_config_id,
+                str(template_config_id),
             )
             return certificate_config.one()
         except exc.NoResultFound as err:
-            raise starlite.NotFoundException(err) from err
+            raise starlite.NotFoundException(str(err)) from err

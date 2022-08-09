@@ -1,7 +1,8 @@
 import typing
 
-import starlite
 import pydantic
+import starlite
+
 from app.api.api_v1.dependencies import database
 from app.api.api_v1.routes.services import configuration as service
 
