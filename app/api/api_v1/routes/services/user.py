@@ -23,7 +23,7 @@ class UserService:
                 wallet_address=wallet_address
             )
         except (ValueError, exceptions.OnCurveException) as err:
-            raise starlite.ValidationException(str(err))
+            raise starlite.ValidationException(str(err)) from err
 
         try:
             solana_user = await database.select_row(
