@@ -9,7 +9,7 @@ You can contribute in many ways:
 
 ## Report Bugs
 
-Report bugs at https://github.com/certinize/zaique/issues.
+Report bugs at https://github.com/certinize/certinize-client-database/issues.
 
 If you are reporting a bug, please include:
 
@@ -26,11 +26,11 @@ Look through the GitHub issues for features. Anything tagged with "enhancement" 
 
 ## Write Documentation
 
-zaique could always use more documentation, whether as part of the official zaique docs, in docstrings, or even on the web in blog posts, articles, and such.
+certinize-client-database could always use more documentation, whether as part of the official certinize-client-database docs, in docstrings, or even on the web in blog posts, articles, and such.
 
 ## Submit Feedback
 
-The best way to send feedback is to file an issue at https://github.com/huenique/zaique/issues.
+The best way to send feedback is to file an issue at https://github.com/huenique/certinize-client-database/issues.
 
 If you are proposing a feature:
 
@@ -40,19 +40,19 @@ If you are proposing a feature:
 
 ## Get Started
 
-Ready to contribute? Here's how to set up `zaique` for local development.
+Ready to contribute? Here's how to set up `certinize-client-database` for local development.
 
-1. Fork the `zaique` repo on GitHub.
+1. Fork the `certinize-client-database` repo on GitHub.
 2. Clone your fork locally
 
     ```
-    $ git clone https://github.com/[Your GitHub Username]/zaique.git
+    $ git clone https://github.com/[Your GitHub Username]/certinize-client-database.git
     ```
 
 3. Install your local copy into a virtualenv. Assuming you have python [poetry](https://github.com/python-poetry/poetry) installed, this is how you set up your fork for local development
 
     ```
-    $ cd zaique/
+    $ cd certinize-client-database/
     $ poetry shell
     $ poetry install
     ```
@@ -74,7 +74,7 @@ Ready to contribute? Here's how to set up `zaique` for local development.
     ```
 
 ## Commit Message Guidelines
-zaique uses precise rules over how git commit messages can be formatted. This leads to more readable messages that are easy to follow when looking through the project history. But also, git commit messages are used to generate the change log. For instructions, head over to this site: https://www.conventionalcommits.org/en/v1.0.0/.
+certinize-client-database uses precise rules over how git commit messages can be formatted. This leads to more readable messages that are easy to follow when looking through the project history. But also, git commit messages are used to generate the change log. For instructions, head over to this site: https://www.conventionalcommits.org/en/v1.0.0/.
 
 ```
 $ git add .
