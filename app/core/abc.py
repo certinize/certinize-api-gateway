@@ -28,7 +28,9 @@ class Database(ABC):
         """
 
     @abstractmethod
-    async def get_row(self, table_model: SQLModel, attribute: str) -> ScalarResult[Any]:
+    async def get_row(
+        self, table_model: SQLModel, attribute: str, query: str
+    ) -> ScalarResult[Any]:
         """Get row from the message table.
         Args:
             table_model (Any): A subclass of SQLModel.

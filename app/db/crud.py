@@ -60,33 +60,20 @@ class DatabaseImpl(abc.Database):
             await session.delete(row.one())
             await session.commit()
 
-    async def select_row(
+    async def get_row(
         self, table_model: sqlmodel.SQLModel, attribute: str, query: str
     ) -> ScalarResult[typing.Any]:
         row: ScalarResult[typing.Any]
         model = type(table_model)
 
         async with AsyncSession(self._engine) as session:
+            # Temp ignore incompatible type passed to `exec()`. See:
+            # https://github.com/tiangolo/sqlmodel/issues/54
+            # https://github.com/tiangolo/sqlmodel/pull/58
             row = await session.exec(
                 sqlmodel.select(model).where(getattr(model, attribute) == query)  # type: ignore
             )
 
-        return row
-
-    async def get_row(
-        self, table_model: sqlmodel.SQLModel, attribute: str
-    ) -> ScalarResult[typing.Any]:
-        model = type(table_model)
-
-        async with AsyncSession(self._engine) as session:
-            # Temp ignore incompatible type passed to `exec()`. See:
-            # https://github.com/tiangolo/sqlmodel/issues/54
-            # https://github.com/tiangolo/sqlmodel/pull/58
-            row: ScalarResult[typing.Any] = await session.exec(
-                sqlmodel.select(model).where(  # type: ignore
-                    getattr(model, attribute) == getattr(table_model, attribute)  # type: ignore
-                )
-            )
         return row
 
     async def get_all_row(

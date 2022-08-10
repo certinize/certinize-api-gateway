@@ -25,7 +25,7 @@ class ConfigurationService:
         del config_meta["template_config_name"]
 
         try:
-            certificate_config = await database.select_row(
+            certificate_config = await database.get_row(
                 certificate_config_schema(template_config_name=""),
                 "template_config_name",
                 template_config_name,
@@ -56,7 +56,7 @@ class ConfigurationService:
         database: crud.DatabaseImpl,
     ):
         try:
-            certificate_config = await database.select_row(
+            certificate_config = await database.get_row(
                 certificate_config_schema(template_config_name=""),
                 "template_config_id",
                 str(template_config_id),
