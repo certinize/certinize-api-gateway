@@ -9,7 +9,7 @@ from app.api.api_v1.routes.controllers import (
 )
 
 api_v1_router = Router(
-    path="/",
+    path="/api/v1",
     route_handlers=[
         certificate.CertificateController,
         configuration.ConfigurationController,
