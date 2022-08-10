@@ -64,3 +64,14 @@ class ConfigurationService:
             return certificate_config.one()
         except exc.NoResultFound as err:
             raise starlite.NotFoundException(str(err)) from err
+
+    async def list_template_config(
+        self,
+        certificate_config_schema: type[configurations.TemplateConfigurations],
+        database: crud.DatabaseImpl,
+    ):
+        result = await database.get_all_row(
+            certificate_config_schema(template_config_name="")
+        )
+
+        return {"configurations": result.all()}

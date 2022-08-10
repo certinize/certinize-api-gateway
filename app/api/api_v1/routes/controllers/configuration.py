@@ -47,5 +47,12 @@ class ConfigurationController(starlite.Controller):
         )
 
     @starlite.get()
-    async def list_template_config(self) -> typing.Any:
-        return {}
+    async def list_template_config(
+        self,
+        certificate_config_schema: type[configurations.TemplateConfigurations],
+        configuration_service: service.ConfigurationService,
+        database: crud.DatabaseImpl,
+    ) -> typing.Any:
+        return await configuration_service.list_template_config(
+            certificate_config_schema, database
+        )
