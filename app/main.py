@@ -9,7 +9,7 @@ def get_application() -> Starlite:
     start_app = get_start_app_handler()
     stop_app = get_stop_app_handler()
 
-    app = Starlite(
+    return Starlite(
         route_handlers=[api_v1_router],
         debug=settings.debug,
         on_shutdown=[stop_app],
@@ -19,8 +19,6 @@ def get_application() -> Starlite:
         ],
         openapi_config=settings.openapi_config,
     )
-
-    return app
 
 
 app = get_application()

@@ -16,7 +16,7 @@ class ConfigurationController(starlite.Controller):
 
     dependencies: typing.Optional[dict[str, "starlite.Provide"]] = {
         "configuration_service": starlite.Provide(service.ConfigurationService),
-        "database": starlite.Provide(database.get_db_impl),
+        "database_": starlite.Provide(database.get_db_impl),
         "certificate_config_schema": starlite.Provide(
             database.get_certificate_config_schema
         ),
@@ -26,24 +26,24 @@ class ConfigurationController(starlite.Controller):
     async def create_template_config(
         self,
         data: configuration.TemplateConfiguration,
-        database: crud.DatabaseImpl,
-        configuration_service: service.ConfigurationService,
         certificate_config_schema: type[configurations.TemplateConfigurations],
+        configuration_service: service.ConfigurationService,
+        database_: crud.DatabaseImpl,
     ) -> dict[str, uuid.UUID | typing.Any]:
         return await configuration_service.create_template_config(
-            data, certificate_config_schema, database
+            data, certificate_config_schema, database_
         )
 
     @starlite.get(path="/{template_config_id:uuid}")
     async def get_template_config(
         self,
         template_config_id: pydantic.UUID1,
-        database: crud.DatabaseImpl,
-        configuration_service: service.ConfigurationService,
         certificate_config_schema: type[configurations.TemplateConfigurations],
+        configuration_service: service.ConfigurationService,
+        database_: crud.DatabaseImpl,
     ) -> typing.Any:
         return await configuration_service.get_template_config(
-            template_config_id, certificate_config_schema, database
+            template_config_id, certificate_config_schema, database_
         )
 
     @starlite.get()
@@ -51,8 +51,8 @@ class ConfigurationController(starlite.Controller):
         self,
         certificate_config_schema: type[configurations.TemplateConfigurations],
         configuration_service: service.ConfigurationService,
-        database: crud.DatabaseImpl,
+        database_: crud.DatabaseImpl,
     ) -> typing.Any:
         return await configuration_service.list_template_config(
-            certificate_config_schema, database
+            certificate_config_schema, database_
         )

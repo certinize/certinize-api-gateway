@@ -1,16 +1,15 @@
-# type: ignore
-from enum import Enum
+import enum
 
-from pydantic import BaseSettings
-
-
-class AppEnv(Enum):
-    prod: str = "prod"
-    dev: str = "dev"
+import pydantic
 
 
-class BaseAppSettings(BaseSettings):
-    app_env: AppEnv = AppEnv.prod
+class AppEnv(enum.Enum):
+    PROD = "prod"
+    DEV = "dev"
 
-    class Config:
+
+class BaseAppSettings(pydantic.BaseSettings):
+    app_env: AppEnv = AppEnv.PROD
+
+    class Config(pydantic.BaseSettings.Config):
         env_file = ".env"

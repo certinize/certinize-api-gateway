@@ -1,3 +1,6 @@
+# flake8: noqa
+# pylint: disable=R0903
+
 import typing
 
 import pydantic
@@ -5,9 +8,13 @@ import sqlmodel
 
 
 class TemplateConfigurations(sqlmodel.SQLModel, table=True):
-    template_config_id: typing.Optional[pydantic.UUID1] = sqlmodel.Field(default=None, primary_key=True)  # type: ignore
+    template_config_id: typing.Optional[pydantic.UUID1] = sqlmodel.Field(  # type: ignore
+        default=None, primary_key=True
+    )
     template_config_name: str
-    config_meta: dict[str, typing.Any] = sqlmodel.Field(default={}, sa_column=sqlmodel.Column(sqlmodel.JSON))  # type: ignore
+    config_meta: dict[str, typing.Any] = sqlmodel.Field(  # type: ignore
+        default={}, sa_column=sqlmodel.Column(sqlmodel.JSON)
+    )
 
-    class Config:  # type: ignore
+    class Config(sqlmodel.SQLModel.Config):
         arbitrary_types_allowed = True

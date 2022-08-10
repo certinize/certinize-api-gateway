@@ -1,25 +1,45 @@
 import uuid
 
 import starlite
+from nacl.bindings import crypto_core
+from solana import publickey
 from sqlalchemy import exc
 
-from app import utils
 from app.core import exceptions
 from app.db import crud
 from app.models.schemas import users
 
 
-class UserService:
+class UserService:  # pylint: disable=R0903
+    async def wallet_address_must_be_on_curve(self, wallet_address: str) -> str:
+        try:
+            valid_point = crypto_core.crypto_core_ed25519_is_valid_point(
+                bytes(publickey.PublicKey(wallet_address))
+            )
+        except ValueError as val_err:
+            err = (
+                str(val_err)
+                .replace("'", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace(",", "")
+            )
+            raise ValueError(err) from val_err
+
+        if not valid_point:
+            raise exceptions.OnCurveException("the point must be on the curve")
+
+        return wallet_address
+
     async def auth(
         self,
         wallet_address: str,
         solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
-        utils: utils.Utils,
     ) -> users.SolanaUsers:
 
         try:
-            wallet_address = await utils.wallet_address_must_be_on_curve(
+            wallet_address = await self.wallet_address_must_be_on_curve(
                 wallet_address=wallet_address
             )
         except (ValueError, exceptions.OnCurveException) as err:

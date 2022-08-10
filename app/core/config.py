@@ -7,8 +7,8 @@ from app.core.settings.dev import DevAppSettings
 from app.core.settings.prod import ProdAppSettings
 
 environments: dict[AppEnv, Type[AppSettings]] = {
-    AppEnv.dev: DevAppSettings,
-    AppEnv.prod: ProdAppSettings,
+    AppEnv.DEV: DevAppSettings,
+    AppEnv.PROD: ProdAppSettings,
 }
 
 
@@ -16,7 +16,7 @@ environments: dict[AppEnv, Type[AppSettings]] = {
 def get_app_settings() -> AppSettings:
     app_env = BaseAppSettings().app_env
     config = environments[app_env]
-    return config()  # type: ignore
+    return config()
 
 
 settings = get_app_settings()

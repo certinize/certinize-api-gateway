@@ -4,7 +4,6 @@ from sqlmodel import SQLModel
 from starlite import State
 
 from app.core.config import settings
-from app.models.schemas import users as users
 
 
 async def create_db_engine(state: State) -> None:

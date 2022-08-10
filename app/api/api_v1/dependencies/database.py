@@ -8,10 +8,10 @@ from app.models.schemas import configurations, users
 async def get_db_engine(state: starlite.State):
     if isinstance(state.engine, engine.AsyncEngine):
         return state.engine
-    else:
-        raise TypeError(
-            "sqlalchemy.ext.asyncio.engine.AsyncEngine is missing from starlite.State"
-        )
+
+    raise TypeError(
+        "sqlalchemy.ext.asyncio.engine.AsyncEngine is missing from starlite.State"
+    )
 
 
 async def get_db_impl(state: starlite.State):

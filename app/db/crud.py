@@ -71,7 +71,9 @@ class DatabaseImpl(abc.Database):
             # https://github.com/tiangolo/sqlmodel/issues/54
             # https://github.com/tiangolo/sqlmodel/pull/58
             row = await session.exec(
-                sqlmodel.select(model).where(getattr(model, attribute) == query)  # type: ignore
+                sqlmodel.select(model).where(  # type: ignore
+                    getattr(model, attribute) == query
+                )
             )
 
         return row
