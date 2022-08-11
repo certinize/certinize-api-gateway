@@ -12,6 +12,7 @@ import starlite
 from aiobotocore import session
 
 from app.core.config import settings
+from app.services import filebase
 
 
 async def create_s3_client(state: starlite.State) -> None:
@@ -20,6 +21,7 @@ async def create_s3_client(state: starlite.State) -> None:
     Args:
         state (starlite.State): An object that can be used to store arbitrary state.
     """
+    state.filebase_client = filebase.Filebase()
     state.s3_client_exit_stack = contextlib.AsyncExitStack()
     state.s3_client = await state.s3_client_exit_stack.enter_async_context(
         session.AioSession().create_client(  # type: ignore
