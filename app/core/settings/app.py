@@ -7,14 +7,18 @@ from app.core.settings import base
 
 
 class AppSettings(base.BaseAppSettings):
-    debug: bool = False
-    title: str = "Certinize client back-end"
-    version: str = "0.1.0"
+    debug = False
+    title = "Certinize client back-end"
+    version = "0.1.0"
     openapi_config = starlite.OpenAPIConfig(title=title, version=version)
 
     database_url: typing.Optional[pydantic.PostgresDsn] = None
-    max_connection_count: int = 10
-    min_connection_count: int = 10
+    max_connection_count = 10
+    min_connection_count = 10
+
+    s3_api_endpoint_url: typing.Optional[str] = None
+    secret_access_key: typing.Optional[str] = None
+    access_key_id: typing.Optional[str] = None
 
     logging_level = "INFO"
 
