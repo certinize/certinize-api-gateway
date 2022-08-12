@@ -5,11 +5,13 @@ app.services.filebase
 This module contains an async client that provides methods for interacting with
 Filebase's S3-compatible API.
 """
+import typing
+
 from types_aiobotocore_s3 import client as s3client
 from types_aiobotocore_s3 import type_defs
 
 
-class Filebase:
+class FilebaseClient:
     """Client implementation for Filebase's S3-compatible API."""
 
     @staticmethod
@@ -29,7 +31,7 @@ class Filebase:
 
     @staticmethod
     async def put_object(
-        client: s3client.S3Client, bucket: str, key: str, body: bytes
+        client: s3client.S3Client, bucket: str, key: str, body: bytes | typing.BinaryIO
     ) -> type_defs.PutObjectOutputTypeDef:
         """Upload an object to an S3 bucket.
 

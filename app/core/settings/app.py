@@ -16,9 +16,17 @@ class AppSettings(base.BaseAppSettings):
     max_connection_count = 10
     min_connection_count = 10
 
-    s3_api_endpoint_url: typing.Optional[str] = None
-    secret_access_key: typing.Optional[str] = None
-    access_key_id: typing.Optional[str] = None
+    s3_api_endpoint_url: pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
+        url="https://", scheme="https"
+    )
+    s3_secret_access_key = ""
+    s3_access_key_id = ""
+
+    imagekit_endpoint_url: pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
+        url="https://", scheme="https"
+    )
+    imagekit_public_key = ""
+    imagekit_private_key = ""
 
     logging_level = "INFO"
 
