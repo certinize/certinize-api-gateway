@@ -79,9 +79,12 @@ class DatabaseImpl(abc.Database):
         return row
 
     async def get_all_row(
-        self, table_model: sqlmodel.SQLModel
+        self, table_model: sqlmodel.SQLModel | type[sqlmodel.SQLModel]
     ) -> ScalarResult[typing.Any]:
-        model = type(table_model)
+        if isinstance(table_model, sqlmodel.SQLModel):
+            model = type(table_model)
+        else:
+            model = table_model
 
         async with AsyncSession(self._engine) as session:
             return await session.exec(sqlmodel.select(model))  # type: ignore

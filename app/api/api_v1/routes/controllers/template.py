@@ -18,7 +18,7 @@ class TemplateController(starlite.Controller):
         "database": starlite.Provide(database_deps.get_db_impl),
         "imagekit_client": starlite.Provide(imagekit_deps.get_imagekit_client),
         "template_service": starlite.Provide(template_svcs.TemplateService),
-        "template_schema": starlite.Provide(database_deps.get_template_schema),
+        "templates_schema": starlite.Provide(database_deps.get_template_schema),
     }
 
     @starlite.post()
@@ -27,7 +27,7 @@ class TemplateController(starlite.Controller):
         database: crud.DatabaseImpl,
         imagekit_client: imagekit.ImageKitClient,
         template_service: template_svcs.TemplateService,
-        template_schema: type[templates.Templates],
+        templates_schema: type[templates.Templates],
         data: dict[
             str, datastructures.UploadFile | list[datastructures.UploadFile]
         ] = starlite.Body(media_type=starlite.RequestEncodingType.MULTI_PART),
@@ -36,9 +36,17 @@ class TemplateController(starlite.Controller):
             data=data,
             database=database,
             imagekit_client=imagekit_client,
-            template_schema=template_schema,
+            template_schema=templates_schema,
         )
 
     @starlite.get()
-    async def list_certificate_templates(self) -> typing.Any:
-        return {}
+    async def list_certificate_templates(
+        self,
+        database: crud.DatabaseImpl,
+        template_service: template_svcs.TemplateService,
+        templates_schema: type[templates.Templates],
+    ) -> typing.Any:
+        result = await template_service.list_certificate_templates(
+            database=database, templates_schema=templates_schema
+        )
+        return {"templates": result.all()}

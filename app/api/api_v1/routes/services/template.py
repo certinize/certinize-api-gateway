@@ -101,3 +101,8 @@ class TemplateService:
             raise starlite.ValidationException(
                 "key missing from request body: image"
             ) from key_err
+
+    async def list_certificate_templates(
+        self, database: crud.DatabaseImpl, templates_schema: type[templates.Templates]
+    ):
+        return await database.get_all_row(templates_schema)

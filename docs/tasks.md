@@ -461,6 +461,7 @@ For multiple file uploads, the response will contain a list of template metadata
     - Method: GET
     - Path: /templates
     - Summary: Get a list of e-Certificate templates.
+    - Description: This will list all recorded e-Certificate templates.
 
 **Request**
 
