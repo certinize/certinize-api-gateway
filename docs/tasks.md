@@ -450,7 +450,7 @@ For multiple file uploads, the response will contain a list of template metadata
     {
       "template_height": 1200,
       ...
-    }
+    },
     ...
   ]
 }
