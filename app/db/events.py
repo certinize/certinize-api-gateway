@@ -10,6 +10,8 @@ async def create_db_engine(state: State) -> None:
     state.engine = create_async_engine(
         settings.database_url, **settings.sqlalchemy_kwargs
     )
+    # Disable logging except for db pool
+    state.engine.echo = False
 
 
 async def dispose_db_engine(state: State) -> None:
