@@ -23,9 +23,9 @@ class TemplateController(starlite.Controller):
         self,
         imagekit_client: imagekit.ImageKitClient,
         template_service: template_svcs.TemplateService,
-        data: dict[str, datastructures.UploadFile] = starlite.Body(
-            media_type=starlite.RequestEncodingType.MULTI_PART
-        ),
+        data: dict[
+            str, datastructures.UploadFile | list[datastructures.UploadFile]
+        ] = starlite.Body(media_type=starlite.RequestEncodingType.MULTI_PART),
     ) -> typing.Any:
         return await template_service.add_certificate_template(
             data=data, imagekit_client=imagekit_client
