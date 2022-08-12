@@ -22,7 +22,7 @@ class TemplateController(starlite.Controller):
     }
 
     @starlite.post()
-    async def add_certificate_template(
+    async def add_certificate_template(  # pylint: disable=R0913
         self,
         database: crud.DatabaseImpl,
         imagekit_client: imagekit.ImageKitClient,

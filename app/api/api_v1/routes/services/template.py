@@ -53,20 +53,18 @@ class TemplateService:
             )
             await database.add_row(template[0])
             return template[1]
-        else:
-            templates_ = [
-                await self._create_template_schema(
-                    imagekit_response=image, template_schema=template_schema
-                )
-                for image in imagekit_response
-            ]
 
-            insert_templates_op = [
-                database.add_row(template[0]) for template in templates_
-            ]
+        templates_ = [
+            await self._create_template_schema(
+                imagekit_response=image, template_schema=template_schema
+            )
+            for image in imagekit_response
+        ]
 
-            await asyncio.gather(*insert_templates_op)
-            return {"templates": [template[1] for template in templates_]}
+        insert_templates_op = [database.add_row(template[0]) for template in templates_]
+
+        await asyncio.gather(*insert_templates_op)
+        return {"templates": [template[1] for template in templates_]}
 
     async def add_certificate_template(
         self,

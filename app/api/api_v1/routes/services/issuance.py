@@ -7,14 +7,13 @@ from types_aiobotocore_s3 import client
 from app.services import filebase
 
 
-class IssuanceService:
+class IssuanceService:  # pylint: disable=R0903
     @staticmethod
     async def transfer_certificate(
         data: dict[str, datastructures.UploadFile],
         filebase_client: filebase.FilebaseClient,
         s3_client: client.S3Client,
     ):
-        # TODO: Upload certificate to IPFS, then transfer token
         try:
             image_src = data["image"]
             key = str(uuid.uuid1())
