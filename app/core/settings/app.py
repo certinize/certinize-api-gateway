@@ -12,7 +12,7 @@ class AppSettings(base.BaseAppSettings):
     version = "0.1.0"
     openapi_config = starlite.OpenAPIConfig(title=title, version=version)
 
-    database_url: typing.Optional[pydantic.PostgresDsn] = None
+    database_url: pydantic.PostgresDsn | None = None
     max_connection_count = 10
     min_connection_count = 10
 

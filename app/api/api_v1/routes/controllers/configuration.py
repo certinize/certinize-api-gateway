@@ -14,7 +14,7 @@ from app.models.schemas import configurations
 class ConfigurationController(starlite.Controller):
     path = "/configurations"
 
-    dependencies: typing.Optional[dict[str, "starlite.Provide"]] = {
+    dependencies: dict[str, "starlite.Provide"] | None = {
         "configuration_service": starlite.Provide(service.ConfigurationService),
         "database_": starlite.Provide(database.get_db_impl),
         "certificate_config_schema": starlite.Provide(

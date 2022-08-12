@@ -8,7 +8,7 @@ import sqlmodel
 
 
 class TemplateConfigurations(sqlmodel.SQLModel, table=True):
-    template_config_id: typing.Optional[pydantic.UUID1] = sqlmodel.Field(  # type: ignore
+    template_config_id: pydantic.UUID1 | None = sqlmodel.Field(  # type: ignore
         default=None, primary_key=True
     )
     template_config_name: str

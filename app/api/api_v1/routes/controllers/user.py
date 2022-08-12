@@ -11,7 +11,7 @@ from app.models.schemas import users
 class UserController(starlite.Controller):
     path = "/users"
 
-    dependencies: typing.Optional[dict[str, "starlite.Provide"]] = {
+    dependencies: dict[str, "starlite.Provide"] | None = {
         "user_service": starlite.Provide(user.UserService),
         "database_": starlite.Provide(database.get_db_impl),
     }

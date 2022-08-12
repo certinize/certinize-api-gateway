@@ -14,7 +14,7 @@ from app.services import imagekit
 class TemplateController(starlite.Controller):
     path = "/templates"
 
-    dependencies: typing.Optional[dict[str, "starlite.Provide"]] = {
+    dependencies: dict[str, "starlite.Provide"] | None = {
         "database": starlite.Provide(database_deps.get_db_impl),
         "imagekit_client": starlite.Provide(imagekit_deps.get_imagekit_client),
         "template_service": starlite.Provide(template_svcs.TemplateService),
