@@ -20,11 +20,9 @@ class AppSettings(base.BaseAppSettings):
     s3_secret_access_key = ""
     s3_access_key_id = ""
 
-    imagekit_endpoint_url: pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
+    certinize_image_processor = pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
         url="https://", scheme="https"
     )
-    imagekit_public_key = ""
-    imagekit_private_key = ""
 
     logging_level = "INFO"
 

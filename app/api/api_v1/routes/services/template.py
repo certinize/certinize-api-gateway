@@ -1,4 +1,5 @@
 import asyncio
+import json
 import typing
 import uuid
 
@@ -7,21 +8,24 @@ from starlette import datastructures
 
 from app.db import crud
 from app.models.schemas import templates
-from app.services import imagekit
+from app.services import image_processor
+
+CERTINIZE_BUCKET = "certinize-bucket"
 
 
 class TemplateService:
-    CERTINIZE_BUCKET = "certinize-bucket"
-
     async def _add_certificate_template(
-        self, imagekit_client: imagekit.ImageKitClient, ecert: bytes
+        self, image_processor_: image_processor.ImageProcessor, ecert: bytes
     ) -> dict[str, typing.Any]:
-        file_name = str(uuid.uuid1())
-        options = {"folder": self.CERTINIZE_BUCKET}
-
-        return await imagekit_client.upload_file(
-            file=ecert, file_name=file_name, options=options
-        )
+        options = {"folder": CERTINIZE_BUCKET}
+        try:
+            return await image_processor_.upload_file(
+                imageb=ecert,
+                image_name=str(uuid.uuid1()),
+                options=json.dumps(options),
+            )
+        except ConnectionError as err:
+            raise starlite.HTTPException(status_code=502, detail=str(err))
 
     async def _create_template_schema(
         self,
@@ -70,35 +74,35 @@ class TemplateService:
         self,
         data: dict[str, datastructures.UploadFile | list[datastructures.UploadFile]],
         database: crud.DatabaseImpl,
-        imagekit_client: imagekit.ImageKitClient,
+        image_processor: image_processor.ImageProcessor,
         template_schema: type[templates.Templates],
     ):
+        image_src: datastructures.UploadFile | list[datastructures.UploadFile]
         try:
             image_src = data["image"]
-
-            if isinstance(image_src, datastructures.UploadFile):
-                imagekit_resp = await self._add_certificate_template(
-                    imagekit_client=imagekit_client, ecert=image_src.file.read()
-                )
-            else:
-                requests = [
-                    self._add_certificate_template(
-                        imagekit_client=imagekit_client, ecert=image.file.read()
-                    )
-                    for image in image_src
-                ]
-                imagekit_resp = await asyncio.gather(*requests)
-
-            return await self._store_imagekit_response(
-                database=database,
-                template_schema=template_schema,
-                imagekit_response=imagekit_resp,
-            )
-
         except KeyError as key_err:
             raise starlite.ValidationException(
                 "key missing from request body: image"
             ) from key_err
+
+        if isinstance(image_src, datastructures.UploadFile):
+            imagekit_resp = await self._add_certificate_template(
+                image_processor_=image_processor, ecert=image_src.file.read()
+            )
+        else:
+            requests = [
+                self._add_certificate_template(
+                    image_processor_=image_processor, ecert=image.file.read()
+                )
+                for image in image_src
+            ]
+            imagekit_resp = await asyncio.gather(*requests)
+
+        return await self._store_imagekit_response(
+            database=database,
+            template_schema=template_schema,
+            imagekit_response=imagekit_resp,
+        )
 
     async def list_certificate_templates(
         self, database: crud.DatabaseImpl, templates_schema: type[templates.Templates]

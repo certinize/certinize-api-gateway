@@ -9,7 +9,7 @@ def get_start_app_handler():
         await db_events.create_db_engine(state)
         await db_events.create_db_tables(state)
         await svcs_events.create_s3_client(state)
-        await svcs_events.create_imagekit_client(state)
+        await svcs_events.create_image_processor_client(state)
 
     return start_app
 

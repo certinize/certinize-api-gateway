@@ -15,7 +15,7 @@ class Templates(sqlmodel.SQLModel, table=True):
     template_size: pydantic.ByteSize | None
     template_thumbnail_url: pydantic.AnyHttpUrl | None
 
-    @orm.declared_attr
     @classmethod
+    @orm.declared_attr
     def __tablename__(cls):
         return "ecert_templates"

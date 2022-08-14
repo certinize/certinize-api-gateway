@@ -12,21 +12,14 @@ import starlite
 from aiobotocore import session
 
 from app.core.config import settings
-from app.services import filebase, imagekit
+from app.services import filebase, image_processor
 
 
-async def create_imagekit_client(state: starlite.State) -> None:
-    """Create an ImageKit client.
-
-    Args:
-        state (starlite.State): An object that can be used to store arbitrary state.
-    """
-    state.imagekit_client = imagekit.ImageKitClient(
-        private_key=settings.imagekit_private_key,
-        public_key=settings.imagekit_public_key,
-        url_endpoint=settings.imagekit_endpoint_url,
+async def create_image_processor_client(state: starlite.State) -> None:
+    state.image_processor = image_processor.ImageProcessor(
+        settings.certinize_image_processor
     )
-    state.imagekit_client_session = state.imagekit_client.session
+    state.image_processor_session = state.image_processor.session
 
 
 async def create_s3_client(state: starlite.State) -> None:
@@ -58,5 +51,5 @@ async def dispose_s3_client(state: starlite.State) -> None:
 
 
 async def dispose_client_sessions(state: starlite.State) -> None:
-    if isinstance(state.imagekit_client_session, aiohttp.ClientSession):
-        await state.imagekit_client_session.close()
+    if isinstance(state.image_processor_session, aiohttp.ClientSession):
+        await state.image_processor_session.close()
