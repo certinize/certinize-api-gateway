@@ -1,12 +1,12 @@
-# certinize-client-database
+# certinize-api-gateway
 
 ## Installation
 
-Fork the [certinize-client-database](https://github.com/certinize/certinize-client-database) repo on GitHub, then [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository) your fork locally.
+Fork the [certinize-api-gateway](https://github.com/certinize/certinize-api-gateway) repo on GitHub, then [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository) your fork locally.
 
 ## Setup
 
-1. `cd` into the project directory, e.g., certinize-client-database.
+1. `cd` into the project directory, e.g., certinize-api-gateway.
 
 2. Inside the project's root directory, run `poetry shell`. This will create or start the virtual environment. Make sure [poetry](https://python-poetry.org/docs/master/#installing-with-the-official-installer) is installed.
 
@@ -24,4 +24,4 @@ Fork the [certinize-client-database](https://github.com/certinize/certinize-clie
 
 ## Contributing
 
-Check the [contributing guide](https://github.com/certinize/certinize-client-database/blob/main/.github/CONTRIBUTING.md) to learn more about the development process and how you can test your changes.
+Check the [contributing guide](https://github.com/certinize/certinize-api-gateway/blob/main/.github/CONTRIBUTING.md) to learn more about the development process and how you can test your changes.

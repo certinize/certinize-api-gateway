@@ -1,30 +1,32 @@
 [tool.poetry]
+authors = ["Hju Kneyck Flores <hjucode@gmail.com>"]
+description = ""
 name = "app"
 version = "0.1.0"
-description = ""
-authors = ["Hju Kneyck Flores <hjucode@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-uvicorn = {extras = ["standard"], version = "^0.17.5"}
-pydantic = {extras = ["email"], version = "^1.9.0"}
-starlite = "^1.2.3"
-asyncpg = "^0.25.0"
-aiosql = "^3.4.1"
-sqlmodel = "^0.0.6"
+Pillow = "^9.2.0"
 PyNaCl = "^1.5.0"
-solana = "^0.25.1"
 aiobotocore = "^2.3.4"
+aiosql = "^3.4.1"
+asyncpg = "^0.25.0"
+pydantic = {extras = ["email"], version = "^1.9.0"}
+python = "^3.10"
+python-multipart = "^0.0.5"
+solana = "^0.25.1"
+sqlmodel = "^0.0.6"
+starlite = "^1.2.3"
+uvicorn = {extras = ["standard"], version = "^0.17.5"}
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
 black = "^22.1.0"
-isort = "^5.10.1"
 flake8 = "^4.0.1"
+isort = "^5.10.1"
 pylint = "^2.12.2"
 pyright = "^0.0.13"
+pytest = "^5.2"
 types-aiobotocore = {extras = ["s3"], version = "^2.3.4"}
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
