@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 import sqlmodel
+from sqlalchemy import orm
 
 
 class TemplateConfigurations(sqlmodel.SQLModel, table=True):
@@ -18,3 +19,7 @@ class TemplateConfigurations(sqlmodel.SQLModel, table=True):
 
     class Config(sqlmodel.SQLModel.Config):
         arbitrary_types_allowed = True
+
+    @orm.declared_attr
+    def __tablename__(cls):
+        return "template_configurations"

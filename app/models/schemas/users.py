@@ -1,5 +1,6 @@
 import pydantic
 import sqlmodel
+from sqlalchemy import orm
 
 
 class SolanaUsers(sqlmodel.SQLModel, table=True):
@@ -8,3 +9,7 @@ class SolanaUsers(sqlmodel.SQLModel, table=True):
     )
     wallet_address: str
     api_key: pydantic.UUID5
+
+    @orm.declared_attr
+    def __tablename__(cls):
+        return "solana_users"
