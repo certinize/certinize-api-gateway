@@ -211,7 +211,7 @@ crt = ["awscrt (==0.13.5)"]
 name = "botocore-stubs"
 version = "1.27.51"
 description = "Type annotations and code completion for botocore"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
@@ -1051,7 +1051,7 @@ python-versions = ">=3.6,<4.0"
 name = "types-aiobotocore"
 version = "2.3.4.post3"
 description = "Type annotations for aiobotocore 2.3.4 generated with mypy-boto3-builder 7.11.3"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -1369,7 +1369,7 @@ xray = ["types-aiobotocore-xray (>=2.3.0,<2.4.0)"]
 name = "types-aiobotocore-s3"
 version = "2.3.4.post3"
 description = "Type annotations for aiobotocore.S3 2.3.4 service generated with mypy-boto3-builder 7.11.3"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -1380,7 +1380,7 @@ typing-extensions = ">=4.1.0"
 name = "types-awscrt"
 version = "0.14.0"
 description = "Type annotations and code completion for awscrt"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
@@ -1507,7 +1507,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.6"
-content-hash = "36abecfe389dcb492227f20177ae7d8df7b38c44a9b728faf0cbfb56e5e0a666"
+content-hash = "d141d5777358e399141bd0a02548b9bf27811f17b575106551ea9e12a7682c15"
 
 [metadata.files]
 aiobotocore = []

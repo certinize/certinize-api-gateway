@@ -17,6 +17,7 @@ python-multipart = "^0.0.5"
 solana = "^0.25.1"
 sqlmodel = "^0.0.6"
 starlite = "^1.2.3"
+types-aiobotocore = {extras = ["s3"], version = "^2.3.4"}
 uvicorn = {extras = ["standard"], version = "^0.17.5"}
 
 [tool.poetry.dev-dependencies]
@@ -26,7 +27,6 @@ isort = "^5.10.1"
 pylint = "^2.12.2"
 pyright = "^0.0.13"
 pytest = "^5.2"
-types-aiobotocore = {extras = ["s3"], version = "^2.3.4"}
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

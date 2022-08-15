@@ -120,6 +120,7 @@ asyncpg==0.25.0; python_full_version >= "3.6.0" \
     --hash=sha256:63f8e6a69733b285497c2855464a34de657f2cccd25aeaeeb5071872e9382540
 attrs==22.1.0; python_version >= "3.7" and python_version < "4.0"
 based58==0.1.1; python_version >= "3.7" and python_version < "4.0"
+botocore-stubs==1.27.51; python_version >= "3.7" and python_version < "4.0"
 botocore==1.24.21; python_version >= "3.6" \
     --hash=sha256:92daca8775e738a9db9b465d533019285f09d541e903233261299fd87c2f842c \
     --hash=sha256:7e976cfd0a61601e74624ef8f5246b40a01f2cce73a011ef29cf80a6e371d0fa
@@ -452,6 +453,9 @@ sqlmodel==0.0.6; python_full_version >= "3.6.1" and python_full_version < "4.0.0
     --hash=sha256:3b4f966b9671b24d85529d274e6c4dbc7753b468e35d2d6a40bd75cad1f66813
 starlette==0.20.4; python_version >= "3.7" and python_version < "4.0"
 starlite==1.11.1; python_version >= "3.7" and python_version < "4.0"
+types-aiobotocore-s3==2.3.4.post3; python_version >= "3.7"
+types-aiobotocore==2.3.4.post3; python_version >= "3.7"
+types-awscrt==0.14.0; python_version >= "3.7" and python_version < "4.0"
 types-cachetools==4.2.10; python_version >= "3.7" and python_version < "4.0"
 typing-extensions==4.3.0; python_version >= "3.7" and python_full_version >= "3.6.1" and python_version < "4.0" and python_full_version < "4.0.0"
 urllib3==1.26.11; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7"
