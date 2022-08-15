@@ -8,7 +8,7 @@ from app.core.events import get_start_app_handler, get_stop_app_handler
 def get_application() -> starlite.Starlite:
     start_app = get_start_app_handler()
     stop_app = get_stop_app_handler()
-    cors_config = starlite.CORSConfig(allow_origins=["*"])
+    cors_config = starlite.CORSConfig(allow_origins=settings.allow_origins)
 
     return starlite.Starlite(
         cors_config=cors_config,

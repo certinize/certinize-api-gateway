@@ -9,7 +9,7 @@ class AppSettings(base.BaseAppSettings):
     title = "Certinize client back-end"
     version = "0.1.0"
     openapi_config = starlite.OpenAPIConfig(title=title, version=version)
-    allow_origins: list[str]
+    allow_origins: list[str] = ["*"]
 
     database_url: pydantic.PostgresDsn | None = None
     max_connection_count = 10
