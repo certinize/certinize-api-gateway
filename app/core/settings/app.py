@@ -44,9 +44,7 @@ class AppSettings(base.BaseAppSettings):
     @property
     def sqlalchemy_kwargs(self) -> dict[str, bool | int]:
         return {
-            "echo": self.debug,
             "future": True,
             "pool_size": self.min_connection_count,
             "max_overflow": self.max_connection_count,
-            "echo_pool": self.debug,
         }
