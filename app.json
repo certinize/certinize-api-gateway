@@ -1,0 +1,50 @@
+{
+  "name": "certinize-api-gateway",
+  "description": "API Gateway for the Certinize project",
+  "env": {
+    "ALLOWED_ORIGINS": {
+      "description": "Origins (domain, scheme, or port) allowed to use the app as a backend. Allow all as default",
+      "required": false,
+      "value": ["*"]
+    },
+    "S3_API_ENDPOINT_URL": {
+      "description": "The endpoint of the S3-compatible object storage service you use.",
+      "required": true
+    },
+    "S3_ACCESS_KEY_ID": {
+      "description": "Associated S3 acess key ID",
+      "required": true
+    },
+    "S3_SECRET_ACCESS_KEY": {
+      "description": "Associated S3 secret key ID",
+      "required": true
+    },
+    "CERTINIZE_IMAGE_PROCESSOR": {
+      "description": "URL of the certinize-image-processor service.",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:hobby-dev",
+      "options": {
+        "version": "14"
+      },
+      "as": "DATABASE"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/moneymeets/python-poetry-buildpack.git"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
