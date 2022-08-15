@@ -9,7 +9,7 @@ from app.core.config import settings
 
 async def create_db_engine(state: State) -> None:
     assert isinstance(settings.database_url, pydantic.PostgresDsn)
-    database_url = settings.database_url.replace("postgres://", "postgresql://")
+    database_url = settings.database_url.replace("postgres://", "postgresql+asyncpg://")
     state.engine = create_async_engine(database_url, **settings.sqlalchemy_kwargs)
 
     # Disable logging except for db pool
