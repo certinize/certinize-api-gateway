@@ -17,6 +17,7 @@ solana = "^0.25.1"
 sqlmodel = "^0.0.6"
 starlite = "^1.2.3"
 uvicorn = {extras = ["standard"], version = "^0.17.5"}
+gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
