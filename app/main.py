@@ -1,15 +1,17 @@
-from starlite import Starlite
+import starlite
 
 from app.api.api_v1.routes.router import api_v1_router
 from app.core.config import settings
 from app.core.events import get_start_app_handler, get_stop_app_handler
 
 
-def get_application() -> Starlite:
+def get_application() -> starlite.Starlite:
     start_app = get_start_app_handler()
     stop_app = get_stop_app_handler()
+    cors_config = starlite.CORSConfig(allow_origins=["*"])
 
-    return Starlite(
+    return starlite.Starlite(
+        cors_config=cors_config,
         route_handlers=[api_v1_router],
         debug=settings.debug,
         on_shutdown=[stop_app],
