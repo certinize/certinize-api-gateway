@@ -2,14 +2,16 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from sqlmodel import SQLModel
 from starlite import State
+import pydantic
 
 from app.core.config import settings
 
 
 async def create_db_engine(state: State) -> None:
-    state.engine = create_async_engine(
-        settings.database_url, **settings.sqlalchemy_kwargs
-    )
+    assert isinstance(settings.database_url, pydantic.PostgresDsn)
+    database_url = settings.database_url.replace("postgres://", "postgresql://")
+    state.engine = create_async_engine(database_url, **settings.sqlalchemy_kwargs)
+
     # Disable logging except for db pool
     state.engine.echo = False
 
