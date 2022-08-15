@@ -6,7 +6,7 @@ from app.core.settings import base
 
 class AppSettings(base.BaseAppSettings):
     debug = False
-    title = "Certinize client back-end"
+    title = "Certinize API Gateway"
     version = "0.1.0"
     openapi_config = starlite.OpenAPIConfig(title=title, version=version)
     allow_origins: list[str] = ["*"]
