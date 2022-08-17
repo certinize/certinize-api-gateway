@@ -1,8 +1,8 @@
+import pydantic
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from sqlmodel import SQLModel
 from starlite import State
-import pydantic
 
 from app.core.config import settings
 

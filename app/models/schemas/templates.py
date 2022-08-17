@@ -7,13 +7,13 @@ class Templates(sqlmodel.SQLModel, table=True):
     template_id: pydantic.UUID1 | None = sqlmodel.Field(  # type: ignore
         default=None, primary_key=True
     )
-    template_url: pydantic.AnyHttpUrl
+    template_url: pydantic.HttpUrl
     template_height: int
     template_width: int
     template_path: str | None
     template_name: str | None
     template_size: pydantic.ByteSize | None
-    template_thumbnail_url: pydantic.AnyHttpUrl | None
+    template_thumbnail_url: pydantic.HttpUrl | None
 
     @classmethod
     @orm.declared_attr

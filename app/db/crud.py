@@ -4,6 +4,7 @@ import sqlmodel
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel.engine.result import ScalarResult
 from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlmodel.sql import expression
 
 from app.core import abc
 
@@ -17,6 +18,10 @@ class DatabaseImpl(abc.Database):
 
     def __init__(self, engine: AsyncEngine) -> None:
         self._engine = engine
+
+        # Avoid an SAWarning. See: https://github.com/tiangolo/sqlmodel/issues/189
+        expression.SelectOfScalar.inherit_cache = True  # type: ignore
+        expression.Select.inherit_cache = True  # type: ignore
 
     @staticmethod
     async def update(

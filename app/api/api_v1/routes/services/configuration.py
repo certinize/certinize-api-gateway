@@ -19,10 +19,15 @@ class ConfigurationService:
     ) -> dict[str, uuid.UUID | typing.Any]:
         config_meta = data.__dict__
         template_config_id = uuid.uuid1()
-        template_config_name = config_meta["template_config_name"]
 
-        config_meta["template_id"] = str(config_meta["template_id"])
+        # Reusing a variable seems more efficient and correct than extracting the value
+        # from the dict everytime we need it.
+        template_config_name = config_meta["template_config_name"]
         del config_meta["template_config_name"]
+
+        # SQLAlchemy rejects objects, so convert them to their string reprs.
+        config_meta["template_id"] = str(config_meta["template_id"])
+        config_meta["font_id"] = str(config_meta["font_id"])
 
         try:
             certificate_config = await database.get_row(
@@ -46,6 +51,7 @@ class ConfigurationService:
                     "recipient_name": config_meta["recipient_name"],
                     "issuance_date": config_meta["issuance_date"],
                     "template_id": config_meta["template_id"],
+                    "font_id": config_meta["font_id"],
                 },
             }
 

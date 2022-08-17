@@ -11,6 +11,7 @@ class TemplateConfiguration(app_model.AppModel):
     issuance_date: dict[str, dict[str, int] | int]
     template_id: uuid.UUID
     template_config_name: str
+    font_id: uuid.UUID
 
     @pydantic.root_validator(pre=True)
     @classmethod

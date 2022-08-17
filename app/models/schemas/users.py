@@ -10,6 +10,7 @@ class SolanaUsers(sqlmodel.SQLModel, table=True):
     wallet_address: str
     api_key: pydantic.UUID5
 
+    @classmethod
     @orm.declared_attr
     def __tablename__(cls):
         return "solana_users"

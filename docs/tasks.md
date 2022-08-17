@@ -133,7 +133,8 @@ Request Body:
     "font_size": 12
   },
   "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
-  "template_config_name": "example"
+  "template_config_name": "example",
+  "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
 }
 ```
 
@@ -164,7 +165,8 @@ JSON Response:
       },
       "font_size": 12
     },
-    "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42"
+    "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
+    "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
   }
 }
 ```
@@ -235,7 +237,8 @@ JSON Response:
       },
       "font_size": 12
     },
-    "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42"
+    "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
+    "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
   }
 }
 ```
@@ -304,8 +307,66 @@ JSON Response:
           },
           "font_size": 12
         },
-        "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42"
+        "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
+        "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
       }
+    },
+    ...
+  ]
+}
+```
+
+## Fonts
+
+### Get All Fonts
+
+    - Method: GET
+    - Path: /fonts
+    - Summary: Retrieve all usable e-Certificate fonts.
+
+**Request**
+
+There are no request parameters for this operation.
+
+**Response**
+
+Supported Media Types:
+
+- `application/json`
+
+**Response Status Codes**
+
+200 Response: The request was fulfilled.
+400 Response: Bad request syntax or unsuported method.
+
+**Examples**
+
+Request Header:
+
+```
+X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
+```
+
+Request Path:
+
+```
+/fonts
+```
+
+HTTP Status Code:
+
+```
+200
+```
+
+JSON Response:
+
+```json
+{
+  "fonts": [
+    {
+      "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad",
+      "font_url": "https://raw.githubusercontent.com/certinize/fonts/main/ttf/example-ttf.ttf"
     },
     ...
   ]

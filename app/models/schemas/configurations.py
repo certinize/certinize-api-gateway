@@ -20,6 +20,7 @@ class TemplateConfigurations(sqlmodel.SQLModel, table=True):
     class Config(sqlmodel.SQLModel.Config):
         arbitrary_types_allowed = True
 
+    @classmethod
     @orm.declared_attr
     def __tablename__(cls):
         return "template_configurations"
