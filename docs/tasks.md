@@ -436,8 +436,8 @@ JSON Response:
   "template_name": "18a46f27-1a46-11ed-af20-00155d3fe822_wmPgJS8wq",
   "template_path": "/certinize-bucket/18a46f27-1a46-11ed-af20-00155d3fe822_wmPgJS8wq",
   "template_size": 379611,
-  "template_thumbnail_url": "https://ik.imagekit.io/certinize/tr:n-ik_ml_thumbnail/certinize-bucket/18a46f27-1a46-11ed-af20-00155d3fe822_wmPgJS8wq",
-  "template_url": "https://ik.imagekit.io/certinize/certinize-bucket/18a46f27-1a46-11ed-af20-00155d3fe822_wmPgJS8wq",
+  "template_thumbnail_url": "https://...",
+  "template_url": "https://...",
   "template_width": 773
 }
 ```
