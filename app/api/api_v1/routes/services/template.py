@@ -74,7 +74,7 @@ class TemplateService:
         self,
         data: dict[str, datastructures.UploadFile | list[datastructures.UploadFile]],
         database: crud.DatabaseImpl,
-        image_processor: image_processor.ImageProcessor,
+        image_processor_: image_processor.ImageProcessor,
         template_schema: type[templates.Templates],
     ):
         image_src: datastructures.UploadFile | list[datastructures.UploadFile]
@@ -87,12 +87,12 @@ class TemplateService:
 
         if isinstance(image_src, datastructures.UploadFile):
             imagekit_resp = await self._add_certificate_template(
-                image_processor_=image_processor, ecert=image_src.file.read()
+                image_processor_=image_processor_, ecert=image_src.file.read()
             )
         else:
             requests = [
                 self._add_certificate_template(
-                    image_processor_=image_processor, ecert=image.file.read()
+                    image_processor_=image_processor_, ecert=image.file.read()
                 )
                 for image in image_src
             ]

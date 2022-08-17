@@ -37,7 +37,7 @@ class TemplateController(starlite.Controller):
         return await template_service.add_certificate_template(
             data=data,
             database=database,
-            image_processor=image_processor_,
+            image_processor_=image_processor_,
             template_schema=templates_schema,
         )
 

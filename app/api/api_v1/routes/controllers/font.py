@@ -18,10 +18,10 @@ class FontController(starlite.Controller):
     @starlite.get()
     async def get_all_fonts(
         self,
-        database: crud.DatabaseImpl,
+        database_: crud.DatabaseImpl,
         font_schema: type[fonts.Fonts],
         fonts_service: service.FontService,
     ) -> dict[str, list[dict[str, str]]]:
         return await fonts_service.get_all_fonts(
-            database=database, font_schema=font_schema
+            database=database_, font_schema=font_schema
         )
