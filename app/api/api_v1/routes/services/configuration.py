@@ -87,7 +87,7 @@ class ConfigurationService:
         database: crud.DatabaseImpl,
     ) -> dict[str, uuid.UUID | typing.Any]:
         try:
-            certificate_config = await database.select_join(
+            results = await database.select_join(
                 certificate_config_schema(
                     template_config_id=template_config_id, template_config_name=""
                 ),
@@ -95,10 +95,15 @@ class ConfigurationService:
                 templates_schema,
                 fonts_schema,
             )
+            results_ = results.one()
 
             return dict(
                 sortedcontainers.SortedDict(
-                    orjson.loads(certificate_config.one().json())
+                    {
+                        "template_config": results_["Configurations"],
+                        "template": results_["Templates"],
+                        "font": results_["Fonts"],
+                    }
                 )
             )
         except exc.NoResultFound as err:
@@ -140,17 +145,17 @@ class ConfigurationService:
                 {
                     "template_config_id": template_config_id,
                     "template_config_name": template_config_name,
-                    "template_config": template_config,
-                    "template": dict(
-                        sortedcontainers.SortedDict(
-                            orjson.loads(result["Templates"].json())
-                        )
-                    ),
                     "font": dict(
                         sortedcontainers.SortedDict(
                             orjson.loads(result["Fonts"].json())
                         )
                     ),
+                    "template": dict(
+                        sortedcontainers.SortedDict(
+                            orjson.loads(result["Templates"].json())
+                        )
+                    ),
+                    "template_config": template_config,
                 }
             )
 

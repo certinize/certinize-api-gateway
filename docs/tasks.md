@@ -207,7 +207,7 @@ X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 Request Parameter:
 
 ```
-/configurations/36b91a30-16fb-11ed-8a9e-00155d3ecff4
+/configurations/6e9fd408-207d-11ed-9d54-00155d886c22
 ```
 
 HTTP Status Code:
@@ -220,8 +220,6 @@ JSON Response:
 
 ```json
 {
-  "template_config_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
-  "template_config_name": "example",
   "config_meta": {
     "recipient_name": {
       "position": {
@@ -236,10 +234,12 @@ JSON Response:
         "y": 950
       },
       "font_size": 12
-    },
-    "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
-    "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
-  }
+    }
+  },
+  "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
+  "template_config_id": "6e9fd408-207d-11ed-9d54-00155d886c22",
+  "template_config_name": "my template",
+  "template_id": "89b22a51-2057-11ed-9d28-00155d886c22"
 }
 ```
 
@@ -292,6 +292,20 @@ JSON Response:
     {
       "template_config_id": "6e9fd408-207d-11ed-9d54-00155d886c22",
       "template_config_name": "my template",
+      "font": {
+        "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
+        "font_url": "https://..."
+      },
+      "template": {
+        "template_height": 720,
+        "template_id": "89b22a51-2057-11ed-9d28-00155d886c22",
+        "template_name": "template_name",
+        "template_path": "/certinize-bucket/template_name",
+        "template_size": 97583,
+        "template_thumbnail_url": "https://...",
+        "template_url": "https://...",
+        "template_width": 1040
+      },
       "template_config": {
         "config_meta": {
           "recipient_name": {
@@ -311,20 +325,6 @@ JSON Response:
         },
         "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
         "template_id": "89b22a51-2057-11ed-9d28-00155d886c22"
-      },
-      "template": {
-        "template_height": 720,
-        "template_id": "89b22a51-2057-11ed-9d28-00155d886c22",
-        "template_name": "template_name",
-        "template_path": "/certinize-bucket/template_name",
-        "template_size": 97583,
-        "template_thumbnail_url": "https://...",
-        "template_url": "https://...",
-        "template_width": 1040
-      },
-      "font": {
-        "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
-        "font_url": "https://..."
       }
     }
   ]

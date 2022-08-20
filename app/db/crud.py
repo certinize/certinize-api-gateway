@@ -96,29 +96,25 @@ class DatabaseImpl(abc.Database):
             return await session.exec(sqlmodel.select(model))  # type: ignore
 
     async def select_join(
-        self,
-        main_model: sqlmodel.SQLModel,
-        *table_models: type[sqlmodel.SQLModel],
+        self, main_model: sqlmodel.SQLModel, *table_models: type[sqlmodel.SQLModel]
     ) -> ScalarResult[typing.Any]:
-        row: ScalarResult[typing.Any]
         attribute = ""
         query = ""
 
-        # Dynamically get the "id" attrib str repr (attribute) and its value (query),
-        # so we don't have to ask the user for them.
+        # Dynamically get the first "id" attrib str repr (attribute) and its value
+        # (query), so we don't have to ask the user for them.
         for var in vars(main_model):
             if "_id" in var:
                 attribute = var
                 query = getattr(main_model, attribute)
+                break
 
         async with AsyncSession(self._engine) as session:
-            row = await session.exec(
-                sqlmodel.select(*table_models).where(  # type: ignore
-                    getattr(type(main_model), attribute) == query
-                )
+            return await session.exec(
+                sqlmodel.select(*table_models)  # type: ignore
+                .join(table_models[-1])
+                .where(getattr(type(main_model), attribute) == query)
             )
-
-        return row
 
     async def select_all_join(
         self, *table_models: type[sqlmodel.SQLModel]
