@@ -85,7 +85,7 @@ class ConfigurationService:
         templates_schema: type[templates.Templates],
         fonts_schema: type[fonts.Fonts],
         database: crud.DatabaseImpl,
-    ):
+    ) -> dict[str, uuid.UUID | typing.Any]:
         try:
             certificate_config = await database.select_join(
                 certificate_config_schema(
@@ -95,7 +95,12 @@ class ConfigurationService:
                 templates_schema,
                 fonts_schema,
             )
-            return certificate_config.one()
+
+            return dict(
+                sortedcontainers.SortedDict(
+                    orjson.loads(certificate_config.one().json())
+                )
+            )
         except exc.NoResultFound as err:
             raise starlite.NotFoundException(str(err)) from err
 
@@ -119,13 +124,23 @@ class ConfigurationService:
             # 4. Convert the SortedDict object to dict using dict().
             # 5. Assign the result to a parent dict key.
             # 6. Append the parent dict to serialized_results.
+
+            template_config: dict[str, typing.Any] = dict(
+                sortedcontainers.SortedDict(
+                    orjson.loads(result["Configurations"].json())
+                )
+            )
+            template_config_id = template_config["template_config_id"]
+            template_config_name = template_config["template_config_name"]
+
+            del template_config["template_config_id"]
+            del template_config["template_config_name"]
+
             serialized_results.append(
                 {
-                    "template_config": dict(
-                        sortedcontainers.SortedDict(
-                            orjson.loads(result["Configurations"].json())
-                        )
-                    ),
+                    "template_config_id": template_config_id,
+                    "template_config_name": template_config_name,
+                    "template_config": template_config,
                     "template": dict(
                         sortedcontainers.SortedDict(
                             orjson.loads(result["Templates"].json())

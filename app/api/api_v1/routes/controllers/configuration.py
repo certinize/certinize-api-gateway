@@ -20,6 +20,8 @@ class ConfigurationController(starlite.Controller):
         "certificate_config_schema": starlite.Provide(
             database_deps.get_certificate_configs_schema
         ),
+        "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
+        "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }
 
     @starlite.post()
@@ -34,36 +36,25 @@ class ConfigurationController(starlite.Controller):
             data, certificate_config_schema, database
         )
 
-    @starlite.get(
-        path="/{template_config_id:uuid}",
-        dependencies={
-            "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
-            "templates_schema": starlite.Provide(database_deps.get_templates_schema),
-        },
-    )
+    @starlite.get(path="/{template_config_id:uuid}")
     async def get_template_config(  # pylint: disable=R0913
         self,
         template_config_id: pydantic.UUID1,
         certificate_config_schema: type[configurations.Configurations],
         fonts_schema: type[fonts.Fonts],
-        template_schema: type[templates.Templates],
+        templates_schema: type[templates.Templates],
         configuration_service: service.ConfigurationService,
         database: crud.DatabaseImpl,
     ) -> typing.Any:
         return await configuration_service.get_template_config(
             template_config_id=template_config_id,
             certificate_config_schema=certificate_config_schema,
-            templates_schema=template_schema,
+            templates_schema=templates_schema,
             fonts_schema=fonts_schema,
             database=database,
         )
 
-    @starlite.get(
-        dependencies={
-            "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
-            "templates_schema": starlite.Provide(database_deps.get_templates_schema),
-        }
-    )
+    @starlite.get()
     async def list_template_config(  # pylint: disable=R0913
         self,
         certificate_config_schema: type[configurations.Configurations],

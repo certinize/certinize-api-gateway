@@ -290,6 +290,8 @@ JSON Response:
 {
   "configurations": [
     {
+      "template_config_id": "6e9fd408-207d-11ed-9d54-00155d886c22",
+      "template_config_name": "my template",
       "template_config": {
         "config_meta": {
           "recipient_name": {
@@ -305,13 +307,9 @@ JSON Response:
               "y": 950
             },
             "font_size": 12
-          },
-          "template_id": "89b22a51-2057-11ed-9d28-00155d886c22",
-          "font_id": "e632f180-2056-11ed-b912-bb65d3909f61"
+          }
         },
         "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
-        "template_config_id": "96156735-2057-11ed-9f44-00155d886c22",
-        "template_config_name": "my template",
         "template_id": "89b22a51-2057-11ed-9d28-00155d886c22"
       },
       "template": {
