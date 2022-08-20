@@ -24,7 +24,7 @@ def get_solana_users_schema() -> type[users.SolanaUsers]:
 
 
 def get_certificate_configs_schema():
-    return configurations.TemplateConfigurations
+    return configurations.Configurations
 
 
 def get_templates_schema() -> type[templates.Templates]:

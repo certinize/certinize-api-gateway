@@ -8,7 +8,7 @@ import sqlmodel
 from sqlalchemy import orm
 
 
-class TemplateConfigurations(sqlmodel.SQLModel, table=True):
+class Configurations(sqlmodel.SQLModel, table=True):
     template_config_id: pydantic.UUID1 | None = sqlmodel.Field(  # type: ignore
         default=None, primary_key=True
     )

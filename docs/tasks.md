@@ -290,28 +290,45 @@ JSON Response:
 {
   "configurations": [
     {
-      "template_config_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
-      "template_config_name": "example",
-      "config_meta": {
-        "recipient_name": {
-          "position": {
-            "x": 960,
-            "y": 540
+      "template_config": {
+        "config_meta": {
+          "recipient_name": {
+            "position": {
+              "x": 960,
+              "y": 540
+            },
+            "font_size": 24
           },
-          "font_size": 24
-        },
-        "issuance_date": {
-          "position": {
-            "x": 130,
-            "y": 950
+          "issuance_date": {
+            "position": {
+              "x": 130,
+              "y": 950
+            },
+            "font_size": 12
           },
-          "font_size": 12
+          "template_id": "89b22a51-2057-11ed-9d28-00155d886c22",
+          "font_id": "e632f180-2056-11ed-b912-bb65d3909f61"
         },
-        "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
-        "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
+        "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
+        "template_config_id": "96156735-2057-11ed-9f44-00155d886c22",
+        "template_config_name": "my template",
+        "template_id": "89b22a51-2057-11ed-9d28-00155d886c22"
+      },
+      "template": {
+        "template_height": 720,
+        "template_id": "89b22a51-2057-11ed-9d28-00155d886c22",
+        "template_name": "template_name",
+        "template_path": "/certinize-bucket/template_name",
+        "template_size": 97583,
+        "template_thumbnail_url": "https://...",
+        "template_url": "https://...",
+        "template_width": 1040
+      },
+      "font": {
+        "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
+        "font_url": "https://..."
       }
-    },
-    ...
+    }
   ]
 }
 ```

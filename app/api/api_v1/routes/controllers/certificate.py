@@ -26,7 +26,7 @@ class CertificateController(starlite.Controller):
     }
 
     @starlite.post()
-    async def generate_certificate(
+    async def generate_certificate(  # pylint: disable=R0913
         self,
         data: certificate.CertificateTemplateMeta,
         database_: crud.DatabaseImpl,

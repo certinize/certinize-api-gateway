@@ -938,6 +938,14 @@ python-versions = ">=3.7"
 typing-extensions = ">=4.2.0,<5.0.0"
 
 [[package]]
+name = "sortedcontainers"
+version = "2.4.0"
+description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sqlalchemy"
 version = "1.4.40"
 description = "Database Abstraction Library"
@@ -1507,7 +1515,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.6"
-content-hash = "d141d5777358e399141bd0a02548b9bf27811f17b575106551ea9e12a7682c15"
+content-hash = "dbe32c9cb682b67095b7cd6605413ec21ca3c3a92a038c6ab01bd225d8ccee0f"
 
 [metadata.files]
 aiobotocore = []
@@ -2097,6 +2105,10 @@ sniffio = [
 ]
 solana = []
 solders = []
+sortedcontainers = [
+    {file = "sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"},
+    {file = "sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"},
+]
 sqlalchemy = []
 sqlalchemy2-stubs = []
 sqlmodel = [

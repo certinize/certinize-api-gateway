@@ -3,7 +3,7 @@ import sqlmodel
 from sqlalchemy import orm
 
 
-class CertificateCollections(sqlmodel.SQLModel, table=True):
+class CertificateCollections(sqlmodel.SQLModel, table=True):  # pylint: disable=R0913
     collection_id: pydantic.UUID1 | None = sqlmodel.Field(  # type: ignore
         default=None, primary_key=True
     )
@@ -11,7 +11,7 @@ class CertificateCollections(sqlmodel.SQLModel, table=True):
         default={}, sa_column=sqlmodel.Column(sqlmodel.JSON)
     )
 
-    class Config(sqlmodel.SQLModel.Config):
+    class Config(sqlmodel.SQLModel.Config):  # pylint: disable=R0903
         arbitrary_types_allowed = True
 
     @classmethod
