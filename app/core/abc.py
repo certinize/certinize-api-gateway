@@ -28,7 +28,7 @@ class Database(ABC):
         """
 
     @abstractmethod
-    async def get_row(
+    async def select_row(
         self, table_model: SQLModel, attribute: str, query: str
     ) -> ScalarResult[Any]:
         """Get row from the message table.
@@ -41,7 +41,7 @@ class Database(ABC):
         """
 
     @abstractmethod
-    async def get_all_row(self, table_model: SQLModel) -> ScalarResult[Any]:
+    async def select_all_row(self, table_model: SQLModel) -> ScalarResult[Any]:
         """Fetch all records in a database table.
         Args:
             table_model (type[SQLModel]): Type of the class which corresponds to a

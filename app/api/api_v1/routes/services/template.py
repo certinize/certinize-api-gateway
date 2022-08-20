@@ -108,4 +108,4 @@ class TemplateService:
     async def list_certificate_templates(
         self, database: crud.DatabaseImpl, templates_schema: type[templates.Templates]
     ):
-        return await database.get_all_row(templates_schema)
+        return await database.select_all_row(templates_schema)

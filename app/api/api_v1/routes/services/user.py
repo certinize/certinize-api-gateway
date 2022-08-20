@@ -46,7 +46,7 @@ class UserService:  # pylint: disable=R0903
             raise starlite.ValidationException(str(err)) from err
 
         try:
-            solana_user = await database.get_row(
+            solana_user = await database.select_row(
                 solana_user_schema(wallet_address=wallet_address, api_key=uuid.uuid1()),
                 "wallet_address",
                 wallet_address,

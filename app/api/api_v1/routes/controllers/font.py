@@ -10,7 +10,7 @@ class FontController(starlite.Controller):
     path = "/fonts"
 
     dependencies: dict[str, "starlite.Provide"] | None = {
-        "database": starlite.Provide(database.get_db_impl),
+        "database_": starlite.Provide(database.get_db_impl),
         "font_schema": starlite.Provide(database.get_fonts_schema),
         "fonts_service": starlite.Provide(service.FontService),
     }

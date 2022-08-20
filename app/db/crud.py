@@ -65,7 +65,7 @@ class DatabaseImpl(abc.Database):
             await session.delete(row.one())
             await session.commit()
 
-    async def get_row(
+    async def select_row(
         self, table_model: sqlmodel.SQLModel, attribute: str, query: str
     ) -> ScalarResult[typing.Any]:
         row: ScalarResult[typing.Any]
@@ -83,7 +83,7 @@ class DatabaseImpl(abc.Database):
 
         return row
 
-    async def get_all_row(
+    async def select_all_row(
         self, table_model: sqlmodel.SQLModel | type[sqlmodel.SQLModel]
     ) -> ScalarResult[typing.Any]:
         if isinstance(table_model, sqlmodel.SQLModel):

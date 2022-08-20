@@ -30,7 +30,7 @@ class ConfigurationService:
         config_meta["font_id"] = str(config_meta["font_id"])
 
         try:
-            certificate_config = await database.get_row(
+            certificate_config = await database.select_row(
                 certificate_config_schema(template_config_name=""),
                 "template_config_name",
                 template_config_name,
@@ -42,6 +42,8 @@ class ConfigurationService:
                     template_config_id=template_config_id,
                     config_meta=config_meta,
                     template_config_name=template_config_name,
+                    font_id=data.font_id,
+                    template_id=data.template_id,
                 )
             )
             return {
@@ -62,7 +64,7 @@ class ConfigurationService:
         database: crud.DatabaseImpl,
     ):
         try:
-            certificate_config = await database.get_row(
+            certificate_config = await database.select_row(
                 certificate_config_schema(template_config_name=""),
                 "template_config_id",
                 str(template_config_id),
@@ -76,7 +78,7 @@ class ConfigurationService:
         certificate_config_schema: type[configurations.TemplateConfigurations],
         database: crud.DatabaseImpl,
     ):
-        result = await database.get_all_row(
+        result = await database.select_all_row(
             certificate_config_schema(template_config_name="")
         )
 

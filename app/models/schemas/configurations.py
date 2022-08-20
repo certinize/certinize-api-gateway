@@ -17,6 +17,13 @@ class TemplateConfigurations(sqlmodel.SQLModel, table=True):
         default={}, sa_column=sqlmodel.Column(sqlmodel.JSON)
     )
 
+    font_id: pydantic.UUID1 = sqlmodel.Field(  # type: ignore
+        default=None, foreign_key="fonts.font_id"
+    )
+    template_id: pydantic.UUID1 = sqlmodel.Field(  # type: ignore
+        default=None, foreign_key="ecert_templates.template_id"
+    )
+
     class Config(sqlmodel.SQLModel.Config):
         arbitrary_types_allowed = True
 
