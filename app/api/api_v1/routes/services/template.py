@@ -18,6 +18,7 @@ class TemplateService:
         self, image_processor_: image_processor.ImageProcessor, ecert: bytes
     ) -> dict[str, typing.Any]:
         options = {"folder": CERTINIZE_BUCKET}
+
         try:
             return await image_processor_.upload_file(
                 imageb=ecert,
@@ -42,6 +43,7 @@ class TemplateService:
             template_url=imagekit_response["url"],
             template_width=imagekit_response["width"],
         )
+
         return (template_schema(**reusable_result), reusable_result)
 
     async def _store_imagekit_response(
@@ -51,7 +53,6 @@ class TemplateService:
         imagekit_response: dict[str, typing.Any] | list[dict[str, typing.Any]],
     ):
         if isinstance(imagekit_response, dict):
-
             template = await self._create_template_schema(
                 imagekit_response=imagekit_response, template_schema=template_schema
             )
@@ -64,7 +65,6 @@ class TemplateService:
             )
             for image in imagekit_response
         ]
-
         insert_templates_op = [database.add_row(template[0]) for template in templates_]
 
         await asyncio.gather(*insert_templates_op)
@@ -78,6 +78,7 @@ class TemplateService:
         template_schema: type[templates.Templates],
     ):
         image_src: datastructures.UploadFile | list[datastructures.UploadFile]
+
         try:
             image_src = data["image"]
         except KeyError as key_err:
