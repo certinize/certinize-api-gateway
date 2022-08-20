@@ -40,15 +40,20 @@ class ImageProcessor:
 
     async def create_folder(
         self, folder_name: str, parent_folder_path: str
-    ) -> aiohttp.ClientResponse:
-        """Create a folder on the e-Certificate cloud storage.
+    ) -> dict[str, typing.Any]:
+        """Create a folder on a cloud storage.
 
         Args:
-            folder_name (str): _description_
-            parent_folder_path (str): _description_
+            folder_name (str): Name of the folder.
+            parent_folder_path (str): Path of the parent folder.
+
+        Raises:
+            ConnectionError: If the gateway failed to receive a valid response from
+                `certinize-ecert-processor`.
 
         Returns:
-            aiohttp.ClientResponse: _description_
+            dict[str, typing.Any]: Decoded JSON object containing the result of the
+                folder creation.
         """
         request_body = {
             "folderName": folder_name,
@@ -68,15 +73,21 @@ class ImageProcessor:
         image_name: str,
         options: str,
     ) -> dict[str, typing.Any]:
-        """Upload image file to the e-Certificate cloud storage.
+        """Upload image file to a cloud storage.
 
         Args:
-            file (bytes | typing.BinaryIO): _description_
-            file_name (str): _description_
-            options (dict[str, str]): _description_
+            imageb (bytes | typing.BinaryIO): The image content.
+            image_name (str): Name of the image file.
+            options (str): Other options. Refer to certinize-ecert-processor's docs
+                regarding other options.
+
+        Raises:
+            ConnectionError: If the gateway failed to receive a valid response from
+                `certinize-ecert-processor`.
 
         Returns:
-            dict[str, typing.Any]: _description_
+            dict[str, typing.Any]: Decoded JSON object containing the result of the
+                upload.
         """
         form_data = aiohttp.FormData()
         form_data.add_field("filename", image_name)
