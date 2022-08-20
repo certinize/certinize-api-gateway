@@ -9,6 +9,8 @@ import typing
 import aiohttp
 import orjson
 
+from app.models.domain import certificate
+
 CERTIFICATES = "/certificates"
 TEMPLATES = "/templates"
 
@@ -97,6 +99,18 @@ class ImageProcessor:
         try:
             response = await self.session.post(url=TEMPLATES, data=form_data)
         except aiohttp.ClientConnectorError as err:
+            raise ConnectionError(str(err)) from err
+
+        return await response.json()
+
+    async def generate_certificate(
+        self, certificate_template_meta: certificate.CertificateTemplateMeta
+    ):
+        request_body = certificate_template_meta.dict()
+
+        try:
+            response = await self.session.post(url=CERTIFICATES, json=request_body)
+        except aiohttp.ClientConnectionError as err:
             raise ConnectionError(str(err)) from err
 
         return await response.json()

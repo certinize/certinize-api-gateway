@@ -18,7 +18,7 @@ class ConfigurationController(starlite.Controller):
         "configuration_service": starlite.Provide(service.ConfigurationService),
         "database": starlite.Provide(database_deps.get_db_impl),
         "certificate_config_schema": starlite.Provide(
-            database_deps.get_certificate_config_schema
+            database_deps.get_certificate_configs_schema
         ),
     }
 

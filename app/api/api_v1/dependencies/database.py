@@ -2,7 +2,7 @@ import starlite
 from sqlalchemy.ext.asyncio import engine
 
 from app.db import crud
-from app.models.schemas import configurations, fonts, templates, users
+from app.models.schemas import certificates, configurations, fonts, templates, users
 
 
 async def get_db_engine(state: starlite.State):
@@ -19,17 +19,21 @@ async def get_db_impl(state: starlite.State):
     return crud.DatabaseImpl(db_engine)
 
 
-def get_solana_user_schema():
+def get_solana_users_schema() -> type[users.SolanaUsers]:
     return users.SolanaUsers
 
 
-def get_certificate_config_schema():
+def get_certificate_configs_schema():
     return configurations.TemplateConfigurations
 
 
-def get_template_schema():
+def get_templates_schema() -> type[templates.Templates]:
     return templates.Templates
 
 
-def get_font_schema():
+def get_fonts_schema() -> type[fonts.Fonts]:
     return fonts.Fonts
+
+
+def get_certificate_collections_schema() -> type[certificates.CertificateCollections]:
+    return certificates.CertificateCollections

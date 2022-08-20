@@ -20,7 +20,7 @@ class TemplateController(starlite.Controller):
             image_processor_deps.get_image_processor_client
         ),
         "template_service": starlite.Provide(template_svcs.TemplateService),
-        "templates_schema": starlite.Provide(database_deps.get_template_schema),
+        "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }
 
     @starlite.post()
