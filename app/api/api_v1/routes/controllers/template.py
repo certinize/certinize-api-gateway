@@ -51,4 +51,5 @@ class TemplateController(starlite.Controller):
         result = await template_service.list_certificate_templates(
             database=database, templates_schema=templates_schema
         )
+
         return {"templates": result.all()}

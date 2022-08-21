@@ -18,21 +18,21 @@ class CertificateController(starlite.Controller):
     path = "/certificates"
 
     dependencies: dict[str, "starlite.Provide"] | None = {
-        "engine": starlite.Provide(database_deps.get_db_engine),
-        "database": starlite.Provide(database_deps.get_db_impl),
-        "config_repo": starlite.Provide(database_deps.get_configurations_repository),
-        "certificate_service": starlite.Provide(cert_service.CertificateService),
-        "config_service_": starlite.Provide(config_service.ConfigurationService),
-        "image_processor_": starlite.Provide(
-            image_processor_deps.get_image_processor_client
-        ),
         "certificate_collections_schema": starlite.Provide(
             database_deps.get_certificate_collections_schema
         ),
+        "engine": starlite.Provide(database_deps.get_db_engine),
+        "certificate_service": starlite.Provide(cert_service.CertificateService),
+        "config_repo": starlite.Provide(database_deps.get_configurations_repository),
+        "config_service_": starlite.Provide(config_service.ConfigurationService),
         "configs_schema": starlite.Provide(
             database_deps.get_certificate_configs_schema
         ),
+        "database": starlite.Provide(database_deps.get_db_impl),
         "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
+        "image_processor_": starlite.Provide(
+            image_processor_deps.get_image_processor_client
+        ),
         "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }
 

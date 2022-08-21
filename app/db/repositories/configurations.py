@@ -102,7 +102,8 @@ class ConfigurationsRepository(abc.Database):
 
         # We only need three table models for the join: the configurations schema, the
         # fonts schema, and the templates schema. We don't have to check for the
-        # configurations schema as the other two should do that.
+        # configurations schema as the assertions for the other two tables should do
+        # that.
         assert isinstance(table_models[1], type(fonts.Fonts))
         assert isinstance(table_models[2], type(templates.Templates))
 

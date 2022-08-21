@@ -29,50 +29,50 @@ class ConfigurationController(starlite.Controller):
     @starlite.post()
     async def create_template_config(  # pylint: disable=R0913
         self,
-        data: configuration.TemplateConfiguration,
         configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
+        data: configuration.TemplateConfiguration,
         database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, uuid.UUID | typing.Any]:
         return await configuration_service.create_template_config(
-            data=data, configs_schema=configs_schema, database=database, engine=engine
+            configs_schema=configs_schema, data=data, database=database, engine=engine
         )
 
     @starlite.get(path="/{template_config_id:uuid}")
     async def get_template_config(  # pylint: disable=R0913
         self,
-        template_config_id: pydantic.UUID1,
         configs_schema: type[configurations.Configurations],
-        fonts_schema: type[fonts.Fonts],
-        templates_schema: type[templates.Templates],
         configuration_service: service.ConfigurationService,
         database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
+        fonts_schema: type[fonts.Fonts],
+        template_config_id: pydantic.UUID1,
+        templates_schema: type[templates.Templates],
     ) -> typing.Any:
         return await configuration_service.get_template_config(
-            template_config_id=template_config_id,
             configs_schema=configs_schema,
-            templates_schema=templates_schema,
-            fonts_schema=fonts_schema,
             database=database,
             engine=engine,
+            fonts_schema=fonts_schema,
+            template_config_id=template_config_id,
+            templates_schema=templates_schema,
         )
 
     @starlite.get()
     async def list_template_config(  # pylint: disable=R0913
         self,
         configs_schema: type[configurations.Configurations],
-        fonts_schema: type[fonts.Fonts],
-        templates_schema: type[templates.Templates],
         configuration_service: service.ConfigurationService,
         database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
+        fonts_schema: type[fonts.Fonts],
+        templates_schema: type[templates.Templates],
     ) -> typing.Any:
         return await configuration_service.list_template_config(
             configs_schema=configs_schema,
-            templates_schema=templates_schema,
-            fonts_schema=fonts_schema,
             database=database,
             engine=engine,
+            fonts_schema=fonts_schema,
+            templates_schema=templates_schema,
         )

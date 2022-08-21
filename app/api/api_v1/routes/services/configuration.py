@@ -19,8 +19,8 @@ from app.models.schemas import configurations, fonts, templates
 class ConfigurationService:
     async def create_template_config(
         self,
-        data: configuration.TemplateConfiguration,
         configs_schema: type[configurations.Configurations],
+        data: configuration.TemplateConfiguration,
         database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, typing.Any]:
@@ -84,12 +84,12 @@ class ConfigurationService:
 
     async def get_template_config(  # pylint: disable=R0913
         self,
-        template_config_id: pydantic.UUID1,
         configs_schema: type[configurations.Configurations],
-        fonts_schema: type[fonts.Fonts],
-        templates_schema: type[templates.Templates],
         database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
+        fonts_schema: type[fonts.Fonts],
+        template_config_id: pydantic.UUID1,
+        templates_schema: type[templates.Templates],
     ) -> dict[str, typing.Any]:
         try:
             results = await database.select_join(
@@ -120,10 +120,10 @@ class ConfigurationService:
     async def list_template_config(  # pylint: disable=R0913
         self,
         configs_schema: type[configurations.Configurations],
-        templates_schema: type[templates.Templates],
-        fonts_schema: type[fonts.Fonts],
         database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
+        fonts_schema: type[fonts.Fonts],
+        templates_schema: type[templates.Templates],
     ) -> dict[str, list[dict[str, dict[str, typing.Any]]]]:
         result = await database.select_all_join(
             engine, configs_schema, templates_schema, fonts_schema
