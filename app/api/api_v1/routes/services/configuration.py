@@ -19,9 +19,9 @@ class ConfigurationService:
     async def create_template_config(
         self,
         data: configuration.TemplateConfiguration,
-        certificate_config_schema: type[configurations.Configurations],
+        configs_schema: type[configurations.Configurations],
         database: crud.DatabaseImpl,
-    ) -> dict[str, uuid.UUID | typing.Any]:
+    ) -> dict[str, typing.Any]:
         font_id = data.font_id
         template_id = data.template_id
         config_meta = data.__dict__
@@ -42,7 +42,7 @@ class ConfigurationService:
 
         try:
             certificate_config = await database.select_row(
-                table_model=certificate_config_schema(template_config_name=""),
+                table_model=configs_schema(template_config_name=""),
                 attribute="template_config_name",
                 query=template_config_name,
             )
@@ -54,7 +54,7 @@ class ConfigurationService:
             )
         except exc.NoResultFound:
             await database.add_row(
-                certificate_config_schema(
+                configs_schema(
                     template_config_id=template_config_id,
                     config_meta=config_meta,
                     template_config_name=template_config_name,
@@ -69,8 +69,8 @@ class ConfigurationService:
                         "template_config_id": template_config_id,
                         "template_config_name": template_config_name,
                         "config_meta": {
-                            "recipient_name": config_meta["recipient_name"],
-                            "issuance_date": config_meta["issuance_date"],
+                            "recipient_name_meta": config_meta["recipient_name_meta"],
+                            "issuance_date_meta": config_meta["issuance_date_meta"],
                         },
                         "template_id": font_id,
                         "font_id": template_id,
@@ -81,17 +81,17 @@ class ConfigurationService:
     async def get_template_config(  # pylint: disable=R0913
         self,
         template_config_id: pydantic.UUID1,
-        certificate_config_schema: type[configurations.Configurations],
+        configs_schema: type[configurations.Configurations],
         templates_schema: type[templates.Templates],
         fonts_schema: type[fonts.Fonts],
         database: crud.DatabaseImpl,
-    ) -> dict[str, uuid.UUID | typing.Any]:
+    ) -> dict[str, typing.Any]:
         try:
             results = await database.select_join(
-                certificate_config_schema(
+                configs_schema(
                     template_config_id=template_config_id, template_config_name=""
                 ),
-                certificate_config_schema,
+                configs_schema,
                 templates_schema,
                 fonts_schema,
             )
@@ -100,9 +100,11 @@ class ConfigurationService:
             return dict(
                 sortedcontainers.SortedDict(
                     {
-                        "template_config": results_["Configurations"],
-                        "template": results_["Templates"],
-                        "font": results_["Fonts"],
+                        "template_config": orjson.loads(
+                            results_["Configurations"].json()
+                        ),
+                        "template": orjson.loads(results_["Templates"].json()),
+                        "font": orjson.loads(results_["Fonts"].json()),
                     }
                 )
             )
@@ -111,13 +113,13 @@ class ConfigurationService:
 
     async def list_template_config(
         self,
-        certificate_config_schema: type[configurations.Configurations],
+        configs_schema: type[configurations.Configurations],
         templates_schema: type[templates.Templates],
         fonts_schema: type[fonts.Fonts],
         database: crud.DatabaseImpl,
-    ):
+    ) -> dict[str, list[dict[str, dict[str, typing.Any]]]]:
         result = await database.select_all_join(
-            *(certificate_config_schema, templates_schema, fonts_schema),
+            *(configs_schema, templates_schema, fonts_schema),
         )
 
         serialized_results: list[dict[str, dict[str, typing.Any]]] = []

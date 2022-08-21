@@ -1,12 +1,10 @@
 import datetime
+import uuid
 
 import pydantic
 
 
 class CertificateTemplateMeta(pydantic.BaseModel):
-    recipient_name_meta: dict[str, int | dict[str, float]]
-    issuance_date_meta: dict[str, int | dict[str, float]]
-    template_url: pydantic.HttpUrl
-    font_url: pydantic.HttpUrl
+    template_config_id: uuid.UUID
     issuance_date: datetime.date
     recipients: list[dict[str, str]]

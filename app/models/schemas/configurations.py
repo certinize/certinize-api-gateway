@@ -21,7 +21,7 @@ class Configurations(sqlmodel.SQLModel, table=True):
         default=None, foreign_key="fonts.font_id"
     )
     template_id: pydantic.UUID1 = sqlmodel.Field(  # type: ignore
-        default=None, foreign_key="ecert_templates.template_id"
+        default=None, foreign_key="certificate_templates.template_id"
     )
 
     class Config(sqlmodel.SQLModel.Config):

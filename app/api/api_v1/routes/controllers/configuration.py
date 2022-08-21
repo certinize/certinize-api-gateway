@@ -17,7 +17,7 @@ class ConfigurationController(starlite.Controller):
     dependencies: dict[str, "starlite.Provide"] | None = {
         "configuration_service": starlite.Provide(service.ConfigurationService),
         "database": starlite.Provide(database_deps.get_db_impl),
-        "certificate_config_schema": starlite.Provide(
+        "configs_schema": starlite.Provide(
             database_deps.get_certificate_configs_schema
         ),
         "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
@@ -28,19 +28,19 @@ class ConfigurationController(starlite.Controller):
     async def create_template_config(
         self,
         data: configuration.TemplateConfiguration,
-        certificate_config_schema: type[configurations.Configurations],
+        configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
         database: crud.DatabaseImpl,
     ) -> dict[str, uuid.UUID | typing.Any]:
         return await configuration_service.create_template_config(
-            data, certificate_config_schema, database
+            data, configs_schema, database
         )
 
     @starlite.get(path="/{template_config_id:uuid}")
     async def get_template_config(  # pylint: disable=R0913
         self,
         template_config_id: pydantic.UUID1,
-        certificate_config_schema: type[configurations.Configurations],
+        configs_schema: type[configurations.Configurations],
         fonts_schema: type[fonts.Fonts],
         templates_schema: type[templates.Templates],
         configuration_service: service.ConfigurationService,
@@ -48,7 +48,7 @@ class ConfigurationController(starlite.Controller):
     ) -> typing.Any:
         return await configuration_service.get_template_config(
             template_config_id=template_config_id,
-            certificate_config_schema=certificate_config_schema,
+            configs_schema=configs_schema,
             templates_schema=templates_schema,
             fonts_schema=fonts_schema,
             database=database,
@@ -57,14 +57,14 @@ class ConfigurationController(starlite.Controller):
     @starlite.get()
     async def list_template_config(  # pylint: disable=R0913
         self,
-        certificate_config_schema: type[configurations.Configurations],
+        configs_schema: type[configurations.Configurations],
         fonts_schema: type[fonts.Fonts],
         templates_schema: type[templates.Templates],
         configuration_service: service.ConfigurationService,
         database: crud.DatabaseImpl,
     ) -> typing.Any:
         return await configuration_service.list_template_config(
-            certificate_config_schema=certificate_config_schema,
+            configs_schema=configs_schema,
             templates_schema=templates_schema,
             fonts_schema=fonts_schema,
             database=database,

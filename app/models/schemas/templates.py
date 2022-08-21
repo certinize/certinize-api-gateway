@@ -18,4 +18,4 @@ class Templates(sqlmodel.SQLModel, table=True):
     @classmethod
     @orm.declared_attr
     def __tablename__(cls):
-        return "ecert_templates"
+        return "certificate_templates"

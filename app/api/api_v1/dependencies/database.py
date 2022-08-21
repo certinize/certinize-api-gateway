@@ -35,5 +35,5 @@ def get_fonts_schema() -> type[fonts.Fonts]:
     return fonts.Fonts
 
 
-def get_certificate_collections_schema() -> type[certificates.CertificateCollections]:
-    return certificates.CertificateCollections
+def get_certificate_collections_schema() -> type[certificates.Certificates]:
+    return certificates.Certificates

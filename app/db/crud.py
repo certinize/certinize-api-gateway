@@ -95,6 +95,7 @@ class DatabaseImpl(abc.Database):
         async with AsyncSession(self._engine) as session:
             return await session.exec(sqlmodel.select(model))  # type: ignore
 
+    # TODO: Move select joins in a standalone db repo
     async def select_join(
         self, main_model: sqlmodel.SQLModel, *table_models: type[sqlmodel.SQLModel]
     ) -> ScalarResult[typing.Any]:
@@ -112,7 +113,8 @@ class DatabaseImpl(abc.Database):
         async with AsyncSession(self._engine) as session:
             return await session.exec(
                 sqlmodel.select(*table_models)  # type: ignore
-                .join(table_models[-1])
+                .join(table_models[1])
+                .join(table_models[2])
                 .where(getattr(type(main_model), attribute) == query)
             )
 
@@ -121,7 +123,9 @@ class DatabaseImpl(abc.Database):
     ) -> sqlalchemy.engine.result.ChunkedIteratorResult:
         async with AsyncSession(self._engine) as session:
             return await session.exec(
-                sqlmodel.select(*table_models).join(table_models[-1])  # type: ignore
+                sqlmodel.select(*table_models)  # type: ignore
+                .join(table_models[1])
+                .join(table_models[2])
             )
 
     async def update_row(self, table_model: sqlmodel.SQLModel, attribute: str) -> None:
@@ -132,7 +136,7 @@ class DatabaseImpl(abc.Database):
             row: ScalarResult[typing.Any] = await session.exec(
                 sqlmodel.select(model).where(  # type: ignore
                     getattr(model, attribute) == getattr(table_model, attribute)
-                )  # type: ignore
+                )
             )
             task = row.one()
             task = await self.update(task, table)
