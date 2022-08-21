@@ -9,8 +9,9 @@ import pydantic
 import sortedcontainers
 import starlite
 from sqlalchemy import exc
+from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
-from app.db import crud
+from app.db.repositories import configurations as config_repo
 from app.models.domain import configuration
 from app.models.schemas import configurations, fonts, templates
 
@@ -20,7 +21,8 @@ class ConfigurationService:
         self,
         data: configuration.TemplateConfiguration,
         configs_schema: type[configurations.Configurations],
-        database: crud.DatabaseImpl,
+        database: config_repo.ConfigurationsRepository,
+        engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, typing.Any]:
         font_id = data.font_id
         template_id = data.template_id
@@ -42,9 +44,10 @@ class ConfigurationService:
 
         try:
             certificate_config = await database.select_row(
-                table_model=configs_schema(template_config_name=""),
-                attribute="template_config_name",
-                query=template_config_name,
+                engine,
+                configs_schema(template_config_name=""),
+                "template_config_name",
+                template_config_name,
             )
 
             return dict(
@@ -54,13 +57,14 @@ class ConfigurationService:
             )
         except exc.NoResultFound:
             await database.add_row(
+                engine,
                 configs_schema(
                     template_config_id=template_config_id,
                     config_meta=config_meta,
                     template_config_name=template_config_name,
                     font_id=font_id,
                     template_id=template_id,
-                )
+                ),
             )
 
             return dict(
@@ -82,18 +86,20 @@ class ConfigurationService:
         self,
         template_config_id: pydantic.UUID1,
         configs_schema: type[configurations.Configurations],
-        templates_schema: type[templates.Templates],
         fonts_schema: type[fonts.Fonts],
-        database: crud.DatabaseImpl,
+        templates_schema: type[templates.Templates],
+        database: config_repo.ConfigurationsRepository,
+        engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, typing.Any]:
         try:
             results = await database.select_join(
+                engine,
                 configs_schema(
                     template_config_id=template_config_id, template_config_name=""
                 ),
                 configs_schema,
-                templates_schema,
                 fonts_schema,
+                templates_schema,
             )
             results_ = results.one()
 
@@ -111,15 +117,16 @@ class ConfigurationService:
         except exc.NoResultFound as err:
             raise starlite.NotFoundException(str(err)) from err
 
-    async def list_template_config(
+    async def list_template_config(  # pylint: disable=R0913
         self,
         configs_schema: type[configurations.Configurations],
         templates_schema: type[templates.Templates],
         fonts_schema: type[fonts.Fonts],
-        database: crud.DatabaseImpl,
+        database: config_repo.ConfigurationsRepository,
+        engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, list[dict[str, dict[str, typing.Any]]]]:
         result = await database.select_all_join(
-            *(configs_schema, templates_schema, fonts_schema),
+            engine, configs_schema, templates_schema, fonts_schema
         )
 
         serialized_results: list[dict[str, dict[str, typing.Any]]] = []

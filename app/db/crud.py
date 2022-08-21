@@ -1,16 +1,13 @@
 import typing
 
-import sqlalchemy
 import sqlmodel
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel.engine.result import ScalarResult
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel.sql import expression
 
-from app.core import abc
 
-
-class DatabaseImpl(abc.Database):
+class DatabaseImpl:
     """Implementaion of a database connection for transacting and interacting with
     database tables —those that derive from SQLModel.
     """
@@ -94,39 +91,6 @@ class DatabaseImpl(abc.Database):
 
         async with AsyncSession(self._engine) as session:
             return await session.exec(sqlmodel.select(model))  # type: ignore
-
-    # TODO: Move select joins in a standalone db repo
-    async def select_join(
-        self, main_model: sqlmodel.SQLModel, *table_models: type[sqlmodel.SQLModel]
-    ) -> ScalarResult[typing.Any]:
-        attribute = ""
-        query = ""
-
-        # Dynamically get the first "id" attrib str repr (attribute) and its value
-        # (query), so we don't have to ask the user for them.
-        for var in vars(main_model):
-            if "_id" in var:
-                attribute = var
-                query = getattr(main_model, attribute)
-                break
-
-        async with AsyncSession(self._engine) as session:
-            return await session.exec(
-                sqlmodel.select(*table_models)  # type: ignore
-                .join(table_models[1])
-                .join(table_models[2])
-                .where(getattr(type(main_model), attribute) == query)
-            )
-
-    async def select_all_join(
-        self, *table_models: type[sqlmodel.SQLModel]
-    ) -> sqlalchemy.engine.result.ChunkedIteratorResult:
-        async with AsyncSession(self._engine) as session:
-            return await session.exec(
-                sqlmodel.select(*table_models)  # type: ignore
-                .join(table_models[1])
-                .join(table_models[2])
-            )
 
     async def update_row(self, table_model: sqlmodel.SQLModel, attribute: str) -> None:
         model = type(table_model)

@@ -1,60 +1,138 @@
-from abc import ABC, abstractmethod
-from typing import Any
+import abc
+import typing
 
-from sqlmodel import SQLModel
-from sqlmodel.engine.result import ScalarResult
+import sqlmodel
+from sqlalchemy.engine import result as sqlalchemy_result
+from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
+from sqlmodel.engine import result
 
 
-class Database(ABC):
+class Database(abc.ABC):
     """Abstract base class of a database interface."""
 
-    @abstractmethod
-    async def create_table(self) -> None:
-        """Create physical tables for all the table models stored in `Any.metadata`."""
+    @abc.abstractmethod
+    async def create_table(self, engine: sqlalchemy_asyncio.AsyncEngine) -> None:
+        """Create physical tables for all the table models stored in
+        `sqlmodel.SQLModel.metadata`.
 
-    @abstractmethod
-    async def add_row(self, table_model: SQLModel) -> None:
-        """Add a row to the message table.
         Args:
-            table_model (Any): A subclass of SQLModel
+            engine (AsyncEngine): An asyncio proxy for `_engine.Engine`.
         """
 
-    @abstractmethod
-    async def remove_row(self, table_model: SQLModel, attribute: str) -> None:
-        """Remove a row from the message table.
+    @abc.abstractmethod
+    async def add_row(
+        self, engine: sqlalchemy_asyncio.AsyncEngine, table_model: sqlmodel.SQLModel
+    ) -> None:
+        """Add a row to a database table.
+
         Args:
-            table_model (Any): A subclass of SQLModel
+            engine (AsyncEngine): An asyncio proxy for `_engine.Engine`.
+            table_model (sqlmodel.SQLModel): A subclass of sqlmodel.SQLModel.
+        """
+
+    @abc.abstractmethod
+    async def delete_row(
+        self,
+        engine: sqlalchemy_asyncio.AsyncEngine,
+        table_model: sqlmodel.SQLModel,
+        attribute: str,
+    ) -> None:
+        """Remove a row from a database table.
+
+        Args:
+            engine (sqlalchemy_asyncio.AsyncEngine): An asyncio proxy for
+                `_engine.Engine`.
+            table_model (sqlmodel.SQLModel): A subclass of SQLModel
             attribute (str): A Table model attribute.
         """
 
-    @abstractmethod
+    @abc.abstractmethod
     async def select_row(
-        self, table_model: SQLModel, attribute: str, query: str
-    ) -> ScalarResult[Any]:
-        """Get row from the message table.
+        self,
+        engine: sqlalchemy_asyncio.AsyncEngine,
+        table_model: sqlmodel.SQLModel,
+        attribute: str,
+        query: str,
+    ) -> result.ScalarResult[typing.Any]:
+        """Select a row from a database table.
+
         Args:
-            table_model (Any): A subclass of SQLModel.
+            table_model (sqlmodel.SQLModel): A subclass of SQLModel.
             attribute (str): A Table model attribute.
+
         Returns:
             ScalarResult[Any]: A `ScalarResult` which contains a scalar value or
                 sequence of scalar values.
         """
 
-    @abstractmethod
-    async def select_all_row(self, table_model: SQLModel) -> ScalarResult[Any]:
+    @abc.abstractmethod
+    async def select_all_row(
+        self, engine: sqlalchemy_asyncio.AsyncEngine, table_model: sqlmodel.SQLModel
+    ) -> result.ScalarResult[typing.Any]:
         """Fetch all records in a database table.
+
         Args:
-            table_model (type[SQLModel]): Type of the class which corresponds to a
+            engine: (sqlalchemy_asyncio.AsyncEngine): An asyncio proxy for
+                `_engine.Engine`.
+            table_model (sqlmodel.SQLModel): Type of the class which corresponds to a
                 database table.
+
         Returns:
-            ScalarResult[Any]: A `ScalarResult` which contains a scalar value or
+            ScalarResult[typing.Any]: A `ScalarResult` which contains a scalar value or
                 sequence of scalar values.
         """
 
-    @abstractmethod
-    async def update_row(self, table_model: SQLModel, attribute: str) -> None:
-        """Update a database record/row.
+    @abc.abstractmethod
+    async def select_join(
+        self,
+        engine: sqlalchemy_asyncio.AsyncEngine,
+        main_model: sqlmodel.SQLModel,
+        *table_models: type[sqlmodel.SQLModel]
+    ) -> result.ScalarResult[typing.Any]:
+        """Select rows from multiple tables using a join.
+
         Args:
-            table_model (Any): A subclass of SQLModel.
-            attribute (str): A Table model attribute.
+            engine: (sqlalchemy_asyncio.AsyncEngine): An asyncio proxy for
+                `_engine.Engine`.
+            main_model (sqlmodel.SQLModel): Type of the class which corresponds to a
+                database table.
+            table_models (type[sqlmodel.SQLModel]): Types of the classes which
+                correspond to a database table.
+
+        Returns:
+            ScalarResult[typing.Any]: A `ScalarResult` which contains a scalar value or
+                sequence of scalar values.
+        """
+
+    @abc.abstractmethod
+    async def select_all_join(
+        self,
+        engine: sqlalchemy_asyncio.AsyncEngine,
+        *table_models: type[sqlmodel.SQLModel]
+    ) -> sqlalchemy_result.ChunkedIteratorResult:
+        """Select all rows from multiple tables using a join.
+
+        Args:
+            engine: (sqlalchemy_asyncio.AsyncEngine): An asyncio proxy for
+                `_engine.Engine`.
+            table_models (type[sqlmodel.SQLModel]): Types of the classes which
+                correspond to a database table.
+
+        Returns:
+            ChunkedIteratorResult: A `ChunkedIteratorResult` which contains a
+                sequence of scalar values.
+        """
+
+    @abc.abstractmethod
+    async def update_row(
+        self,
+        engine: sqlalchemy_asyncio.AsyncEngine,
+        table_model: sqlmodel.SQLModel,
+        attribute: str,
+    ) -> None:
+        """Update a database row.
+
+        Args:
+            table_model (sqlmodel.SQLModel): A subclass of SQLModel.
+            attribute (str): A table model attribute.
         """
