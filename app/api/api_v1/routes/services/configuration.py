@@ -11,7 +11,7 @@ import starlite
 from sqlalchemy import exc
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
-from app.db.repositories import configurations as config_repo
+from app.db.repositories import configurations as config_repo_
 from app.models.domain import configuration
 from app.models.schemas import configurations, fonts, templates
 
@@ -21,7 +21,7 @@ class ConfigurationService:
         self,
         data: configuration.TemplateConfiguration,
         configs_schema: type[configurations.Configurations],
-        database: config_repo.ConfigurationsRepository,
+        database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, typing.Any]:
         font_id = data.font_id
@@ -88,7 +88,7 @@ class ConfigurationService:
         configs_schema: type[configurations.Configurations],
         fonts_schema: type[fonts.Fonts],
         templates_schema: type[templates.Templates],
-        database: config_repo.ConfigurationsRepository,
+        database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, typing.Any]:
         try:
@@ -122,7 +122,7 @@ class ConfigurationService:
         configs_schema: type[configurations.Configurations],
         templates_schema: type[templates.Templates],
         fonts_schema: type[fonts.Fonts],
-        database: config_repo.ConfigurationsRepository,
+        database: config_repo_.ConfigurationsRepository,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, list[dict[str, dict[str, typing.Any]]]]:
         result = await database.select_all_join(

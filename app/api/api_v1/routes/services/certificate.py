@@ -2,9 +2,11 @@ import typing
 import uuid
 
 import sortedcontainers
+from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
 from app.api.api_v1.routes.services import configuration
 from app.db import crud
+from app.db.repositories import configurations as config_repo_
 from app.models.domain import certificate
 from app.models.schemas import certificates, configurations, fonts, templates
 from app.services import image_processor
@@ -14,10 +16,12 @@ class CertificateService:  # pylint: disable=R0903
     async def generate_certificate(  # pylint: disable=R0913
         self,
         collections_schema: type[certificates.Certificates],
+        config_repo: config_repo_.ConfigurationsRepository,
         config_service: configuration.ConfigurationService,
         configs_schema: type[configurations.Configurations],
         data: certificate.CertificateTemplateMeta,
         database: crud.DatabaseImpl,
+        engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
         image_processor_: image_processor.ImageProcessor,
         templates_schema: type[templates.Templates],
@@ -27,7 +31,8 @@ class CertificateService:  # pylint: disable=R0903
             configs_schema=configs_schema,
             templates_schema=templates_schema,
             fonts_schema=fonts_schema,
-            database=database,
+            database=config_repo,
+            engine=engine,
         )
 
         certificate_meta = {
