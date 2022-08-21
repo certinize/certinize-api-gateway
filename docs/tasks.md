@@ -39,9 +39,7 @@ Request Body:
   "issuance_date": "2022-01-31",
   "recipients": [
     {
-      "recipient_name": "Juan Cruz",
-      "email_address": "juan_cruz@email.com",
-      "wallet_address": "9ZNTfG4NyQgxy2SWjSiQoUyBPEvXT2xo7fKc5hPYYJ7b"
+      "recipient_name": "Juan Cruz"
     }
   ]
 }
@@ -57,27 +55,16 @@ JSON Response:
 
 ```json
 {
-  "certificate_collection_id": "6a5cfab5-6451-4515-abb3-c6bd4033e21e",
-  "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
-  "template_url": "https://bucket.s3.objectstorageprovider.com/certificate_template.jpg",
-  "template_config_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
-  "recipient_name_position": {
-    "x": 960,
-    "y": 540
-  },
-  "issuance_date_position": {
-    "x": 130,
-    "y": 950
-  },
-  "issuance_date": "2022-01-31",
-  "recipients": [
+  "certificate": [
     {
+      "certificate_url": "https://...",
+      "file_id": "1k-UTikDkXmQomW28VYpWhQDgu2ced0uU",
       "recipient_name": "Juan Cruz",
-      "email_address": "juan_cruz@email.com",
-      "wallet_address": "9ZNTfG4NyQgxy2SWjSiQoUyBPEvXT2xo7fKc5hPYYJ7b",
-      "generated_certificate": "https://bucket.s3.objectstorageprovider.com/generated_certificate.jpg"
+      "issuance_date": "2022-01-02"
     }
-  ]
+  ],
+  "certificate_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
+  "template_config_id": "e46286c6-2136-11ed-b1e8-00155d886c22"
 }
 ```
 
@@ -220,26 +207,42 @@ JSON Response:
 
 ```json
 {
-  "config_meta": {
-    "recipient_name": {
-      "position": {
-        "x": 960,
-        "y": 540
-      },
-      "font_size": 24
-    },
-    "issuance_date": {
-      "position": {
-        "x": 130,
-        "y": 950
-      },
-      "font_size": 12
-    }
+  "font": {
+    "font_url": "https://example.com/FontFile.ttf",
+    "font_id": "e632f180-2056-11ed-b912-bb65d3909f61"
   },
-  "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
-  "template_config_id": "6e9fd408-207d-11ed-9d54-00155d886c22",
-  "template_config_name": "my template",
-  "template_id": "89b22a51-2057-11ed-9d28-00155d886c22"
+  "template": {
+    "template_path": "/certinize-bucket/cdbcfa87-2136-11ed-bf4e-00155d886c22_WROGguGnZ",
+    "template_id": "cf8138ce-2136-11ed-9a61-00155d886c22",
+    "template_height": 720,
+    "template_size": 97583,
+    "template_url": "https://example.com/template.jpeg",
+    "template_width": 1040,
+    "template_name": "cdbcfa87-2136-11ed-bf4e-00155d886c22_WROGguGnZ",
+    "template_thumbnail_url": "https://example.com/template-thumbnail.jpeg"
+  },
+  "template_config": {
+    "template_config_id": "6e9fd408-207d-11ed-9d54-00155d886c22",
+    "template_config_name": "my template",
+    "template_id": "cf8138ce-2136-11ed-9a61-00155d886c22",
+    "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
+    "config_meta": {
+      "recipient_name_meta": {
+        "position": {
+          "x": 960,
+          "y": 540
+        },
+        "font_size": 24
+      },
+      "issuance_date_meta": {
+        "position": {
+          "x": 130,
+          "y": 950
+        },
+        "font_size": 12
+      }
+    }
+  }
 }
 ```
 
@@ -294,7 +297,7 @@ JSON Response:
       "template_config_name": "my template",
       "font": {
         "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
-        "font_url": "https://..."
+        "font_url": "https://example.com/FontFile.ttf"
       },
       "template": {
         "template_height": 720,
@@ -302,8 +305,8 @@ JSON Response:
         "template_name": "template_name",
         "template_path": "/certinize-bucket/template_name",
         "template_size": 97583,
-        "template_thumbnail_url": "https://...",
-        "template_url": "https://...",
+        "template_thumbnail_url": "https://example.com/template-thumbnail.jpeg",
+        "template_url": "https://example.com/template.jpeg",
         "template_width": 1040
       },
       "template_config": {
@@ -381,7 +384,7 @@ JSON Response:
   "fonts": [
     {
       "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad",
-      "font_url": "https://raw.githubusercontent.com/certinize/fonts/main/ttf/example-ttf.ttf"
+      "font_url": "https://example.com/FontFile.ttf"
     },
     ...
   ]
@@ -512,8 +515,8 @@ JSON Response:
   "template_name": "18a46f27-1a46-11ed-af20-00155d3fe822_wmPgJS8wq",
   "template_path": "/certinize-bucket/18a46f27-1a46-11ed-af20-00155d3fe822_wmPgJS8wq",
   "template_size": 379611,
-  "template_thumbnail_url": "https://...",
-  "template_url": "https://...",
+  "template_thumbnail_url": "https://example.com/template-thumbnail.jpeg",
+  "template_url": "https://example.com/template.jpeg",
   "template_width": 773
 }
 ```
@@ -524,7 +527,8 @@ For multiple file uploads, the response will contain a list of template metadata
 {
   "templates": [
     {
-      "template_height": 1200,
+      "template_id": "1a62a09e-1a46-11ed-b3e0-00155d3fe822",
+      "template_url": "https://example.com/template.jpeg",
       ...
     },
     ...
@@ -579,7 +583,7 @@ JSON Response:
   "templates": [
     {
       "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
-      "template_url": "http://bucket.s3.provider.com/template.png"
+      "template_url": "https://example.com/template.jpeg"
     }
   ]
 }
