@@ -58,7 +58,8 @@ class UserService:  # pylint: disable=R0903
             schema = solana_user_schema(
                 user_id=user_id, wallet_address=wallet_address, api_key=api_key
             )
+            result = schema.copy()
 
             await database.add_row(schema)
 
-            return schema
+            return result
