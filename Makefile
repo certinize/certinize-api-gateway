@@ -33,7 +33,7 @@ clean-pyc: ## remove Python file artifacts
 
 lint: ## check style with flake8
 	flake8 app
-	pylint app/ --disable=C0114,C0115,C0116
+	pylint app --rcfile=.pylintrc
 
 dist: clean ## build source and wheel package
 	poetry build
