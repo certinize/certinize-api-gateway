@@ -12,8 +12,8 @@ def exec_async(
     """Asynchronously run sync functions or methods outside an event loop.
 
     Args:
-        fn (Callable[..., Coroutine[typing.Any, typing.Any, str]]): The sync method to be run
-            asynchronously.
+        fn (Callable[..., Coroutine[typing.Any, typing.Any, str]]): The sync method to
+            be run asynchronously.
 
     Returns:
         typing.Any: Return value(s) of the sync method.
