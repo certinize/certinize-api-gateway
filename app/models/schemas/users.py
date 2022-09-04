@@ -8,10 +8,8 @@ class SolanaUsers(sqlmodel.SQLModel, table=True):
         default=None, primary_key=True
     )
     api_key: pydantic.UUID5
-    email: pydantic.EmailStr | None
+    name: str | None
     website: pydantic.HttpUrl | None
-    address: str | None
-    issuances: list[str] | None
 
     @classmethod
     @orm.declared_attr

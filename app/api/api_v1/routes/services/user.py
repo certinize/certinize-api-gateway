@@ -51,10 +51,8 @@ class UserService:  # pylint: disable=R0903
                 solana_user_schema(
                     wallet_address=wallet_address,
                     api_key=uuid.uuid1(),
-                    email=None,
+                    name=None,
                     website=None,
-                    address=None,
-                    issuances=None,
                 ),
                 "wallet_address",
                 wallet_address,
@@ -65,10 +63,8 @@ class UserService:  # pylint: disable=R0903
             schema = solana_user_schema(
                 wallet_address=wallet_address,
                 api_key=api_key,
-                email=None,
+                name=None,
                 website=None,
-                address=None,
-                issuances=None,
             )
             result = schema.copy()
 
