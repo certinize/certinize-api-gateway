@@ -4,11 +4,14 @@ from sqlalchemy import orm
 
 
 class SolanaUsers(sqlmodel.SQLModel, table=True):
-    user_id: pydantic.UUID1 | None = sqlmodel.Field(  # type: ignore
+    wallet_address: str | None = sqlmodel.Field(  # type: ignore
         default=None, primary_key=True
     )
-    wallet_address: str
     api_key: pydantic.UUID5
+    email: pydantic.EmailStr | None
+    website: pydantic.HttpUrl | None
+    address: str | None
+    issuances: list[str] | None
 
     @classmethod
     @orm.declared_attr

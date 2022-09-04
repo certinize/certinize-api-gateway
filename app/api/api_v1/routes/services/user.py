@@ -38,6 +38,7 @@ class UserService:  # pylint: disable=R0903
         database: crud.DatabaseImpl,
     ) -> users.SolanaUsers:
 
+        # TODO: Let pydantic handle validation
         try:
             wallet_address = await self.wallet_address_must_be_on_curve(
                 wallet_address=wallet_address
@@ -47,16 +48,27 @@ class UserService:  # pylint: disable=R0903
 
         try:
             solana_user = await database.select_row(
-                solana_user_schema(wallet_address=wallet_address, api_key=uuid.uuid1()),
+                solana_user_schema(
+                    wallet_address=wallet_address,
+                    api_key=uuid.uuid1(),
+                    email=None,
+                    website=None,
+                    address=None,
+                    issuances=None,
+                ),
                 "wallet_address",
                 wallet_address,
             )
             return solana_user.one()
         except exc.NoResultFound:
-            user_id = uuid.uuid1()
             api_key = uuid.uuid5(uuid.uuid4(), wallet_address)
             schema = solana_user_schema(
-                user_id=user_id, wallet_address=wallet_address, api_key=api_key
+                wallet_address=wallet_address,
+                api_key=api_key,
+                email=None,
+                website=None,
+                address=None,
+                issuances=None,
             )
             result = schema.copy()
 

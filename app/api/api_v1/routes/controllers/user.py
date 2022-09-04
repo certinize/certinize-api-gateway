@@ -12,16 +12,10 @@ class UserController(starlite.Controller):
     dependencies: dict[str, "starlite.Provide"] | None = {
         "user_service": starlite.Provide(user.UserService),
         "database": starlite.Provide(database_deps.get_db_impl),
+        "solana_user_schema": starlite.Provide(database_deps.get_solana_users_schema),
     }
 
-    @starlite.get(
-        path="/{wallet_address:str}",
-        dependencies={
-            "solana_user_schema": starlite.Provide(
-                database_deps.get_solana_users_schema
-            )
-        },
-    )
+    @starlite.get(path="/{wallet_address:str}")
     async def auth_solana_user(
         self,
         user_service: user.UserService,
@@ -37,3 +31,9 @@ class UserController(starlite.Controller):
         )
 
         return solana_user
+
+    @starlite.patch()
+    async def update_solana_user(
+        self, solana_user_schema: type[users.SolanaUsers]
+    ) -> None:
+        ...
