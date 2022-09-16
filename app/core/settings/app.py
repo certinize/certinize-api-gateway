@@ -21,7 +21,7 @@ class AppSettings(base.BaseAppSettings):
     s3_secret_access_key = ""
     s3_access_key_id = ""
 
-    certinize_image_processor = pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
+    certinize_object_processor = pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
         url="https://", scheme="https"
     )
 

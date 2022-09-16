@@ -6,7 +6,7 @@ from app.db.repositories import configurations as configurations_repository
 from app.models.schemas import certificates, configurations, fonts, templates, users
 
 
-async def get_db_engine(state: starlite.State):
+def get_db_engine(state: starlite.State):
     if isinstance(state.engine, engine.AsyncEngine):
         return state.engine
 
@@ -15,12 +15,12 @@ async def get_db_engine(state: starlite.State):
     )
 
 
-async def get_db_impl(state: starlite.State):
-    db_engine = await get_db_engine(state)
+def get_db_impl(state: starlite.State):
+    db_engine = get_db_engine(state)
     return crud.DatabaseImpl(db_engine)
 
 
-async def get_configurations_repository():
+def get_configurations_repository():
     return configurations_repository.ConfigurationsRepository()
 
 

@@ -11,7 +11,7 @@ import starlite
 from sqlalchemy import exc
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
-from app.db.repositories import configurations as config_repo_
+from app.core import abc
 from app.models.domain import configuration
 from app.models.schemas import configurations, fonts, templates
 
@@ -21,7 +21,7 @@ class ConfigurationService:
         self,
         configs_schema: type[configurations.Configurations],
         data: configuration.TemplateConfiguration,
-        database: config_repo_.ConfigurationsRepository,
+        database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, typing.Any]:
         font_id = data.font_id
@@ -85,7 +85,7 @@ class ConfigurationService:
     async def get_template_config(  # pylint: disable=R0913
         self,
         configs_schema: type[configurations.Configurations],
-        database: config_repo_.ConfigurationsRepository,
+        database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
         template_config_id: pydantic.UUID1,
@@ -101,6 +101,7 @@ class ConfigurationService:
                 fonts_schema,
                 templates_schema,
             )
+            assert results is not None
             results_ = results.one()
 
             return dict(
@@ -120,17 +121,19 @@ class ConfigurationService:
     async def list_template_config(  # pylint: disable=R0913
         self,
         configs_schema: type[configurations.Configurations],
-        database: config_repo_.ConfigurationsRepository,
+        database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
         templates_schema: type[templates.Templates],
     ) -> dict[str, list[dict[str, dict[str, typing.Any]]]]:
-        result = await database.select_all_join(
+        results = await database.select_all_join(
             engine, configs_schema, templates_schema, fonts_schema
         )
-
         serialized_results: list[dict[str, dict[str, typing.Any]]] = []
-        for result in result.all():
+
+        assert results is not None
+
+        for results in results.all():
             # In case this becomes confusing, here's what happens here:
             # 1. Convert the Row to its JSON representation.
             # 2. Deserialize the JSON repr using orjson.loads().
@@ -141,7 +144,7 @@ class ConfigurationService:
 
             template_config: dict[str, typing.Any] = dict(
                 sortedcontainers.SortedDict(
-                    orjson.loads(result["Configurations"].json())
+                    orjson.loads(results["Configurations"].json())
                 )
             )
             template_config_id = template_config["template_config_id"]
@@ -156,12 +159,12 @@ class ConfigurationService:
                     "template_config_name": template_config_name,
                     "font": dict(
                         sortedcontainers.SortedDict(
-                            orjson.loads(result["Fonts"].json())
+                            orjson.loads(results["Fonts"].json())
                         )
                     ),
                     "template": dict(
                         sortedcontainers.SortedDict(
-                            orjson.loads(result["Templates"].json())
+                            orjson.loads(results["Templates"].json())
                         )
                     ),
                     "template_config": template_config,

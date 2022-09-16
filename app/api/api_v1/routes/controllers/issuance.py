@@ -4,18 +4,18 @@ import pydantic
 import starlite
 
 from app.api.api_v1.dependencies import database as database_deps
-from app.api.api_v1.routes.services import configuration as service
+from app.api.api_v1.routes.services import issuance as service
 
 
 class IssuanceController(starlite.Controller):
     path = "/issuances"
 
     dependencies: dict[str, "starlite.Provide"] | None = {
-        "certificate_service": starlite.Provide(service.ConfigurationService),
-        "database": starlite.Provide(database_deps.get_db_impl),
+        "engine": starlite.Provide(database_deps.get_db_engine),
+        "issuance_service": starlite.Provide(service.IssuanceService),
     }
 
-    @starlite.post(path="/{certificate_collection_id:uuid}")
+    @starlite.get(path="/{certificate_collection_id:uuid}")
     async def transfer_certificate(
         self, certificate_collection_id: pydantic.UUID1
     ) -> typing.Any:

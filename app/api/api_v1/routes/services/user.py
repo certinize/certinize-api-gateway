@@ -37,8 +37,6 @@ class UserService:  # pylint: disable=R0903
         solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
     ) -> users.SolanaUsers:
-
-        # TODO: Let pydantic handle validation
         try:
             wallet_address = await self.wallet_address_must_be_on_curve(
                 wallet_address=wallet_address

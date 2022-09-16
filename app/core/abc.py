@@ -88,7 +88,7 @@ class Database(abc.ABC):
         engine: sqlalchemy_asyncio.AsyncEngine,
         main_model: sqlmodel.SQLModel,
         *table_models: type[sqlmodel.SQLModel]
-    ) -> result.ScalarResult[typing.Any]:
+    ) -> result.ScalarResult[typing.Any] | None:
         """Select rows from multiple tables using a join.
 
         Args:
@@ -109,7 +109,7 @@ class Database(abc.ABC):
         self,
         engine: sqlalchemy_asyncio.AsyncEngine,
         *table_models: type[sqlmodel.SQLModel]
-    ) -> sqlalchemy_result.ChunkedIteratorResult:
+    ) -> sqlalchemy_result.ChunkedIteratorResult | None:
         """Select all rows from multiple tables using a join.
 
         Args:

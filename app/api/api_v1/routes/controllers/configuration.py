@@ -7,7 +7,7 @@ from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
 from app.api.api_v1.dependencies import database as database_deps
 from app.api.api_v1.routes.services import configuration as service
-from app.db.repositories import configurations as config_repo_
+from app.core import abc
 from app.models.domain import configuration
 from app.models.schemas import configurations, fonts, templates
 
@@ -32,7 +32,7 @@ class ConfigurationController(starlite.Controller):
         configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
         data: configuration.TemplateConfiguration,
-        database: config_repo_.ConfigurationsRepository,
+        database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, uuid.UUID | typing.Any]:
         return await configuration_service.create_template_config(
@@ -44,7 +44,7 @@ class ConfigurationController(starlite.Controller):
         self,
         configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
-        database: config_repo_.ConfigurationsRepository,
+        database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
         template_config_id: pydantic.UUID1,
@@ -64,7 +64,7 @@ class ConfigurationController(starlite.Controller):
         self,
         configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
-        database: config_repo_.ConfigurationsRepository,
+        database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
         templates_schema: type[templates.Templates],

@@ -4,14 +4,14 @@ import starlite
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
 from app.api.api_v1.dependencies import database as database_deps
-from app.api.api_v1.dependencies import image_processor as image_processor_deps
+from app.api.api_v1.dependencies import object_processor as object_processor_deps
 from app.api.api_v1.routes.services import certificate as cert_service
 from app.api.api_v1.routes.services import configuration as config_service
 from app.db import crud
 from app.db.repositories import configurations as config_repo_
 from app.models.domain import certificate
 from app.models.schemas import certificates, configurations, fonts, templates
-from app.services import image_processor
+from app.services import object_processor
 
 
 class CertificateController(starlite.Controller):
@@ -30,8 +30,8 @@ class CertificateController(starlite.Controller):
         ),
         "database": starlite.Provide(database_deps.get_db_impl),
         "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
-        "image_processor_": starlite.Provide(
-            image_processor_deps.get_image_processor_client
+        "object_processor_": starlite.Provide(
+            object_processor_deps.get_object_processor_client
         ),
         "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }
@@ -48,7 +48,7 @@ class CertificateController(starlite.Controller):
         database: crud.DatabaseImpl,
         engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
-        image_processor_: image_processor.ImageProcessor,
+        object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
     ) -> typing.Any:
         return await certificate_service.generate_certificate(
@@ -60,6 +60,6 @@ class CertificateController(starlite.Controller):
             database=database,
             engine=engine,
             fonts_schema=fonts_schema,
-            image_processor_=image_processor_,
+            object_processor_=object_processor_,
             templates_schema=templates_schema,
         )

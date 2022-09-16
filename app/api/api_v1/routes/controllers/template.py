@@ -4,11 +4,11 @@ import starlite
 from starlette import datastructures
 
 from app.api.api_v1.dependencies import database as database_deps
-from app.api.api_v1.dependencies import image_processor as image_processor_deps
+from app.api.api_v1.dependencies import object_processor as object_processor_deps
 from app.api.api_v1.routes.services import template as template_svcs
 from app.db import crud
 from app.models.schemas import templates
-from app.services import image_processor
+from app.services import object_processor
 
 
 class TemplateController(starlite.Controller):
@@ -16,8 +16,8 @@ class TemplateController(starlite.Controller):
 
     dependencies: dict[str, "starlite.Provide"] | None = {
         "database": starlite.Provide(database_deps.get_db_impl),
-        "image_processor_": starlite.Provide(
-            image_processor_deps.get_image_processor_client
+        "object_processor_": starlite.Provide(
+            object_processor_deps.get_object_processor_client
         ),
         "template_service": starlite.Provide(template_svcs.TemplateService),
         "templates_schema": starlite.Provide(database_deps.get_templates_schema),
@@ -27,7 +27,7 @@ class TemplateController(starlite.Controller):
     async def add_certificate_template(  # pylint: disable=R0913
         self,
         database: crud.DatabaseImpl,
-        image_processor_: image_processor.ImageProcessor,
+        object_processor_: object_processor.ObjectProcessor,
         template_service: template_svcs.TemplateService,
         templates_schema: type[templates.Templates],
         data: dict[
@@ -37,7 +37,7 @@ class TemplateController(starlite.Controller):
         return await template_service.add_certificate_template(
             data=data,
             database=database,
-            image_processor_=image_processor_,
+            object_processor_=object_processor_,
             template_schema=templates_schema,
         )
 

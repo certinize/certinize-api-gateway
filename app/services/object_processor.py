@@ -13,7 +13,7 @@ CERTIFICATES = "/certificates"
 TEMPLATES = "/templates"
 
 
-class ImageProcessor:
+class ObjectProcessor:
     """A client implementation of certinize-image-processor."""
 
     endpoint_url = ""
@@ -49,7 +49,7 @@ class ImageProcessor:
 
         Raises:
             ConnectionError: If the gateway failed to receive a valid response from
-                `certinize-ecert-processor`.
+                `certinize-object-processor`.
 
         Returns:
             dict[str, typing.Any]: Decoded JSON object containing the result of the
@@ -67,10 +67,10 @@ class ImageProcessor:
 
         return await response.json()
 
-    async def upload_file(
+    async def upload_object(
         self,
-        imageb: bytes | typing.BinaryIO,
-        image_name: str,
+        objectb: bytes | typing.BinaryIO,
+        object_name: str,
         options: str,
     ) -> dict[str, typing.Any]:
         """Upload image file to a cloud storage.
@@ -78,21 +78,21 @@ class ImageProcessor:
         Args:
             imageb (bytes | typing.BinaryIO): The image content.
             image_name (str): Name of the image file.
-            options (str): Other options. Refer to certinize-ecert-processor's docs
+            options (str): Other options. Refer to certinize-object-processor's docs
                 regarding other options.
 
         Raises:
             ConnectionError: If the gateway failed to receive a valid response from
-                `certinize-ecert-processor`.
+                `certinize-object-processor`.
 
         Returns:
             dict[str, typing.Any]: Decoded JSON object containing the result of the
                 upload.
         """
         form_data = aiohttp.FormData()
-        form_data.add_field("filename", image_name)
+        form_data.add_field("filename", object_name)
         form_data.add_field("options", options)
-        form_data.add_field("fileb", imageb)
+        form_data.add_field("fileb", objectb)
 
         try:
             response = await self.session.post(url=TEMPLATES, data=form_data)

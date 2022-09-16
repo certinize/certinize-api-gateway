@@ -8,19 +8,19 @@ from starlette import datastructures
 
 from app.db import crud
 from app.models.schemas import templates
-from app.services import image_processor
+from app.services import object_processor
 
 CERTINIZE_BUCKET = "certinize-bucket"
 
 
 class TemplateService:
     async def _add_certificate_template(
-        self, image_processor_: image_processor.ImageProcessor, ecert: bytes
+        self, object_processor_: object_processor.ObjectProcessor, ecert: bytes
     ) -> dict[str, typing.Any]:
         options = {"folder": CERTINIZE_BUCKET}
 
         try:
-            return await image_processor_.upload_file(
+            return await object_processor_.upload_file(
                 imageb=ecert,
                 image_name=str(uuid.uuid1()),
                 options=json.dumps(options),
@@ -74,7 +74,7 @@ class TemplateService:
         self,
         data: dict[str, datastructures.UploadFile | list[datastructures.UploadFile]],
         database: crud.DatabaseImpl,
-        image_processor_: image_processor.ImageProcessor,
+        object_processor_: object_processor.ObjectProcessor,
         template_schema: type[templates.Templates],
     ):
         image_src: datastructures.UploadFile | list[datastructures.UploadFile]
@@ -88,12 +88,12 @@ class TemplateService:
 
         if isinstance(image_src, datastructures.UploadFile):
             imagekit_resp = await self._add_certificate_template(
-                image_processor_=image_processor_, ecert=image_src.file.read()
+                object_processor_=object_processor_, ecert=image_src.file.read()
             )
         else:
             requests = [
                 self._add_certificate_template(
-                    image_processor_=image_processor_, ecert=image.file.read()
+                    object_processor_=object_processor_, ecert=image.file.read()
                 )
                 for image in image_src
             ]

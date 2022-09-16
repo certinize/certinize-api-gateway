@@ -8,7 +8,7 @@ def get_start_app_handler():
     async def start_app(state: State) -> None:
         await db_events.create_db_engine(state)
         await db_events.create_db_tables(state)
-        await svcs_events.create_image_processor_client(state)
+        await svcs_events.create_object_processor_client(state)
 
     return start_app
 

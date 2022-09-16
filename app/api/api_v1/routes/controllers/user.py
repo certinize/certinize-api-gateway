@@ -36,4 +36,5 @@ class UserController(starlite.Controller):
     async def update_solana_user(
         self, solana_user_schema: type[users.SolanaUsers]
     ) -> None:
-        ...
+        _ = solana_user_schema
+        return

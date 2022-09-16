@@ -9,7 +9,7 @@ from app.db import crud
 from app.db.repositories import configurations as config_repo_
 from app.models.domain import certificate
 from app.models.schemas import certificates, configurations, fonts, templates
-from app.services import image_processor
+from app.services import object_processor
 
 
 class CertificateService:  # pylint: disable=R0903
@@ -23,7 +23,7 @@ class CertificateService:  # pylint: disable=R0903
         database: crud.DatabaseImpl,
         engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
-        image_processor_: image_processor.ImageProcessor,
+        object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
     ) -> dict[str, typing.Any]:
         template_config = await config_service.get_template_config(
@@ -44,7 +44,7 @@ class CertificateService:  # pylint: disable=R0903
             "recipients": data.recipients,
         }
 
-        result = await image_processor_.generate_certificate(
+        result = await object_processor_.generate_certificate(
             certificate_meta=certificate_meta
         )
 
