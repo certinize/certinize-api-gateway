@@ -1,3 +1,4 @@
+# pylint: disable=R0801
 import typing
 
 import sqlmodel
@@ -5,6 +6,7 @@ from sqlalchemy.engine import result as sqlalchemy_result
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 from sqlmodel.engine import result
 from sqlmodel.ext.asyncio import session
+from sqlmodel.sql import expression
 
 from app.core import abc
 from app.models.schemas import configurations, fonts, templates
@@ -12,6 +14,11 @@ from app.models.schemas import configurations, fonts, templates
 
 class ConfigurationsRepository(abc.Database):
     """Database implementation for the configurations table."""
+
+    def __init__(self) -> None:
+        # Avoid an SAWarning. See: https://github.com/tiangolo/sqlmodel/issues/189
+        expression.SelectOfScalar.inherit_cache = True  # type: ignore
+        expression.Select.inherit_cache = True  # type: ignore
 
     @staticmethod
     def update(

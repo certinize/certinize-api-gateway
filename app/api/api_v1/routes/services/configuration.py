@@ -4,9 +4,7 @@
 import typing
 import uuid
 
-import orjson
 import pydantic
-import sortedcontainers
 import starlite
 from sqlalchemy import exc
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
@@ -26,7 +24,7 @@ class ConfigurationService:
     ) -> dict[str, typing.Any]:
         font_id = data.font_id
         template_id = data.template_id
-        config_meta = data.__dict__
+        config_meta = data.dict()
         template_config_id = uuid.uuid1()
 
         # Reusing a variable seems more efficient and correct than extracting the value
@@ -50,11 +48,7 @@ class ConfigurationService:
                 template_config_name,
             )
 
-            return dict(
-                sortedcontainers.SortedDict(
-                    orjson.loads(certificate_config.one().json())
-                )
-            )
+            return certificate_config.one().dict()
         except exc.NoResultFound:
             await database.add_row(
                 engine,
@@ -67,20 +61,16 @@ class ConfigurationService:
                 ),
             )
 
-            return dict(
-                sortedcontainers.SortedDict(
-                    {
-                        "template_config_id": template_config_id,
-                        "template_config_name": template_config_name,
-                        "config_meta": {
-                            "recipient_name_meta": config_meta["recipient_name_meta"],
-                            "issuance_date_meta": config_meta["issuance_date_meta"],
-                        },
-                        "template_id": font_id,
-                        "font_id": template_id,
-                    }
-                )
-            )
+            return {
+                "template_config_id": template_config_id,
+                "template_config_name": template_config_name,
+                "config_meta": {
+                    "recipient_name_meta": config_meta["recipient_name_meta"],
+                    "issuance_date_meta": config_meta["issuance_date_meta"],
+                },
+                "template_id": font_id,
+                "font_id": template_id,
+            }
 
     async def get_template_config(  # pylint: disable=R0913
         self,
@@ -104,17 +94,11 @@ class ConfigurationService:
             assert results is not None
             results_ = results.one()
 
-            return dict(
-                sortedcontainers.SortedDict(
-                    {
-                        "template_config": orjson.loads(
-                            results_["Configurations"].json()
-                        ),
-                        "template": orjson.loads(results_["Templates"].json()),
-                        "font": orjson.loads(results_["Fonts"].json()),
-                    }
-                )
-            )
+            return {
+                "template_config": results_["Configurations"].dict(),
+                "template": results_["Templates"].dict(),
+                "font": results_["Fonts"].dict(),
+            }
         except exc.NoResultFound as err:
             raise starlite.NotFoundException(str(err)) from err
 
@@ -142,11 +126,7 @@ class ConfigurationService:
             # 5. Assign the result to a parent dict key.
             # 6. Append the parent dict to serialized_results.
 
-            template_config: dict[str, typing.Any] = dict(
-                sortedcontainers.SortedDict(
-                    orjson.loads(results["Configurations"].json())
-                )
-            )
+            template_config = results["Configurations"].dict()
             template_config_id = template_config["template_config_id"]
             template_config_name = template_config["template_config_name"]
 
@@ -157,16 +137,8 @@ class ConfigurationService:
                 {
                     "template_config_id": template_config_id,
                     "template_config_name": template_config_name,
-                    "font": dict(
-                        sortedcontainers.SortedDict(
-                            orjson.loads(results["Fonts"].json())
-                        )
-                    ),
-                    "template": dict(
-                        sortedcontainers.SortedDict(
-                            orjson.loads(results["Templates"].json())
-                        )
-                    ),
+                    "font": results["Fonts"].dict(),
+                    "template": results["Templates"].dict(),
                     "template_config": template_config,
                 }
             )
