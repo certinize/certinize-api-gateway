@@ -1,33 +1,39 @@
-## Certificates
+# Certificates
 
-### Generate eCertificate
+## Generate eCertificate
 
-    - Method: POST
-    - Path: /certificates
-    - Summary: Generate an e-Certificate.
+```json
+- Method: POST
+- Path: /certificates
+- Summary: Generate an e-Certificate.
+```
 
-**Request**
-
+**Request**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response**
-
+**Response**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
-- 201 Response: The e-Certificate(s) was created.
-- 400 Response: Bad request syntax or unsuported method.
+```json
+201 Response: The e-Certificate(s) was created.
+400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
@@ -47,7 +53,7 @@ Request Body:
 
 HTTP Status Code:
 
-```
+```json
 201
 ```
 
@@ -72,32 +78,34 @@ JSON Response:
 
 ### Create Template Configuration
 
-    - Method: POST
-    - Path: /configurations
-    - Summary: Save an e-Certificate template configuration.
+```properties
+- Method: POST
+- Path: /configurations
+- Summary: Save an e-Certificate template configuration.
+```
 
-**Request**
-
+**Request**\
 Supported Media Types:
 
 - `application/json`
 
-**Response**
-
+**Response**\
 Supported Media Types:
 
 - `application/json`
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
-- 201 Response: The e-Certificate template configuration was created.
-- 400 Response: Bad request syntax or unsuported method.
+```json
+201 Response: The e-Certificate template configuration was created.
+400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
@@ -127,7 +135,7 @@ Request Body:
 
 HTTP Status Code:
 
-```
+```json
 201
 ```
 
@@ -160,46 +168,50 @@ JSON Response:
 
 ### Get Template Configuration
 
-    - Method: GET
-    - Path: /configurations/{template_config_id:uuid}
-    - Summary: Get a specific template configuration.
+```properties
+- Method: GET
+- Path: /configurations/{template_config_id:uuid}
+- Summary: Get a specific template configuration.
+```
 
-**Request**
-
+**Request**\
 Path Parameters:
 
-```
+```properties
 template_config_id:uuid
 ```
 
-**Response**
-
+**Response**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
-- 200 Response: The request was fulfilled.
-- 400 Response: Bad request syntax or unsuported method.
+```json
+200 Response: The request was fulfilled.
+400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
 Request Parameter:
 
-```
+```sh
 /configurations/6e9fd408-207d-11ed-9d54-00155d886c22
 ```
 
 HTTP Status Code:
 
-```
+```json
 200
 ```
 
@@ -248,42 +260,46 @@ JSON Response:
 
 ### List Template Configurations
 
-    - Method: GET
-    - Path: /configurations
-    - Summary: Get a list of template configurations.
+```properties
+- Method: GET
+- Path: /configurations
+- Summary: Get a list of template configurations.
+```
 
-**Request**
-
+**Request**\
 There are no request parameters for this operation.
 
-**Response**
-
+**Response**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
-- 200 Response: The request was fulfilled.
-- 400 Response: Bad request syntax or unsuported method.
+```json
+200 Response: The request was fulfilled.
+400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
 Request Path:
 
-```
+```json
 /configurations
 ```
 
 HTTP Status Code:
 
-```
+```json
 200
 ```
 
@@ -338,42 +354,46 @@ JSON Response:
 
 ### Get All Fonts
 
-    - Method: GET
-    - Path: /fonts
-    - Summary: Retrieve all usable e-Certificate fonts.
+```properties
+- Method: GET
+- Path: /fonts
+- Summary: Retrieve all usable e-Certificate fonts.
+```
 
-**Request**
-
+**Request**\
 There are no request parameters for this operation.
 
-**Response**
-
+**Response**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
+```json
 200 Response: The request was fulfilled.
 400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
 Request Path:
 
-```
+```json
 /fonts
 ```
 
 HTTP Status Code:
 
-```
+```json
 200
 ```
 
@@ -395,66 +415,78 @@ JSON Response:
 
 ### Transfer Certificate
 
-    - Method: POST
-    - Path: /issuances
-    - Summary: Transfer an e-Certificate to a recipient(s). 
-    - Description: Transfer generated e-Certificate(s) inside an e-Certificate collection. The recipient(s) is indicated in the collection metadata.
-
-**Request**
-
-Path Parameters:
-
-```
-certificate_collection_id:uuid
+```properties
+- Method: POST
+- Path: /issuances
+- Summary: Transfer an e-Certificate to a recipient(s).
+- Description: Transfer generated e-Certificate(s) inside an e-Certificate collection. The recipient(s) should be listed in the collection metadata.
 ```
 
-**Response**
-
+**Request**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response**\
+Supported Media Types:
 
-- 201 Response: The transfer request was fulfilled.
-- 400 Response: Bad request syntax or unsuported method.
+```properties
+application/json
+```
 
-**Examples**
+**Response Status Codes**\
+Status:
 
+```json
+202 Response: E-Certificate issuance request accepted.
+400 Response: Bad request syntax or unsuported method.
+```
+
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
-Request Parameter:
+Request Body:
 
-```
-/issuances/34f8ba1a-1707-11ed-a111-f73a0f2a24a8
+> The issuer_id is used to check if the issuer is a verified user.
+
+```json
+{
+  "issuer_meta": {
+    "issuer_id": "144b084c-374e-11ed-8e58-d7cfa0c850a6",
+    "issuer_name": "Issuer Name",
+    "issuer_email": "issuer@example.com",
+    "issuer_website": "https://issuer-website.com",
+    "issuer_pubkey": "ZaXGjYvxgVTemk9Rx42hw9zBAjPjH3r41Aqy9xuQRrL1",
+    "issuer_pvtket": "9Hb2TDTMB8wfRNg7g6EPdZbkzRLYw2WGSvVYNoc8m9jrF63uGpTsHPBVyWDhPBrDaevftJUDRmVLad9TgAJT9GZJ"
+  },
+  "recipient_meta": [
+    {
+      "recipient_email": "recipient@example.com",
+      "recipient_name": "Juan dela Cruz",
+      "recipient_pubkey": "B7KNk9UWUGjg89NrmuCvuzNc9dNrmQYCQtcQB525a8HU",
+      "recipient_ecert_url": "https://storage.com/certificate.jpeg"
+    }
+  ]
+}
 ```
 
 HTTP Status Code:
 
-```
-201
+```json
+202
 ```
 
 JSON Response:
 
 ```json
 {
-  "transfer_id": "9b5ec38f-4d0f-4a8b-9a36-60feba6ea7b1",
-  "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
-  "template_config_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
-  "issuance_date": "2022-01-31",
-  "recipients": [
-    {
-      "recipient_name": "Juan Cruz",
-      "email_address": "juan_cruz@email.com",
-      "wallet_address": "9ZNTfG4NyQgxy2SWjSiQoUyBPEvXT2xo7fKc5hPYYJ7b",
-      "certificate_id": "8561b082-bcdd-4ff0-9506-ee1dcebda715"
-    }
-  ]
+  "message": "Issuance request accepted"
 }
 ```
 
@@ -462,47 +494,51 @@ JSON Response:
 
 ### Add eCertificate Template
 
-    - Method: POST
-    - Path: /templates
-    - Summary: Upload an e-Certificate template(s).
+```properties
+- Method: POST
+- Path: /templates
+- Summary: Upload an e-Certificate template(s).
+```
 
-**Request**
-
-There are no request parameters for this operation.
-
+**Request**\
 Supported Media Types:
 
-- `multipart/form-data`
+```properties
+multipart/form-data
+```
 
-**Response**
-
+**Response**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
-- 201 Response: The e-Certificate template(s) was uploaded.
-- 400 Response: Bad request syntax or unsuported method.
+```json
+201 Response: The e-Certificate template(s) was uploaded.
+400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
 Form Data:
 
-```
+```properties
 Key: image
 Value: C:/path/to/file/template1.png
 ```
 
 HTTP Status Code:
 
-```
+```json
 201
 ```
 
@@ -521,7 +557,7 @@ JSON Response:
 }
 ```
 
-For multiple file uploads, the response will contain a list of template metadata: 
+For multiple file uploads, the response will contain a list of template metadata:
 
 ```json
 {
@@ -538,41 +574,46 @@ For multiple file uploads, the response will contain a list of template metadata
 
 ### List Templates
 
-    - Method: GET
-    - Path: /templates
-    - Summary: Get a list of e-Certificate templates.
-    - Description: This will list all recorded e-Certificate templates.
+```properties
+- Method: GET
+- Path: /templates
+- Summary: Get a list of e-Certificate templates.
+- Description: This will list all recorded e-Certificate templates.
+```
 
-**Request**
-
+**Request**\
 There are no request parameters for this operation.
 
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
-- 200 Response: The request was fulfilled.
-- 400 Response: Bad request syntax or unsuported method.
+```json
+200 Response: The request was fulfilled.
+400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
 Request Parameter:
 
-```
+```sh
 /templates
 ```
 
 HTTP Status Code:
 
-```
+```json
 200
 ```
 
@@ -593,46 +634,50 @@ JSON Response:
 
 ### Auth Solana User
 
-    - Method: GET
-    - Path: /users
-    - Summary: Authorize Solana user.
+```properties
+- Method: GET
+- Path: /users
+- Summary: Authorize Solana user.
+```
 
-**Request**
-
+**Request**\
 Path Parameters:
 
-```
+```properties
 wallet_address:str
 ```
 
-**Response**
-
+**Response**\
 Supported Media Types:
 
-- `application/json`
+```properties
+application/json
+```
 
-**Response Status Codes**
+**Response Status Codes**\
+Status:
 
-- 200 Response: The user was successfully authorized.
-- 400 Response: Bad request syntax or unsuported method.
+```json
+200 Response: The user was successfully authorized.
+400 Response: Bad request syntax or unsuported method.
+```
 
-**Examples**
-
+**Examples**\
 Request Header:
 
-```
+```properties
 X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 ```
 
 Request Parameter:
 
-```
+```sh
 /users/9ZNTfG4NyQgxy2SWjSiQoUyBPEvXT2xo7fKc5hPYYJ7b
 ```
 
 HTTP Status Code:
 
-```
+```json
 200
 ```
 
