@@ -3,8 +3,8 @@ import typing
 import starlite
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
+from app.api.api_v1.dependencies import associated_services
 from app.api.api_v1.dependencies import database as database_deps
-from app.api.api_v1.dependencies import object_processor as object_processor_deps
 from app.api.api_v1.routes.services import certificate as cert_service
 from app.api.api_v1.routes.services import configuration as config_service
 from app.db import crud
@@ -31,7 +31,7 @@ class CertificateController(starlite.Controller):
         "database": starlite.Provide(database_deps.get_db_impl),
         "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
         "object_processor_": starlite.Provide(
-            object_processor_deps.get_object_processor_client
+            associated_services.get_object_processor_client
         ),
         "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }

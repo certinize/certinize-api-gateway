@@ -20,9 +20,9 @@ class TemplateService:
         options = {"folder": CERTINIZE_BUCKET}
 
         try:
-            return await object_processor_.upload_file(
-                imageb=ecert,
-                image_name=str(uuid.uuid1()),
+            return await object_processor_.upload_object(
+                objectb=ecert,
+                object_name=str(uuid.uuid1()),
                 options=json.dumps(options),
             )
         except ConnectionError as err:

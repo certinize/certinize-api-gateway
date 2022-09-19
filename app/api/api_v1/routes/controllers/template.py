@@ -3,8 +3,8 @@ import typing
 import starlite
 from starlette import datastructures
 
+from app.api.api_v1.dependencies import associated_services
 from app.api.api_v1.dependencies import database as database_deps
-from app.api.api_v1.dependencies import object_processor as object_processor_deps
 from app.api.api_v1.routes.services import template as template_svcs
 from app.db import crud
 from app.models.schemas import templates
@@ -17,7 +17,7 @@ class TemplateController(starlite.Controller):
     dependencies: dict[str, "starlite.Provide"] | None = {
         "database": starlite.Provide(database_deps.get_db_impl),
         "object_processor_": starlite.Provide(
-            object_processor_deps.get_object_processor_client
+            associated_services.get_object_processor_client
         ),
         "template_service": starlite.Provide(template_svcs.TemplateService),
         "templates_schema": starlite.Provide(database_deps.get_templates_schema),

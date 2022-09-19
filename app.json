@@ -19,7 +19,7 @@
       "description": "Associated S3 secret key ID",
       "required": true
     },
-    "CERTINIZE_IMAGE_PROCESSOR": {
+    "CERTINIZE_OBJECT_PROCESSOR": {
       "description": "URL of the certinize-image-processor service.",
       "required": true
     }

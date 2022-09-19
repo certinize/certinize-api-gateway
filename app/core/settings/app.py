@@ -15,14 +15,11 @@ class AppSettings(base.BaseAppSettings):
     max_connection_count = 10
     min_connection_count = 10
 
-    s3_api_endpoint_url: pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
-        url="https://", scheme="https"
+    certinize_object_processor: pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
+        "https://", scheme="https"
     )
-    s3_secret_access_key = ""
-    s3_access_key_id = ""
-
-    certinize_object_processor = pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
-        url="https://", scheme="https"
+    certinize_blockchain_api: pydantic.AnyHttpUrl = pydantic.AnyHttpUrl(
+        "https://", scheme="https"
     )
 
     logging_level = "INFO"

@@ -1,13 +1,14 @@
 """
-app.services.image_processor
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.services.object_processor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This modiles contains a client for interacting with certnize-ecert-processor's REST API.
 """
 import typing
 
 import aiohttp
-import orjson
+
+from app import utils
 
 CERTIFICATES = "/certificates"
 TEMPLATES = "/templates"
@@ -17,7 +18,7 @@ class ObjectProcessor:
     """A client implementation of certinize-image-processor."""
 
     endpoint_url = ""
-    headers: dict[str, typing.Any] = {}
+    headers: dict[str, str] = {}
     session: aiohttp.ClientSession
 
     def __init__(self, endpoint_url: str) -> None:
@@ -30,13 +31,7 @@ class ObjectProcessor:
 
     def _create_client_session(self) -> None:
         """Initialize the client session."""
-        self.session = aiohttp.ClientSession(
-            headers=self.headers,
-            base_url=self.endpoint_url,
-            json_serialize=lambda json_: orjson.dumps(  # pylint: disable=E1101
-                json_
-            ).decode(),
-        )
+        self.session = utils.create_http_client(self.headers, self.endpoint_url)
 
     async def create_folder(
         self, folder_name: str, parent_folder_path: str
