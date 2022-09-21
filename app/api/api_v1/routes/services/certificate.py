@@ -1,7 +1,6 @@
 import typing
 import uuid
 
-import sortedcontainers
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
 from app.api.api_v1.routes.services import configuration
@@ -61,4 +60,4 @@ class CertificateService:  # pylint: disable=R0903
         result["certificate_id"] = certificate_id
         result["template_config_id"] = data.template_config_id
 
-        return dict(sortedcontainers.SortedDict(result))
+        return result
