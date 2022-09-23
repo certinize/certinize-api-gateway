@@ -16,7 +16,7 @@ class UserController(starlite.Controller):
         "solana_user_schema": starlite.Provide(database_deps.get_solana_users_schema),
     }
 
-    @starlite.get(path="/{wallet_address:str}")
+    @starlite.get(path="/{public_key:str}")
     async def auth_solana_user(
         self,
         user_service: user_service.UserService,
