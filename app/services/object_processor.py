@@ -98,10 +98,12 @@ class ObjectProcessor:
 
         return await response.json()
 
-    async def generate_certificate(self, certificate_meta: dict[str, typing.Any]):
+    async def generate_certificate(
+        self, certificate_meta: dict[str, typing.Any]
+    ) -> tuple[dict[str, typing.Any], int]:
         try:
             response = await self.session.post(url=CERTIFICATES, json=certificate_meta)
         except aiohttp.ClientConnectionError as err:
             raise ConnectionError(str(err)) from err
 
-        return await response.json()
+        return (await response.json(), response.status)

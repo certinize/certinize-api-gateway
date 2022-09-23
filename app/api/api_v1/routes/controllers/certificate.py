@@ -51,7 +51,7 @@ class CertificateController(starlite.Controller):
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
     ) -> typing.Any:
-        return await certificate_service.generate_certificate(
+        response = await certificate_service.generate_certificate(
             collections_schema=certificate_collections_schema,
             config_repo=config_repo,
             config_service=config_service_,
@@ -62,4 +62,10 @@ class CertificateController(starlite.Controller):
             fonts_schema=fonts_schema,
             object_processor_=object_processor_,
             templates_schema=templates_schema,
+        )
+
+        return starlite.Response(
+            status_code=response[1],
+            content=response[0],
+            media_type="application/json",
         )

@@ -24,7 +24,7 @@ class CertificateService:  # pylint: disable=R0903
         fonts_schema: type[fonts.Fonts],
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
-    ) -> dict[str, typing.Any]:
+    ) -> tuple[dict[str, typing.Any], int]:
         template_config = await config_service.get_template_config(
             template_config_id=data.template_config_id,
             configs_schema=configs_schema,
@@ -46,18 +46,18 @@ class CertificateService:  # pylint: disable=R0903
         result = await object_processor_.generate_certificate(
             certificate_meta=certificate_meta
         )
-
+        content = result[0]
         certificate_id = uuid.uuid1()
 
         await database.add_row(
             collections_schema(
                 certificate_id=certificate_id,
-                certificate=result,
+                certificate=content,
                 template_config_id=data.template_config_id,
             )
         )
 
-        result["certificate_id"] = certificate_id
-        result["template_config_id"] = data.template_config_id
+        content["certificate_id"] = certificate_id
+        content["template_config_id"] = data.template_config_id
 
-        return result
+        return content, result[1]
