@@ -15,7 +15,7 @@ TEMPLATES = "/templates"
 
 
 class ObjectProcessor:
-    """A client implementation of certinize-image-processor."""
+    """A client implementation of certinize-object-processor."""
 
     endpoint_url = ""
     headers: dict[str, str] = {}
@@ -64,15 +64,15 @@ class ObjectProcessor:
 
     async def upload_object(
         self,
-        objectb: bytes | typing.BinaryIO,
+        objectb: str,
         object_name: str,
-        options: str,
+        options: dict[str, str],
     ) -> dict[str, typing.Any]:
-        """Upload image file to a cloud storage.
+        """Upload object file to a cloud storage.
 
         Args:
-            imageb (bytes | typing.BinaryIO): The image content.
-            image_name (str): Name of the image file.
+            objectb (bytes | typing.BinaryIO): The object content.
+            object_name (str): Name of the object file.
             options (str): Other options. Refer to certinize-object-processor's docs
                 regarding other options.
 
@@ -84,13 +84,15 @@ class ObjectProcessor:
             dict[str, typing.Any]: Decoded JSON object containing the result of the
                 upload.
         """
-        form_data = aiohttp.FormData()
-        form_data.add_field("filename", object_name)
-        form_data.add_field("options", options)
-        form_data.add_field("fileb", objectb)
-
         try:
-            response = await self.session.post(url=TEMPLATES, data=form_data)
+            response = await self.session.post(
+                url=TEMPLATES,
+                json={
+                    "filename": object_name,
+                    "options": options,
+                    "fileb": objectb,
+                },
+            )
         except aiohttp.ClientConnectorError as err:
             raise ConnectionError(str(err)) from err
 

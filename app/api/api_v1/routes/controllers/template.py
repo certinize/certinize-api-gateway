@@ -1,12 +1,12 @@
 import typing
 
 import starlite
-from starlette import datastructures
 
 from app.api.api_v1.dependencies import associated_services
 from app.api.api_v1.dependencies import database as database_deps
 from app.api.api_v1.routes.services import template as template_svcs
 from app.db import crud
+from app.models.domain import template
 from app.models.schemas import templates
 from app.services import object_processor
 
@@ -26,13 +26,11 @@ class TemplateController(starlite.Controller):
     @starlite.post()
     async def add_certificate_template(  # pylint: disable=R0913
         self,
+        data: template.TemplateUpload,
         database: crud.DatabaseImpl,
         object_processor_: object_processor.ObjectProcessor,
         template_service: template_svcs.TemplateService,
         templates_schema: type[templates.Templates],
-        data: dict[
-            str, datastructures.UploadFile | list[datastructures.UploadFile]
-        ] = starlite.Body(media_type=starlite.RequestEncodingType.MULTI_PART),
     ) -> typing.Any:
         return await template_service.add_certificate_template(
             data=data,
