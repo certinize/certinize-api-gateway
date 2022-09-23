@@ -26,9 +26,9 @@ class IssuanceController(starlite.Controller):
         self,
         data: issuance.IssuanceRequest,
         issuance_service: service.IssuanceService,
-        blockchain_api: blockchain_api.BlockchainInterface,
+        blockchain_api_: blockchain_api.BlockchainInterface,
     ) -> starlite.Response[typing.Any | None]:
-        result = await issuance_service.transfer_certificate(data, blockchain_api)
+        result = await issuance_service.transfer_certificate(data, blockchain_api_)
 
         return starlite.Response(
             content=result[0],

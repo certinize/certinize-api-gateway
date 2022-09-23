@@ -8,20 +8,20 @@ from solana import publickey
 
 from app.models.domain import app_model
 
-PanicException = re.compile(r"\((.*?)\)")
-InvalidCharacter = re.compile(r"(?<=: ).*(?=\s{)")
+PANIC_EXC = re.compile(r"\((.*?)\)")
+INVALID_CHAR = re.compile(r"(?<=: ).*(?=\s{)")
 
 
 class RustError(enum.Enum):
-    InvalidCharacter = "found unsupported characters"
+    INVALIDCHARACTER = "found unsupported characters"
 
 
 def raise_rust_error(error: BaseException) -> None:
     try:
-        raise ValueError(PanicException.findall(str(error))[1]) from error
+        raise ValueError(PANIC_EXC.findall(str(error))[1]) from error
     except IndexError:
         raise ValueError(
-            RustError[InvalidCharacter.findall(str(error))[0]].value
+            RustError[INVALID_CHAR.findall(str(error))[0].upper()].value
         ) from error
 
 
@@ -51,7 +51,7 @@ class IssuerMeta(app_model.AppModel):
     def recipient_pvtkey_on_curve(cls, value: str):
         try:
             solders_keypair.Keypair().from_base58_string(value)
-        except BaseException as base_err:
+        except BaseException as base_err:  # pylint: disable=W0703
             raise_rust_error(base_err)
 
         return value

@@ -1,5 +1,13 @@
 # certinize-api-gateway
 
+![main-branch-state](https://img.shields.io/github/checks-status/certinize/certinize-api-gateway/main?style=flat-square)
+
+![repo-size](https://img.shields.io/github/repo-size/certinize/certinize-api-gateway?style=flat-square)
+
+## Tests
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://elements.getpostman.com/redirect?entityId=14719803-9b5f6f7d-f215-47d2-8ac5-8c449a226bfe&entityType=collection&workspaceId=4cb1727d-8f73-4063-8bc1-af86b4222d4e)
+
 ## Installation
 
 Fork the [certinize-api-gateway](https://github.com/certinize/certinize-api-gateway) repo on GitHub, then [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository) your fork locally.

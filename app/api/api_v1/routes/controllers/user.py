@@ -19,7 +19,7 @@ class UserController(starlite.Controller):
     @starlite.get(path="/{public_key:str}")
     async def auth_solana_user(
         self,
-        user_service: user_service.UserService,
+        user_service_: user_service.UserService,
         solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
         public_key: str = starlite.Parameter(
@@ -27,7 +27,7 @@ class UserController(starlite.Controller):
             description="Authenticate and authorize solana user and provide API key",
         ),
     ) -> users.SolanaUsers | starlite.ValidationException:
-        solana_user = await user_service.auth(public_key, solana_user_schema, database)
+        solana_user = await user_service_.auth(public_key, solana_user_schema, database)
 
         return solana_user
 
@@ -40,4 +40,4 @@ class UserController(starlite.Controller):
 
     @starlite.post()
     async def verify_solana_user(self, solana_url: user_domain.UnverifiedUser) -> None:
-        ...
+        _ = solana_url

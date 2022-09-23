@@ -34,17 +34,21 @@ class CertificateService:  # pylint: disable=R0903
             engine=engine,
         )
 
-        certificate_meta = {
-            "recipient_name_meta": {"position": {"x": 522, "y": 420}, "font_size": 64},
-            "issuance_date_meta": {"position": {"x": 310, "y": 514}, "font_size": 48},
-            "template_url": template_config["template"]["template_url"],
-            "font_url": template_config["font"]["font_url"],
-            "issuance_date": data.issuance_date,
-            "recipients": data.recipients,
-        }
-
         result = await object_processor_.generate_certificate(
-            certificate_meta=certificate_meta
+            certificate_meta={
+                "recipient_name_meta": {
+                    "position": {"x": 522, "y": 420},
+                    "font_size": 64,
+                },
+                "issuance_date_meta": {
+                    "position": {"x": 310, "y": 514},
+                    "font_size": 48,
+                },
+                "template_url": template_config["template"]["template_url"],
+                "font_url": template_config["font"]["font_url"],
+                "issuance_date": data.issuance_date,
+                "recipients": data.recipients,
+            }
         )
         content = result[0]
         certificate_id = uuid.uuid1()

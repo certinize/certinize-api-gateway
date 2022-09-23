@@ -60,11 +60,11 @@ class TemplateService:
         imagekit_response: dict[str, typing.Any] | list[dict[str, typing.Any]],
     ) -> ImageKitStoreRes:
         if isinstance(imagekit_response, dict):
-            template = await self._create_template_schema(
+            template_ = await self._create_template_schema(
                 imagekit_response=imagekit_response, template_schema=template_schema
             )
-            await database.add_row(template[0])
-            return template[1]
+            await database.add_row(template_[0])
+            return template_[1]
 
         templates_ = [
             await self._create_template_schema(
