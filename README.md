@@ -1,8 +1,9 @@
 # certinize-api-gateway
 
-![main-branch-state](https://img.shields.io/github/checks-status/certinize/certinize-api-gateway/main?style=flat-square)
-
-![repo-size](https://img.shields.io/github/repo-size/certinize/certinize-api-gateway?style=flat-square)
+![repo-size](https://img.shields.io/github/repo-size/certinize/certinize-api-gateway)
+![python-version](https://img.shields.io/badge/python-v3.10-blue)
+![build-check](https://img.shields.io/github/workflow/status/certinize/certinize-api-gateway/Python%20application)
+![license](https://img.shields.io/github/license/certinize/certinize-api-gateway)
 
 ## Tests
 
