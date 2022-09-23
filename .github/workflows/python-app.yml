@@ -37,12 +37,3 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py') --disable=missing-function-docstring,missing-class-docstring,missing-module-docstring
-    - name: Run pyright with reviewdog
-      uses: jordemort/action-pyright@v1.7.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        reporter: github-check
-        lib: true
-        python_version: 3.10
-        typeshed_path: typings/
-        workdir: app/
