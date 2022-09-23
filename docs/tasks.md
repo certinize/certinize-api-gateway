@@ -2,7 +2,7 @@
 
 ## Generate eCertificate
 
-```json
+```properties
 - Method: POST
 - Path: /certificates
 - Summary: Generate an e-Certificate.
@@ -25,9 +25,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 201 Response: The e-Certificate(s) was created.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -53,7 +53,7 @@ Request Body:
 
 HTTP Status Code:
 
-```json
+```sh
 201
 ```
 
@@ -97,9 +97,9 @@ Supported Media Types:
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 201 Response: The e-Certificate template configuration was created.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -135,7 +135,7 @@ Request Body:
 
 HTTP Status Code:
 
-```json
+```sh
 201
 ```
 
@@ -191,9 +191,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 200 Response: The request was fulfilled.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -211,7 +211,7 @@ Request Parameter:
 
 HTTP Status Code:
 
-```json
+```sh
 200
 ```
 
@@ -279,9 +279,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 200 Response: The request was fulfilled.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -293,13 +293,13 @@ X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 
 Request Path:
 
-```json
+```properties
 /configurations
 ```
 
 HTTP Status Code:
 
-```json
+```sh
 200
 ```
 
@@ -373,9 +373,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 200 Response: The request was fulfilled.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -387,13 +387,13 @@ X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 
 Request Path:
 
-```json
+```properties
 /fonts
 ```
 
 HTTP Status Code:
 
-```json
+```sh
 200
 ```
 
@@ -439,9 +439,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 202 Response: E-Certificate issuance request accepted.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -478,7 +478,7 @@ Request Body:
 
 HTTP Status Code:
 
-```json
+```sh
 202
 ```
 
@@ -504,7 +504,7 @@ JSON Response:
 Supported Media Types:
 
 ```properties
-multipart/form-data
+application/json
 ```
 
 **Response**\
@@ -517,9 +517,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 201 Response: The e-Certificate template(s) was uploaded.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -531,14 +531,17 @@ X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
 
 Form Data:
 
-```properties
-Key: image
-Value: C:/path/to/file/template1.png
+```json
+{
+  "image": [
+    "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+  ]
+}
 ```
 
 HTTP Status Code:
 
-```json
+```sh
 201
 ```
 
@@ -593,9 +596,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 200 Response: The request was fulfilled.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -613,7 +616,7 @@ Request Parameter:
 
 HTTP Status Code:
 
-```json
+```sh
 200
 ```
 
@@ -657,9 +660,9 @@ application/json
 **Response Status Codes**\
 Status:
 
-```json
+```sh
 200 Response: The user was successfully authorized.
-400 Response: Bad request syntax or unsuported method.
+400 Response: Bad request syntax or unsupported method.
 ```
 
 **Examples**\
@@ -677,7 +680,7 @@ Request Parameter:
 
 HTTP Status Code:
 
-```json
+```sh
 200
 ```
 
