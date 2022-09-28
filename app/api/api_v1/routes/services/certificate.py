@@ -24,6 +24,7 @@ class CertificateService:  # pylint: disable=R0903
         fonts_schema: type[fonts.Fonts],
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
+        request_id: uuid.UUID,
     ) -> tuple[dict[str, typing.Any], int]:
         template_config = await config_service.get_template_config(
             template_config_id=data.template_config_id,
@@ -33,17 +34,11 @@ class CertificateService:  # pylint: disable=R0903
             database=config_repo,
             engine=engine,
         )
-
+        conf_ = template_config["template_config"]["config_meta"]
         result = await object_processor_.generate_certificate(
             certificate_meta={
-                "recipient_name_meta": {
-                    "position": {"x": 522, "y": 420},
-                    "font_size": 64,
-                },
-                "issuance_date_meta": {
-                    "position": {"x": 310, "y": 514},
-                    "font_size": 48,
-                },
+                "recipient_name_meta": conf_["recipient_name_meta"],
+                "issuance_date_meta": conf_["issuance_date_meta"],
                 "template_url": template_config["template"]["template_url"],
                 "font_url": template_config["font"]["font_url"],
                 "issuance_date": data.issuance_date,
@@ -51,17 +46,16 @@ class CertificateService:  # pylint: disable=R0903
             }
         )
         content = result[0]
-        certificate_id = uuid.uuid1()
 
         await database.add_row(
             collections_schema(
-                certificate_id=certificate_id,
+                certificate_id=request_id,
                 certificate=content,
                 template_config_id=data.template_config_id,
             )
         )
 
-        content["certificate_id"] = certificate_id
+        content["certificate_id"] = request_id
         content["template_config_id"] = data.template_config_id
 
         return content, result[1]

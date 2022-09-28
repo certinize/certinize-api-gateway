@@ -1,4 +1,6 @@
+import asyncio
 import typing
+import uuid
 
 import starlite
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
@@ -51,21 +53,26 @@ class CertificateController(starlite.Controller):
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
     ) -> typing.Any:
-        response = await certificate_service.generate_certificate(
-            collections_schema=certificate_collections_schema,
-            config_repo=config_repo,
-            config_service=config_service_,
-            configs_schema=configs_schema,
-            data=data,
-            database=database,
-            engine=engine,
-            fonts_schema=fonts_schema,
-            object_processor_=object_processor_,
-            templates_schema=templates_schema,
+        request_id = uuid.uuid1()
+
+        asyncio.create_task(
+            certificate_service.generate_certificate(
+                collections_schema=certificate_collections_schema,
+                config_repo=config_repo,
+                config_service=config_service_,
+                configs_schema=configs_schema,
+                data=data,
+                database=database,
+                engine=engine,
+                fonts_schema=fonts_schema,
+                object_processor_=object_processor_,
+                templates_schema=templates_schema,
+                request_id=request_id,
+            )
         )
 
         return starlite.Response(
-            status_code=response[1],
-            content=response[0],
+            status_code=202,
+            content={"request_id": request_id},
             media_type="application/json",
         )
