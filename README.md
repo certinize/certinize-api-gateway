@@ -1,11 +1,14 @@
 # certinize-api-gateway
 
 ![repo-size](https://img.shields.io/github/repo-size/certinize/certinize-api-gateway)
+![lines-of-code](https://img.shields.io/tokei/lines/github.com/certinize/certinize-api-gateway)
 ![python-version](https://img.shields.io/badge/python-v3.10-blue)
 ![build-check](https://img.shields.io/github/workflow/status/certinize/certinize-api-gateway/Python%20application)
 ![license](https://img.shields.io/github/license/certinize/certinize-api-gateway)
 
-## Tests
+## Test
+
+The mock server is available on Postman:
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://elements.getpostman.com/redirect?entityId=14719803-9b5f6f7d-f215-47d2-8ac5-8c449a226bfe&entityType=collection&workspaceId=4cb1727d-8f73-4063-8bc1-af86b4222d4e)
 
