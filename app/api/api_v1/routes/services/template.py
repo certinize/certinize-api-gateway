@@ -12,7 +12,9 @@ from app.services import object_processor
 CERTINIZE_BUCKET = "certinize-bucket"
 UPLOAD_OPTION = {"folder": CERTINIZE_BUCKET}
 
-ImageKitStoreRes = dict[str, typing.Any] | dict[str, list[dict[str, typing.Any]]]
+ImageKitStoreRes: typing.TypeAlias = (
+    dict[str, typing.Any] | dict[str, list[dict[str, typing.Any]]]
+)
 
 
 class TemplateService:
