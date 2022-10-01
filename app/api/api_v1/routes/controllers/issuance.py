@@ -1,6 +1,3 @@
-import typing
-
-# import pydantic
 import starlite
 
 from app.api.api_v1.dependencies import associated_services
@@ -27,7 +24,7 @@ class IssuanceController(starlite.Controller):
         data: issuance.IssuanceRequest,
         issuance_service: service.IssuanceService,
         blockchain_api_: blockchain_api.BlockchainInterface,
-    ) -> starlite.Response[typing.Any | None]:
+    ) -> starlite.Response[dict[str, str]]:
         result = await issuance_service.transfer_certificate(data, blockchain_api_)
 
         return starlite.Response(

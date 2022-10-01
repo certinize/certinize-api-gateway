@@ -11,6 +11,8 @@ from app.core import abc
 from app.models.domain import configuration
 from app.models.schemas import configurations, fonts, templates
 
+ListTemplateConfig: typing.TypeAlias = dict[str, list[dict[str, dict[str, typing.Any]]]]
+
 
 class ConfigurationController(starlite.Controller):
     path = "/configurations"
@@ -49,7 +51,7 @@ class ConfigurationController(starlite.Controller):
         fonts_schema: type[fonts.Fonts],
         template_config_id: pydantic.UUID1,
         templates_schema: type[templates.Templates],
-    ) -> typing.Any:
+    ) -> dict[str, typing.Any]:
         return await configuration_service.get_template_config(
             configs_schema=configs_schema,
             database=database,
@@ -68,7 +70,7 @@ class ConfigurationController(starlite.Controller):
         engine: sqlalchemy_asyncio.AsyncEngine,
         fonts_schema: type[fonts.Fonts],
         templates_schema: type[templates.Templates],
-    ) -> typing.Any:
+    ) -> ListTemplateConfig:
         return await configuration_service.list_template_config(
             configs_schema=configs_schema,
             database=database,

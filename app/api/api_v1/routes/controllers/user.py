@@ -41,3 +41,4 @@ class UserController(starlite.Controller):
     @starlite.post()
     async def verify_solana_user(self, solana_url: user_domain.UnverifiedUser) -> None:
         _ = solana_url
+        return

@@ -1,7 +1,7 @@
 import asyncio
-import typing
 import uuid
 
+import pydantic
 import starlite
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
@@ -52,7 +52,7 @@ class CertificateController(starlite.Controller):
         fonts_schema: type[fonts.Fonts],
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
-    ) -> typing.Any:
+    ) -> starlite.Response[dict[str, pydantic.UUID1]]:
         request_id = uuid.uuid1()
 
         asyncio.create_task(

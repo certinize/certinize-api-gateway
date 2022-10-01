@@ -1,9 +1,13 @@
+import typing
+
 import starlite
 
 from app.api.api_v1.dependencies import database as database_deps
 from app.api.api_v1.routes.services import font as service
 from app.db import crud
 from app.models.schemas import fonts
+
+AllFonts: typing.TypeAlias = dict[str, list[dict[str, str]]]
 
 
 class FontController(starlite.Controller):
@@ -21,7 +25,7 @@ class FontController(starlite.Controller):
         database: crud.DatabaseImpl,
         font_schema: type[fonts.Fonts],
         fonts_service: service.FontService,
-    ) -> dict[str, list[dict[str, str]]]:
+    ) -> AllFonts:
         return await fonts_service.get_all_fonts(
             database=database, font_schema=font_schema
         )

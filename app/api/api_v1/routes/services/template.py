@@ -83,7 +83,7 @@ class TemplateService:
         database: crud.DatabaseImpl,
         object_processor_: object_processor.ObjectProcessor,
         template_schema: type[templates.Templates],
-    ):
+    ) -> ImageKitStoreRes:
         image_src = data.image
         requests = [
             self._add_certificate_template(

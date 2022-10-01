@@ -31,7 +31,7 @@ class TemplateController(starlite.Controller):
         object_processor_: object_processor.ObjectProcessor,
         template_service: template_svcs.TemplateService,
         templates_schema: type[templates.Templates],
-    ) -> typing.Any:
+    ) -> template_svcs.ImageKitStoreRes:
         return await template_service.add_certificate_template(
             data=data,
             database=database,
@@ -45,7 +45,7 @@ class TemplateController(starlite.Controller):
         database: crud.DatabaseImpl,
         template_service: template_svcs.TemplateService,
         templates_schema: type[templates.Templates],
-    ) -> typing.Any:
+    ) -> dict[str, list[typing.Any]]:
         result = await template_service.list_certificate_templates(
             database=database, templates_schema=templates_schema
         )
