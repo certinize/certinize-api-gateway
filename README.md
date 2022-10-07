@@ -10,7 +10,7 @@
 
 The mock server is available on Postman:
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://elements.getpostman.com/redirect?entityId=14719803-9b5f6f7d-f215-47d2-8ac5-8c449a226bfe&entityType=collection&workspaceId=4cb1727d-8f73-4063-8bc1-af86b4222d4e)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/14719803-c7929fed-c243-4a04-8076-53d35aaa8468?action=collection%2Ffork&collection-url=entityId%3D14719803-c7929fed-c243-4a04-8076-53d35aaa8468%26entityType%3Dcollection%26workspaceId%3D4cb1727d-8f73-4063-8bc1-af86b4222d4e)
 
 ## Installation
 
