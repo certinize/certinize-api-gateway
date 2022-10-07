@@ -13,7 +13,7 @@ class IssuanceController(starlite.Controller):
     dependencies: dict[str, "starlite.Provide"] | None = {
         "engine": starlite.Provide(database_deps.get_db_engine),
         "issuance_service": starlite.Provide(service.IssuanceService),
-        "blockchain_api": starlite.Provide(
+        "blockchain_api_": starlite.Provide(
             associated_services.get_blockchain_api_client
         ),
     }

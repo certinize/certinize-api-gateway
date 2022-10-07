@@ -76,3 +76,21 @@ class CertificateController(starlite.Controller):
             content={"request_id": request_id},
             media_type="application/json",
         )
+
+    @starlite.get("/{request_id:uuid}")
+    async def get_certificate(
+        self,
+        request_id: uuid.UUID,
+        database: crud.DatabaseImpl,
+        certificate_service: cert_service.CertificateService,
+        certificate_collections_schema: type[certificates.Certificates],
+    ) -> starlite.Response[dict[str, str]]:
+        result = await certificate_service.get_certificate(
+            request_id, certificate_collections_schema, database
+        )
+
+        return starlite.Response(
+            status_code=result.get("code") or 200,
+            content=result,
+            media_type="application/json",
+        )

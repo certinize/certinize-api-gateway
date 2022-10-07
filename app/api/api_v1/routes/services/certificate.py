@@ -1,6 +1,7 @@
 import typing
 import uuid
 
+from sqlalchemy import exc
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
 from app.api.api_v1.routes.services import configuration
@@ -78,3 +79,20 @@ class CertificateService:  # pylint: disable=R0903
             template_config=template_config,
             request_id=request_id,
         )
+
+    async def get_certificate(
+        self,
+        certificate_id: uuid.UUID,
+        collections_schema: type[certificates.Certificates],
+        database: crud.DatabaseImpl,
+    ) -> dict[str, typing.Any]:
+        result = await database.select_row(
+            collections_schema(certificate_id=certificate_id),
+            "certificate_id",
+            str(certificate_id),
+        )
+
+        try:
+            return result.one().dict()
+        except exc.NoResultFound as err:
+            return {"detail": str(err), "code": 404}
