@@ -91,7 +91,10 @@ python-versions = ">=3.7.2"
 
 [package.dependencies]
 lazy-object-proxy = ">=1.4.0"
-wrapt = {version = ">=1.11,<2", markers = "python_version < \"3.11\""}
+wrapt = [
+    {version = ">=1.11,<2", markers = "python_version < \"3.11\""},
+    {version = ">=1.14,<2", markers = "python_version >= \"3.11\""},
+]
 
 [[package]]
 name = "async-timeout"
@@ -146,11 +149,11 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "black"
-version = "22.8.0"
+version = "22.10.0"
 description = "The uncompromising code formatter."
 category = "dev"
 optional = false
-python-versions = ">=3.6.2"
+python-versions = ">=3.7"
 
 [package.dependencies]
 click = ">=8.0.0"
@@ -175,7 +178,7 @@ python-versions = "~=3.5"
 
 [[package]]
 name = "certifi"
-version = "2022.9.14"
+version = "2022.9.24"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -293,11 +296,11 @@ idna = ">=2.0.0"
 
 [[package]]
 name = "faker"
-version = "14.2.0"
+version = "15.0.0"
 description = "Faker is a Python package that generates fake data for you."
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 python-dateutil = ">=2.4"
@@ -629,7 +632,7 @@ email = ["email-validator (>=1.0.3)"]
 
 [[package]]
 name = "pydantic-factories"
-version = "1.6.2"
+version = "1.9.0"
 description = "Mock data generation for pydantic based models"
 category = "main"
 optional = false
@@ -910,7 +913,7 @@ sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
 name = "sqlalchemy2-stubs"
-version = "0.0.2a27"
+version = "0.0.2a28"
 description = "Typing Stubs for SQLAlchemy 1.4"
 category = "main"
 optional = false
@@ -934,7 +937,7 @@ sqlalchemy2-stubs = "*"
 
 [[package]]
 name = "starlette"
-version = "0.20.4"
+version = "0.21.0"
 description = "The little ASGI library that shines."
 category = "main"
 optional = false
@@ -944,11 +947,11 @@ python-versions = ">=3.7"
 anyio = ">=3.4.0,<5"
 
 [package.extras]
-full = ["itsdangerous", "jinja2", "python-multipart", "pyyaml", "requests"]
+full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
 
 [[package]]
 name = "starlite"
-version = "1.20.0"
+version = "1.26.0"
 description = "Light-weight and flexible ASGI API Framework"
 category = "main"
 optional = false
@@ -960,20 +963,21 @@ pydantic = "*"
 pydantic-factories = "*"
 pydantic-openapi-schema = "*"
 pyyaml = "*"
-starlette = "*"
-starlite-multipart = "*"
+starlette = ">=0.21"
+starlite-multipart = ">=1.2.0"
 typing-extensions = "*"
 
 [package.extras]
 brotli = ["brotli"]
-full = ["brotli", "cryptography", "picologging", "requests"]
+full = ["brotli", "cryptography", "httpx (>=0.22)", "picologging", "structlog"]
+testing = ["cryptography", "httpx (>=0.22)"]
 cryptography = ["cryptography"]
 picologging = ["picologging"]
-testing = ["requests"]
+structlog = ["structlog"]
 
 [[package]]
 name = "starlite-multipart"
-version = "1.1.0"
+version = "1.2.0"
 description = "Toolkit for working with multipart/formdata messages."
 category = "main"
 optional = false
@@ -992,7 +996,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "tomlkit"
-version = "0.11.4"
+version = "0.11.5"
 description = "Style preserving TOML library"
 category = "dev"
 optional = false
@@ -1008,7 +1012,7 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "4.3.0"
+version = "4.4.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
@@ -1120,8 +1124,8 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.10.4"
-content-hash = "b2f514bdbf0c17d4a0638e74b902c33b66299f37c89ed2c4fe588be43b09a6da"
+python-versions = "^3.10.2"
+content-hash = "eec40c4e5a786e85e3603cc04051799b71ecd305e64aee162bbd2d0e7a5f9710"
 
 [metadata.files]
 aiohttp = []
