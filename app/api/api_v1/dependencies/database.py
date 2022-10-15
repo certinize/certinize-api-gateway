@@ -28,6 +28,10 @@ def get_solana_users_schema() -> type[users.SolanaUsers]:
     return users.SolanaUsers
 
 
+def get_vequest_schema() -> type[users.VerificationRequests]:
+    return users.VerificationRequests
+
+
 def get_certificate_configs_schema():
     return configurations.Configurations
 

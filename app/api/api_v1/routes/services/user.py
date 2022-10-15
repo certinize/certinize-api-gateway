@@ -7,6 +7,7 @@ from sqlalchemy import exc
 
 from app.core import exceptions
 from app.db import crud
+from app.models.domain import user as user_domain
 from app.models.schemas import users
 
 
@@ -69,3 +70,22 @@ class UserService:  # pylint: disable=R0903
             await database.add_row(schema)
 
             return result
+
+    async def verify_user(
+        self,
+        data: user_domain.UnverifiedUser,
+        database: crud.DatabaseImpl,
+        vequest_schema: type[users.VerificationRequests],
+    ) -> users.VerificationRequests:
+        schema = vequest_schema(
+            pubkey=data.pubkey,
+            info_link=data.info_link,
+            official_website=data.official_website,
+            official_email=data.official_email,
+            organization_id=data.organization_id,
+        )
+        result = schema.copy()
+
+        await database.add_row(schema)
+
+        return result
