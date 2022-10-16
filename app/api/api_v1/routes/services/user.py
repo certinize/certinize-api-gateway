@@ -86,6 +86,9 @@ class UserService:  # pylint: disable=R0903
         )
         result = schema.copy()
 
-        await database.add_row(schema)
+        try:
+            await database.add_row(schema)
+        except exc.IntegrityError as err:
+            raise starlite.ValidationException(str(err), status_code=409) from err
 
         return result
