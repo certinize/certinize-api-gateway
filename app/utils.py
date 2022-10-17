@@ -4,6 +4,8 @@ from concurrent import futures
 
 import aiohttp
 import orjson
+from nacl.bindings import crypto_core
+from solana import publickey
 
 
 def exec_async(
@@ -47,3 +49,26 @@ def create_http_client(
             json_
         ).decode(),
     )
+
+
+def pubkey_on_curve(value: str):
+    """Validate that the issuer's public key is on the curve.
+
+    Args:
+        value (str): The issuer's public key.
+
+    Raises:
+        ValueError: If the public key is not on the curve.
+
+    Returns:
+        str: The issuer's public key.
+    """
+    try:
+        crypto_core.crypto_core_ed25519_is_valid_point(
+            bytes(publickey.PublicKey(value))
+        )
+    except ValueError as val_err:
+        val_err.args = ("the point must be on the curve",)
+        raise val_err from val_err
+
+    return value

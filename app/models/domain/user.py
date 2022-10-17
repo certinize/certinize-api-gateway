@@ -2,9 +2,8 @@ import base64
 import binascii
 
 import pydantic
-from nacl.bindings import crypto_core
-from solana import publickey
 
+from app import utils
 from app.models.domain import app_model
 
 
@@ -23,15 +22,7 @@ class UnverifiedUser(app_model.AppModel):
     @pydantic.validator("pubkey")
     @classmethod
     def recipient_pubkey_on_curve(cls, value: str):
-        try:
-            crypto_core.crypto_core_ed25519_is_valid_point(
-                bytes(publickey.PublicKey(value))
-            )
-        except ValueError as val_err:
-            val_err.args = ("the point must be on the curve",)
-            raise val_err from val_err
-
-        return value
+        return utils.pubkey_on_curve(value)
 
     @pydantic.validator("organization_id")
     @classmethod

@@ -3,9 +3,8 @@ import re
 
 import pydantic
 import solders.keypair as solders_keypair  # type: ignore # pylint: disable=E0401
-from nacl.bindings import crypto_core
-from solana import publickey
 
+from app import utils
 from app.models.domain import app_model
 
 PANIC_EXC = re.compile(r"\((.*?)\)")
@@ -36,15 +35,7 @@ class IssuerMeta(app_model.AppModel):
     @pydantic.validator("issuer_pubkey")
     @classmethod
     def recipient_pubkey_on_curve(cls, value: str):
-        try:
-            crypto_core.crypto_core_ed25519_is_valid_point(
-                bytes(publickey.PublicKey(value))
-            )
-        except ValueError as val_err:
-            val_err.args = ("the point must be on the curve",)
-            raise val_err from val_err
-
-        return value
+        return utils.pubkey_on_curve(value)
 
     @pydantic.validator("issuer_pvtket")
     @classmethod
@@ -66,15 +57,7 @@ class RecipientMeta(app_model.AppModel):
     @pydantic.validator("recipient_pubkey")
     @classmethod
     def issuer_pubkey_on_curve(cls, value: str):
-        try:
-            crypto_core.crypto_core_ed25519_is_valid_point(
-                bytes(publickey.PublicKey(value))
-            )
-        except ValueError as val_err:
-            val_err.args = ("the point must be on the curve",)
-            raise val_err from val_err
-
-        return value
+        return utils.pubkey_on_curve(value)
 
 
 class IssuanceRequest(app_model.AppModel):
