@@ -66,7 +66,7 @@ class UserService:  # pylint: disable=R0903
             assert isinstance(verified, users.VerificationRequests)
 
             user["is_verified"] = verified.approved
-        except exc.NoResultFound as err:
+        except exc.NoResultFound:
             user["is_verified"] = False
 
         try:
