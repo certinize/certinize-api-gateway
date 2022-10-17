@@ -27,7 +27,7 @@ class UserController(starlite.Controller):
             title="Auth Solana User",
             description="Authenticate and authorize solana user and provide API key",
         ),
-    ) -> users.SolanaUsers | starlite.ValidationException:
+    ) -> dict[str, str] | starlite.ValidationException:
         return await user_service_.auth(public_key, solana_user_schema, database)
 
     @starlite.post()

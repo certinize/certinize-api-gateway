@@ -758,9 +758,12 @@ JSON Response:
 
 ```json
 {
+  "name": "Juan Cruz",
+  "website": "https://example.com",
   "wallet_address": "9ZNTfG4NyQgxy2SWjSiQoUyBPEvXT2xo7fKc5hPYYJ7b",
   "api_key": "e8e5725b-7f33-5bad-9438-e63bdbd2efea",
-  "user_id": "5ca167d6-1654-11ed-908f-00155d3ecff4"
+  "user_id": "5ca167d6-1654-11ed-908f-00155d3ecff4",
+  "is_verified": true
 }
 ```
 
@@ -769,7 +772,7 @@ JSON Response:
 ```properties
 - Method: POST
 - Path: /users
-- Summary: Verify user.
+- Summary: Request for user to be verified.
 ```
 
 **Request**\
