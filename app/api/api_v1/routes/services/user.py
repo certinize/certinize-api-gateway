@@ -89,6 +89,8 @@ class UserService:  # pylint: disable=R0903
         try:
             await database.add_row(schema)
         except exc.IntegrityError as err:
-            raise starlite.ValidationException(str(err), status_code=409) from err
+            raise starlite.ValidationException(
+                f"{data.pubkey} already sent a verification request", status_code=409
+            ) from err
 
         return result
