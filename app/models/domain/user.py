@@ -39,6 +39,6 @@ class UnverifiedUser(app_model.AppModel):
         try:
             base64.b64decode(value)
         except binascii.Error as error:
-            raise ValueError(f"image is not a valid base64 string") from error
+            raise ValueError("image is not a valid base64 string") from error
 
         return value
