@@ -1,6 +1,8 @@
-# Certificates
+# Common
 
-## Generate eCertificate
+## Certificates
+
+### Generate eCertificate
 
 ```properties
 - Method: POST
@@ -66,11 +68,79 @@ JSON Response:
       "certificate_url": "https://...",
       "file_id": "1k-UTikDkXmQomW28VYpWhQDgu2ced0uU",
       "recipient_name": "Juan Cruz",
-      "issuance_date": "2022-01-02"
+      "issuance_date": "2022-01-30"
     }
   ],
   "certificate_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
   "template_config_id": "e46286c6-2136-11ed-b1e8-00155d886c22"
+}
+```
+
+### Get Certificate
+
+```properties
+- Method: GET
+- Path: /certificates/{certificate_id:uuid}
+- Summary: Get a specific certificate.
+```
+
+**Request**\
+Path Parameters:
+
+```properties
+certificate_id:uuid
+```
+
+**Response**\
+Supported Media Types:
+
+```properties
+application/json
+```
+
+**Response Status Codes**\
+Status:
+
+```sh
+200 Response: The request was fulfilled.
+400 Response: Bad request syntax or unsupported method.
+```
+
+**Examples**\
+Request Header:
+
+```properties
+X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
+```
+
+Request Parameter:
+
+```sh
+/configurations/36b91a30-16fb-11ed-8a9e-00155d3ecff4
+```
+
+HTTP Status Code:
+
+```sh
+200
+```
+
+JSON Response:
+
+```json
+{
+  "certificate_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
+  "template_config_id": "e46286c6-2136-11ed-b1e8-00155d886c22",
+  "certificate": {
+      "certificate": [
+          {
+              "certificate_url": "https://...",
+              "file_id": "1k-UTikDkXmQomW28VYpWhQDgu2ced0uU",
+              "recipient_name": "Juan Cruz",
+              "issuance_date": "2022-01-30"
+          }
+      ]
+  }
 }
 ```
 
@@ -635,12 +705,12 @@ JSON Response:
 
 ## Users
 
-### Auth Solana User
+### Auth User
 
 ```properties
 - Method: GET
 - Path: /users
-- Summary: Authorize Solana user.
+- Summary: Authorize and authenticate user.
 ```
 
 **Request**\
@@ -691,5 +761,74 @@ JSON Response:
   "wallet_address": "9ZNTfG4NyQgxy2SWjSiQoUyBPEvXT2xo7fKc5hPYYJ7b",
   "api_key": "e8e5725b-7f33-5bad-9438-e63bdbd2efea",
   "user_id": "5ca167d6-1654-11ed-908f-00155d3ecff4"
+}
+```
+
+### Verify User
+
+```properties
+- Method: POST
+- Path: /users
+- Summary: Verify user.
+```
+
+**Request**\
+Supported Media Types:
+
+```properties
+application/json
+```
+
+**Response**\
+Supported Media Types:
+
+```properties
+application/json
+```
+
+**Response Status Codes**\
+Status:
+
+```sh
+201 Response: The verification request was delivered.
+400 Response: Bad request syntax or unsupported method.
+```
+
+**Examples**\
+Request Header:
+
+```properties
+X-API-Key: 0ef3c43d-a3ac-52a1-938b-57cff7e60282
+```
+
+Request Body:
+
+```json
+{
+  "pubkey": "B7KNk9UWUGjg89NrmuCvuzNc9dNrmQYCQtcQB525a8HU",
+  "info_link": "https://trends.google.com/trends/explore?q=mseuf&geo=PH",
+  "official_website": "https://mseuf.edu.ph/",
+  "official_email": "ictd@mseuf.edu.ph",
+  "organization_id": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=",
+  "approved": false
+}
+```
+
+HTTP Status Code:
+
+```sh
+201
+```
+
+JSON Response:
+
+```json
+{
+  "pubkey": "B7KNk9UWUGjg89NrmuCvuzNc9dNrmQYCQtcQB525a8HU",
+  "info_link": "https://trends.google.com/trends/explore?q=mseuf&geo=PH",
+  "official_website": "https://mseuf.edu.ph/",
+  "official_email": "ictd@mseuf.edu.ph",
+  "organization_id": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=",
+  "approved": false
 }
 ```
