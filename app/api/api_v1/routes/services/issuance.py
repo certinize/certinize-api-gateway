@@ -7,16 +7,14 @@ from app.services import blockchain_api
 
 class IssuanceService:
     @staticmethod
+    async def get_unsigned_msg(
+        public_key: str, blockchain_api_: blockchain_api.BlockchainInterface
+    ) -> dict[str, str]:
+        return await blockchain_api_.get_unsigned_msg(public_key)
+
+    @staticmethod
     async def transfer_certificate(
         data: issuance.IssuanceRequest,
         blockchain_api_: blockchain_api.BlockchainInterface,
     ) -> tuple[typing.Any, int]:
-        issue_req = data.with_fields(callback_endpoint=(str, ...))
-
-        return await blockchain_api_.issue_certificate(
-            issue_req(
-                callback_endpoint="http://localhost:8000/api/v1/issuances/callback",
-                issuer_meta=data.issuer_meta,
-                recipient_meta=data.recipient_meta,
-            )
-        )
+        return await blockchain_api_.issue_certificate(data)

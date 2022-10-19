@@ -18,6 +18,15 @@ class IssuanceController(starlite.Controller):
         ),
     }
 
+    @starlite.get(path="/{public_key:str}")
+    async def get_unsigned_msg(
+        self,
+        public_key: str,
+        issuance_service: service.IssuanceService,
+        blockchain_api_: blockchain_api.BlockchainInterface,
+    ) -> dict[str, str]:
+        return await issuance_service.get_unsigned_msg(public_key, blockchain_api_)
+
     @starlite.post()
     async def transfer_certificate(
         self,

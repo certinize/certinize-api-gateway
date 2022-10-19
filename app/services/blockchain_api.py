@@ -33,6 +33,11 @@ class BlockchainInterface:  # pylint: disable=too-few-public-methods
         """Initialize the client session."""
         self.session = utils.create_http_client(self.headers, self.endpoint_url)
 
+    async def get_unsigned_msg(self, public_key: str):
+        """Get an unsigned message for a public key."""
+        async with self.session.get(url=f"{ISSUANCES}/{public_key}") as response:
+            return await response.json()
+
     async def issue_certificate(
         self, issuance_request: typing.Any
     ) -> tuple[typing.Any, int]:

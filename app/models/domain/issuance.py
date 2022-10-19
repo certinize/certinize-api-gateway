@@ -1,33 +1,12 @@
-import enum
-import re
-
 import pydantic
-import solders.keypair as solders_keypair  # type: ignore # pylint: disable=E0401
 
 from app import utils
 from app.models.domain import app_model
-
-PANIC_EXC = re.compile(r"\((.*?)\)")
-INVALID_CHAR = re.compile(r"(?<=: ).*(?=\s{)")
-
-
-class RustError(enum.Enum):
-    INVALIDCHARACTER = "found unsupported characters"
-
-
-def raise_rust_error(error: BaseException) -> None:
-    try:
-        raise ValueError(PANIC_EXC.findall(str(error))[1]) from error
-    except IndexError:
-        raise ValueError(
-            RustError[INVALID_CHAR.findall(str(error))[0].upper()].value
-        ) from error
 
 
 class IssuerMeta(app_model.AppModel):
     issuer_id: pydantic.UUID1
     issuer_pubkey: str
-    issuer_pvtket: str
     issuer_name: str | None = None
     issuer_email: pydantic.EmailStr | None = None
     issuer_website: pydantic.HttpUrl | None = None
@@ -36,16 +15,6 @@ class IssuerMeta(app_model.AppModel):
     @classmethod
     def recipient_pubkey_on_curve(cls, value: str):
         return utils.pubkey_on_curve(value)
-
-    @pydantic.validator("issuer_pvtket")
-    @classmethod
-    def recipient_pvtkey_on_curve(cls, value: str):
-        try:
-            solders_keypair.Keypair().from_base58_string(value)
-        except BaseException as base_err:  # pylint: disable=W0703
-            raise_rust_error(base_err)
-
-        return value
 
 
 class RecipientMeta(app_model.AppModel):
@@ -61,5 +30,12 @@ class RecipientMeta(app_model.AppModel):
 
 
 class IssuanceRequest(app_model.AppModel):
+    request_id: pydantic.UUID1
+    signature: str
     issuer_meta: IssuerMeta
     recipient_meta: list[RecipientMeta]
+
+    @pydantic.validator("signature")
+    @classmethod
+    def signature_on_curve(cls, value: str):
+        return utils.pvtkey_on_curve(value)
