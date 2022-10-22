@@ -5,17 +5,17 @@ import pydantic
 
 
 class TemplateUpload(pydantic.BaseModel):
-    image: list[str]
+    templates: list[str]
 
-    @pydantic.validator("image")
+    @pydantic.validator("templates")
     @classmethod
-    def image_is_valid_base64(cls, value: list[str]):
+    def templates_are_valid_base64(cls, value: list[str]):
         for index, image in enumerate(value):
             try:
-                base64.b64decode(image)
+                base64.b64decode(image, validate=True)
             except binascii.Error as error:
                 raise ValueError(
-                    f"image at index {index} is not a valid base64 string"
+                    f"image at index {index} is not a valid base64 string; {error}"
                 ) from error
 
         return value
