@@ -7,3 +7,4 @@ class Fonts(sqlmodel.SQLModel, table=True):
         default=None, primary_key=True
     )
     font_url: pydantic.HttpUrl
+    font_name: str
