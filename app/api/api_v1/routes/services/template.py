@@ -86,7 +86,7 @@ class TemplateService:
         object_processor_: object_processor.ObjectProcessor,
         template_schema: type[templates.Templates],
     ) -> ImageKitStoreRes:
-        image_src = data.image
+        image_src = data.templates
         requests = [
             self._add_certificate_template(
                 object_processor_=object_processor_, ecert=image

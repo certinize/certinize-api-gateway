@@ -1,5 +1,6 @@
 import typing
 
+import pydantic
 import starlite
 
 from app.api.api_v1.dependencies import database as database_deps
@@ -28,4 +29,16 @@ class FontController(starlite.Controller):
     ) -> AllFonts:
         return await fonts_service.get_all_fonts(
             database=database, font_schema=font_schema
+        )
+
+    @starlite.get(path="/{font_id:uuid}")
+    async def get_font(
+        self,
+        database: crud.DatabaseImpl,
+        font_id: pydantic.UUID1,
+        font_schema: type[fonts.Fonts],
+        fonts_service: service.FontService,
+    ) -> dict[str, typing.Any]:
+        return await fonts_service.get_font(
+            database=database, font_id=font_id, font_schema=font_schema
         )

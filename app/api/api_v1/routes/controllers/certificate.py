@@ -12,7 +12,7 @@ from app.api.api_v1.routes.services import configuration as config_service
 from app.db import crud
 from app.db.repositories import configurations as config_repo_
 from app.models.domain import certificate
-from app.models.schemas import certificates, configurations, fonts, templates
+from app.models.schemas import certificates, configurations, templates
 from app.services import object_processor
 
 
@@ -31,7 +31,6 @@ class CertificateController(starlite.Controller):
             database_deps.get_certificate_configs_schema
         ),
         "database": starlite.Provide(database_deps.get_db_impl),
-        "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
         "object_processor_": starlite.Provide(
             associated_services.get_object_processor_client
         ),
@@ -49,7 +48,6 @@ class CertificateController(starlite.Controller):
         data: certificate.CertificateTemplateMeta,
         database: crud.DatabaseImpl,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        fonts_schema: type[fonts.Fonts],
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
     ) -> starlite.Response[dict[str, pydantic.UUID1]]:
@@ -64,7 +62,6 @@ class CertificateController(starlite.Controller):
                 data=data,
                 database=database,
                 engine=engine,
-                fonts_schema=fonts_schema,
                 object_processor_=object_processor_,
                 templates_schema=templates_schema,
                 request_id=request_id,

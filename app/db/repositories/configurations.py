@@ -107,12 +107,10 @@ class ConfigurationsRepository(abc.Database):
         attribute = ""
         query = ""
 
-        # We only need three table models for the join: the configurations schema, the
-        # fonts schema, and the templates schema. We don't have to check for the
-        # configurations schema as the assertions for the other two tables should do
-        # that.
-        assert isinstance(table_models[1], type(fonts.Fonts))
-        assert isinstance(table_models[2], type(templates.Templates))
+        # We only need three table models for the join: the configurations schema and
+        # the templates schema. We don't have to check for the configurations schema as
+        # the assertions for the templates schema should do that.
+        assert isinstance(table_models[1], type(templates.Templates))
 
         # Dynamically get the str repr of the first "id" attrib (attribute) and its
         # value (query), so that we don't have to ask the user for them.
@@ -126,7 +124,6 @@ class ConfigurationsRepository(abc.Database):
             return await async_session.exec(
                 sqlmodel.select(*table_models)  # type: ignore
                 .join(table_models[1])
-                .join(table_models[2])
                 .where(getattr(type(main_model), attribute) == query)
             )
 

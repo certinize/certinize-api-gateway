@@ -22,7 +22,6 @@ class ConfigurationService:
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
     ) -> dict[str, typing.Any]:
-        font_id = data.font_id
         template_id = data.template_id
         config_meta = data.dict()
         template_config_id = uuid.uuid1()
@@ -33,10 +32,8 @@ class ConfigurationService:
 
         # SQLAlchemy rejects objects, so convert them to their string reprs.
         config_meta["template_id"] = str(config_meta["template_id"])
-        config_meta["font_id"] = str(config_meta["font_id"])
 
         # Delete unsued fields
-        del config_meta["font_id"]
         del config_meta["template_config_name"]
         del config_meta["template_id"]
 
@@ -56,7 +53,6 @@ class ConfigurationService:
                     template_config_id=template_config_id,
                     config_meta=config_meta,
                     template_config_name=template_config_name,
-                    font_id=font_id,
                     template_id=template_id,
                 ),
             )
@@ -68,8 +64,7 @@ class ConfigurationService:
                     "recipient_name_meta": config_meta["recipient_name_meta"],
                     "issuance_date_meta": config_meta["issuance_date_meta"],
                 },
-                "template_id": font_id,
-                "font_id": template_id,
+                "template_id": template_id,
             }
 
     async def get_template_config(  # pylint: disable=R0913
@@ -77,7 +72,6 @@ class ConfigurationService:
         configs_schema: type[configurations.Configurations],
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        fonts_schema: type[fonts.Fonts],
         template_config_id: pydantic.UUID1,
         templates_schema: type[templates.Templates],
     ) -> dict[str, typing.Any]:
@@ -88,7 +82,6 @@ class ConfigurationService:
                     template_config_id=template_config_id, template_config_name=""
                 ),
                 configs_schema,
-                fonts_schema,
                 templates_schema,
             )
             assert results is not None
@@ -97,7 +90,6 @@ class ConfigurationService:
             return {
                 "template_config": results_["Configurations"].dict(),
                 "template": results_["Templates"].dict(),
-                "font": results_["Fonts"].dict(),
             }
         except exc.NoResultFound as err:
             raise starlite.NotFoundException(str(err)) from err

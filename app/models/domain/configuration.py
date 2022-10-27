@@ -1,5 +1,7 @@
 import uuid
 
+import pydantic
+
 from app.models.domain import app_model
 
 
@@ -11,6 +13,7 @@ class Position(app_model.AppModel):
 class TextPostionMeta(app_model.AppModel):
     position: Position
     font_size: int
+    font_url: pydantic.HttpUrl
 
 
 class TemplateConfiguration(app_model.AppModel):
@@ -18,4 +21,3 @@ class TemplateConfiguration(app_model.AppModel):
     issuance_date_meta: TextPostionMeta
     template_id: uuid.UUID
     template_config_name: str
-    font_id: uuid.UUID

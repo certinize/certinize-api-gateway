@@ -24,7 +24,6 @@ class ConfigurationController(starlite.Controller):
         ),
         "configuration_service": starlite.Provide(service.ConfigurationService),
         "database": starlite.Provide(database_deps.get_configurations_repository),
-        "fonts_schema": starlite.Provide(database_deps.get_fonts_schema),
         "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }
 
@@ -48,7 +47,6 @@ class ConfigurationController(starlite.Controller):
         configuration_service: service.ConfigurationService,
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        fonts_schema: type[fonts.Fonts],
         template_config_id: pydantic.UUID1,
         templates_schema: type[templates.Templates],
     ) -> dict[str, typing.Any]:
@@ -56,7 +54,6 @@ class ConfigurationController(starlite.Controller):
             configs_schema=configs_schema,
             database=database,
             engine=engine,
-            fonts_schema=fonts_schema,
             template_config_id=template_config_id,
             templates_schema=templates_schema,
         )

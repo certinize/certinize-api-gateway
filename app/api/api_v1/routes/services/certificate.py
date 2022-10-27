@@ -8,7 +8,7 @@ from app.api.api_v1.routes.services import configuration
 from app.db import crud
 from app.db.repositories import configurations as config_repo_
 from app.models.domain import certificate
-from app.models.schemas import certificates, configurations, fonts, templates
+from app.models.schemas import certificates, configurations, templates
 from app.services import object_processor
 
 
@@ -28,7 +28,6 @@ class CertificateService:  # pylint: disable=R0903
                 "recipient_name_meta": conf_["recipient_name_meta"],
                 "issuance_date_meta": conf_["issuance_date_meta"],
                 "template_url": template_config["template"]["template_url"],
-                "font_url": template_config["font"]["font_url"],
                 "issuance_date": data.issuance_date,
                 "recipients": data.recipients,
             }
@@ -57,7 +56,6 @@ class CertificateService:  # pylint: disable=R0903
         data: certificate.CertificateTemplateMeta,
         database: crud.DatabaseImpl,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        fonts_schema: type[fonts.Fonts],
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
         request_id: uuid.UUID,
@@ -66,7 +64,6 @@ class CertificateService:  # pylint: disable=R0903
             template_config_id=data.template_config_id,
             configs_schema=configs_schema,
             templates_schema=templates_schema,
-            fonts_schema=fonts_schema,
             database=config_repo,
             engine=engine,
         )
