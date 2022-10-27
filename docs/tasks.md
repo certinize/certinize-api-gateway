@@ -603,7 +603,7 @@ Form Data:
 
 ```json
 {
-  "image": [
+  "templates": [
     "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
   ]
 }
