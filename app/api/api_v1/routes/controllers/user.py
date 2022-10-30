@@ -1,3 +1,5 @@
+import typing
+
 import starlite
 
 from app.api.api_v1.dependencies import database as database_deps
@@ -27,7 +29,7 @@ class UserController(starlite.Controller):
             title="Auth Solana User",
             description="Authenticate and authorize solana user and provide API key",
         ),
-    ) -> dict[str, str] | starlite.ValidationException:
+    ) -> dict[str, typing.Any] | starlite.ValidationException:
         return await user_service_.auth(public_key, solana_user_schema, database)
 
     @starlite.post()

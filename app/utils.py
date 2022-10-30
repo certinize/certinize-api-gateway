@@ -1,4 +1,6 @@
 import asyncio
+import base64
+import binascii
 import enum
 import re
 import typing
@@ -109,5 +111,25 @@ def pvtkey_on_curve(value: str):
         solders_keypair.Keypair().from_base58_string(value)
     except BaseException as base_err:  # pylint: disable=W0703
         raise_rust_error(base_err)
+
+    return value
+
+
+def image_is_valid_base64(value: str):
+    """Validate that the image is a valid base64 string.
+
+    Args:
+        value (str): The base64 encoded image.
+
+    Raises:
+        ValueError: If the image is not a valid base64 string.
+
+    Returns:
+        str: The base64 encoded image.
+    """
+    try:
+        base64.b64decode(value)
+    except binascii.Error as error:
+        raise ValueError("image is not a valid base64 string") from error
 
     return value

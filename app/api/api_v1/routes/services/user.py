@@ -13,7 +13,66 @@ from app.models.domain import user as user_domain
 from app.models.schemas import users
 
 
-class UserService:  # pylint: disable=R0903
+class UserService:
+    async def _fetch_user(
+        self,
+        database: crud.DatabaseImpl,
+        wallet_address: str,
+        solana_user_schema: type[users.SolanaUsers],
+    ):
+        user: dict[str, typing.Any] = {}
+
+        try:
+            solana_user = await database.select_row(
+                solana_user_schema(
+                    wallet_address=wallet_address,
+                    api_key=uuid.uuid1(),
+                ),
+                "wallet_address",
+                wallet_address,
+            )
+
+            user = solana_user.one().dict() | user
+        except exc.NoResultFound:
+            api_key = uuid.uuid5(uuid.uuid4(), wallet_address)
+            schema = solana_user_schema(
+                wallet_address=wallet_address,
+                api_key=api_key,
+            )
+            result = schema.copy()
+
+            await database.add_row(schema)
+
+            user = result.dict() | user
+
+        return user
+
+    async def _fetch_verification(
+        self, database: crud.DatabaseImpl, wallet_address: str
+    ) -> dict[str, typing.Any]:
+        verification: dict[str, typing.Any] = {}
+
+        try:
+            vequest = await database.select_row(
+                users.VerificationRequests(
+                    pubkey=wallet_address,
+                    organization_name="",
+                    organization_logo="",
+                    info_link=pydantic.HttpUrl("", scheme=""),
+                    official_website=pydantic.HttpUrl("", scheme=""),
+                    official_email=pydantic.EmailStr(""),
+                    organization_id="",
+                    approved=False,
+                ),
+                "pubkey",
+                wallet_address,
+            )
+            verification = vequest.one()
+        except exc.NoResultFound:
+            verification = {}
+
+        return verification
+
     async def wallet_address_must_be_on_curve(self, wallet_address: str) -> str:
         try:
             valid_point = crypto_core.crypto_core_ed25519_is_valid_point(
@@ -40,8 +99,6 @@ class UserService:  # pylint: disable=R0903
         solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
     ) -> dict[str, typing.Any]:
-        user: dict[str, typing.Any] = {}
-
         try:
             wallet_address = await self.wallet_address_must_be_on_curve(
                 wallet_address=wallet_address
@@ -49,54 +106,14 @@ class UserService:  # pylint: disable=R0903
         except (ValueError, exceptions.OnCurveException) as err:
             raise starlite.ValidationException(str(err)) from err
 
-        try:
-            result = await database.select_row(
-                users.VerificationRequests(
-                    pubkey=wallet_address,
-                    info_link=pydantic.HttpUrl("", scheme=""),
-                    official_website=pydantic.HttpUrl("", scheme=""),
-                    official_email=pydantic.EmailStr(""),
-                    organization_id="",
-                ),
-                "pubkey",
-                wallet_address,
-            )
-            verified = result.one()
-
-            assert isinstance(verified, users.VerificationRequests)
-
-            user["is_verified"] = verified.approved
-        except exc.NoResultFound:
-            user["is_verified"] = False
-
-        try:
-            solana_user = await database.select_row(
-                solana_user_schema(
-                    wallet_address=wallet_address,
-                    api_key=uuid.uuid1(),
-                    name=None,
-                    website=None,
-                ),
-                "wallet_address",
-                wallet_address,
-            )
-
-            user = solana_user.one().dict() | user
-        except exc.NoResultFound:
-            api_key = uuid.uuid5(uuid.uuid4(), wallet_address)
-            schema = solana_user_schema(
+        return {
+            "user": await self._fetch_user(
+                database=database,
                 wallet_address=wallet_address,
-                api_key=api_key,
-                name=None,
-                website=None,
-            )
-            result = schema.copy()
-
-            await database.add_row(schema)
-
-            user = result.dict() | user
-
-        return user
+                solana_user_schema=solana_user_schema,
+            ),
+            "verification": await self._fetch_verification(database, wallet_address),
+        }
 
     async def verify_user(
         self,
@@ -106,6 +123,8 @@ class UserService:  # pylint: disable=R0903
     ) -> users.VerificationRequests:
         schema = vequest_schema(
             pubkey=data.pubkey,
+            organization_name=data.organization_name,
+            organization_logo=data.organization_logo,
             info_link=data.info_link,
             official_website=data.official_website,
             official_email=data.official_email,
