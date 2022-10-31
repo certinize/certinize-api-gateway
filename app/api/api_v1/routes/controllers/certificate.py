@@ -1,4 +1,3 @@
-import asyncio
 import uuid
 
 import pydantic
@@ -53,19 +52,17 @@ class CertificateController(starlite.Controller):
     ) -> starlite.Response[dict[str, pydantic.UUID1]]:
         request_id = uuid.uuid1()
 
-        asyncio.create_task(
-            certificate_service.generate_certificate(
-                collections_schema=certificate_collections_schema,
-                config_repo=config_repo,
-                config_service=config_service_,
-                configs_schema=configs_schema,
-                data=data,
-                database=database,
-                engine=engine,
-                object_processor_=object_processor_,
-                templates_schema=templates_schema,
-                request_id=request_id,
-            )
+        await certificate_service.generate_certificate(
+            collections_schema=certificate_collections_schema,
+            config_repo=config_repo,
+            config_service=config_service_,
+            configs_schema=configs_schema,
+            data=data,
+            database=database,
+            engine=engine,
+            object_processor_=object_processor_,
+            templates_schema=templates_schema,
+            request_id=request_id,
         )
 
         return starlite.Response(

@@ -1,3 +1,4 @@
+import asyncio
 import typing
 import uuid
 
@@ -59,7 +60,7 @@ class CertificateService:  # pylint: disable=R0903
         object_processor_: object_processor.ObjectProcessor,
         templates_schema: type[templates.Templates],
         request_id: uuid.UUID,
-    ) -> tuple[dict[str, typing.Any], int]:
+    ) -> None:
         template_config = await config_service.get_template_config(
             template_config_id=data.template_config_id,
             configs_schema=configs_schema,
@@ -68,13 +69,17 @@ class CertificateService:  # pylint: disable=R0903
             engine=engine,
         )
 
-        return await self._generate_certificate(
-            collections_schema=collections_schema,
-            data=data,
-            database=database,
-            object_processor_=object_processor_,
-            template_config=template_config,
-            request_id=request_id,
+        # Spawning a task here rather than in the controller allows us to raise a 404
+        # when no template config is found.
+        asyncio.create_task(
+            self._generate_certificate(
+                collections_schema=collections_schema,
+                data=data,
+                database=database,
+                object_processor_=object_processor_,
+                template_config=template_config,
+                request_id=request_id,
+            )
         )
 
     async def get_certificate(
