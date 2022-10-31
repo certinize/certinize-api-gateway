@@ -5,7 +5,6 @@ from app.models.domain import app_model
 
 
 class IssuerMeta(app_model.AppModel):
-    issuer_id: pydantic.UUID1
     issuer_pubkey: str
     issuer_name: str | None = None
     issuer_email: pydantic.EmailStr | None = None
