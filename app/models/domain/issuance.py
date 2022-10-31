@@ -33,8 +33,3 @@ class IssuanceRequest(app_model.AppModel):
     signature: str
     issuer_meta: IssuerMeta
     recipient_meta: list[RecipientMeta]
-
-    @pydantic.validator("signature")
-    @classmethod
-    def signature_on_curve(cls, value: str):
-        return utils.pvtkey_on_curve(value)
