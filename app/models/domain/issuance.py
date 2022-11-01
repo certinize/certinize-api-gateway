@@ -29,6 +29,7 @@ class RecipientMeta(app_model.AppModel):
 
 
 class IssuanceRequest(app_model.AppModel):
+    request_id: pydantic.UUID1
     signature: str
     issuer_meta: IssuerMeta
     recipient_meta: list[RecipientMeta]
