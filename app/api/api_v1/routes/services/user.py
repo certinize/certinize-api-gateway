@@ -17,7 +17,7 @@ class UserService:
     async def _fetch_user(
         self,
         database: crud.DatabaseImpl,
-        wallet_address: str,
+        pubkey: str,
         solana_user_schema: type[users.SolanaUsers],
     ):
         user: dict[str, typing.Any] = {}
@@ -25,18 +25,18 @@ class UserService:
         try:
             solana_user = await database.select_row(
                 solana_user_schema(
-                    wallet_address=wallet_address,
+                    pubkey=pubkey,
                     api_key=uuid.uuid1(),
                 ),
-                "wallet_address",
-                wallet_address,
+                "pubkey",
+                pubkey,
             )
 
             user = solana_user.one().dict() | user
         except exc.NoResultFound:
-            api_key = uuid.uuid5(uuid.uuid4(), wallet_address)
+            api_key = uuid.uuid5(uuid.uuid4(), pubkey)
             schema = solana_user_schema(
-                wallet_address=wallet_address,
+                pubkey=pubkey,
                 api_key=api_key,
             )
             result = schema.copy()
@@ -48,14 +48,14 @@ class UserService:
         return user
 
     async def _fetch_verification(
-        self, database: crud.DatabaseImpl, wallet_address: str
+        self, database: crud.DatabaseImpl, pubkey: str
     ) -> dict[str, typing.Any]:
         verification: dict[str, typing.Any] = {}
 
         try:
             vequest = await database.select_row(
                 users.VerificationRequests(
-                    pubkey=wallet_address,
+                    pubkey=pubkey,
                     organization_name="",
                     organization_logo="",
                     info_link=pydantic.HttpUrl("", scheme=""),
@@ -65,7 +65,7 @@ class UserService:
                     approved=False,
                 ),
                 "pubkey",
-                wallet_address,
+                pubkey,
             )
             verification = vequest.one()
         except exc.NoResultFound:
@@ -73,10 +73,10 @@ class UserService:
 
         return verification
 
-    async def wallet_address_must_be_on_curve(self, wallet_address: str) -> str:
+    async def pubkey_must_be_on_curve(self, pubkey: str) -> str:
         try:
             valid_point = crypto_core.crypto_core_ed25519_is_valid_point(
-                bytes(publickey.PublicKey(wallet_address))
+                bytes(publickey.PublicKey(pubkey))
             )
         except ValueError as val_err:
             err = (
@@ -91,28 +91,26 @@ class UserService:
         if not valid_point:
             raise exceptions.OnCurveException("the point must be on the curve")
 
-        return wallet_address
+        return pubkey
 
     async def auth(
         self,
-        wallet_address: str,
+        pubkey: str,
         solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
     ) -> dict[str, typing.Any]:
         try:
-            wallet_address = await self.wallet_address_must_be_on_curve(
-                wallet_address=wallet_address
-            )
+            pubkey = await self.pubkey_must_be_on_curve(pubkey=pubkey)
         except (ValueError, exceptions.OnCurveException) as err:
             raise starlite.ValidationException(str(err)) from err
 
         return {
             "user": await self._fetch_user(
                 database=database,
-                wallet_address=wallet_address,
+                pubkey=pubkey,
                 solana_user_schema=solana_user_schema,
             ),
-            "verification": await self._fetch_verification(database, wallet_address),
+            "verification": await self._fetch_verification(database, pubkey),
         }
 
     async def verify_user(
@@ -140,3 +138,31 @@ class UserService:
             ) from err
 
         return result
+
+    async def update_user(
+        self,
+        data: user_domain.UserUpdate,
+        database: crud.DatabaseImpl,
+        solana_user_schema: type[users.SolanaUsers],
+        pubkey: str,
+    ) -> users.SolanaUsers:
+        schema = solana_user_schema(
+            pubkey=pubkey,
+            name=data.name,
+            website=data.website,
+            user_avatar=data.user_avatar,
+        )
+
+        try:
+            await database.update_row(schema, "pubkey", pubkey)
+        except exc.IntegrityError as err:
+            raise starlite.ValidationException(
+                str(err),
+                status_code=409,
+            ) from err
+        except exc.NoResultFound as err:
+            raise starlite.ValidationException(
+                f"{pubkey} does not exist", status_code=404
+            ) from err
+
+        return schema

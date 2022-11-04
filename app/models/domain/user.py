@@ -1,12 +1,20 @@
 import pydantic
+import sqlmodel
 
 from app import utils
 from app.models.domain import app_model
 
 
-class SolanaUser(app_model.AppModel):
-    pubkey: str
-    pvtkey: str
+class UserUpdate(app_model.AppModel):
+    name: str | None = sqlmodel.Field(default=None)  # type: ignore
+    api_key: pydantic.UUID5 | None = sqlmodel.Field(default=None)  # type: ignore
+    website: pydantic.HttpUrl | None = sqlmodel.Field(default=None)  # type: ignore
+    user_avatar: str | None = sqlmodel.Field(default=None)  # type: ignore
+
+    @pydantic.validator("user_avatar")
+    @classmethod
+    def organization_logo_is_valid_base64(cls, value: str):
+        return utils.image_is_valid_base64(value)
 
 
 class UnverifiedUser(app_model.AppModel):

@@ -15,7 +15,6 @@ class UserController(starlite.Controller):
     dependencies: dict[str, "starlite.Provide"] | None = {
         "user_service_": starlite.Provide(user_service.UserService),
         "database": starlite.Provide(database_deps.get_db_impl),
-        "solana_user_schema": starlite.Provide(database_deps.get_solana_users_schema),
         "vequest_schema": starlite.Provide(database_deps.get_vequest_schema),
     }
 
@@ -23,14 +22,13 @@ class UserController(starlite.Controller):
     async def auth_user(
         self,
         user_service_: user_service.UserService,
-        solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
         public_key: str = starlite.Parameter(
             title="Auth Solana User",
             description="Authenticate and authorize solana user and provide API key",
         ),
     ) -> dict[str, typing.Any] | starlite.ValidationException:
-        return await user_service_.auth(public_key, solana_user_schema, database)
+        return await user_service_.auth(public_key, users.SolanaUsers, database)
 
     @starlite.post()
     async def verify_user(
@@ -38,6 +36,22 @@ class UserController(starlite.Controller):
         data: user_domain.UnverifiedUser,
         database: crud.DatabaseImpl,
         user_service_: user_service.UserService,
-        vequest_schema: type[users.VerificationRequests],
     ) -> users.VerificationRequests | starlite.ValidationException:
-        return await user_service_.verify_user(data, database, vequest_schema)
+        return await user_service_.verify_user(
+            data, database, users.VerificationRequests
+        )
+
+    @starlite.patch(path="/{public_key:str}")
+    async def update_user(
+        self,
+        data: user_domain.UserUpdate,
+        database: crud.DatabaseImpl,
+        user_service_: user_service.UserService,
+        public_key: str = starlite.Parameter(
+            title="Update Solana User",
+            description="Update solana user",
+        ),
+    ) -> users.SolanaUsers | starlite.ValidationException:
+        return await user_service_.update_user(
+            data, database, users.SolanaUsers, public_key
+        )

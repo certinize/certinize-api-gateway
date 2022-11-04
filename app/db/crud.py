@@ -92,19 +92,16 @@ class DatabaseImpl:
         async with AsyncSession(self._engine) as session:
             return await session.exec(sqlmodel.select(model))  # type: ignore
 
-    async def update_row(self, table_model: sqlmodel.SQLModel, attribute: str) -> None:
+    async def update_row(
+        self, table_model: sqlmodel.SQLModel, attribute: str, primary_key: str | int
+    ) -> None:
         model = type(table_model)
-        table = table_model.__dict__
+        table = table_model.dict()
 
         async with AsyncSession(self._engine) as session:
-            row: ScalarResult[typing.Any] = await session.exec(
-                sqlmodel.select(model).where(  # type: ignore
-                    getattr(model, attribute) == getattr(table_model, attribute)
-                )
+            await session.exec(
+                sqlmodel.update(model)
+                .where(getattr(model, attribute) == primary_key)
+                .values(table)  # type: ignore
             )
-            task = row.one()
-            task = await self.update(task, table)
-
-            session.add(task)
             await session.commit()
-            await session.refresh(task)
