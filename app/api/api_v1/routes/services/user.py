@@ -121,8 +121,6 @@ class UserService:
     ) -> users.VerificationRequests:
         schema = vequest_schema(
             pubkey=data.pubkey,
-            organization_name=data.organization_name,
-            organization_logo=data.organization_logo,
             info_link=data.info_link,
             official_website=data.official_website,
             official_email=data.official_email,
@@ -133,6 +131,7 @@ class UserService:
         try:
             await database.add_row(schema)
         except exc.IntegrityError as err:
+            print(str(err))
             raise starlite.ValidationException(
                 f"{data.pubkey} already sent a verification request", status_code=409
             ) from err

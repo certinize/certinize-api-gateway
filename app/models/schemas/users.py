@@ -18,8 +18,6 @@ class SolanaUsers(sqlmodel.SQLModel, table=True):
 
 class VerificationRequests(sqlmodel.SQLModel, table=True):
     pubkey: str | None = sqlmodel.Field(default=None, primary_key=True)  # type: ignore
-    organization_name: str
-    organization_logo: str
     info_link: pydantic.HttpUrl
     official_website: pydantic.HttpUrl
     official_email: pydantic.EmailStr

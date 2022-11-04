@@ -1,15 +1,14 @@
 import pydantic
-import sqlmodel
 
 from app import utils
 from app.models.domain import app_model
 
 
 class UserUpdate(app_model.AppModel):
-    name: str | None = sqlmodel.Field(default=None)  # type: ignore
-    api_key: pydantic.UUID5 | None = sqlmodel.Field(default=None)  # type: ignore
-    website: pydantic.HttpUrl | None = sqlmodel.Field(default=None)  # type: ignore
-    user_avatar: str | None = sqlmodel.Field(default=None)  # type: ignore
+    name: str | None = pydantic.Field(default=None)
+    api_key: pydantic.UUID5 | None = pydantic.Field(default=None)
+    website: pydantic.HttpUrl | None = pydantic.Field(default=None)
+    user_avatar: str | None = pydantic.Field(default=None)
 
     @pydantic.validator("user_avatar")
     @classmethod
@@ -19,12 +18,10 @@ class UserUpdate(app_model.AppModel):
 
 class UnverifiedUser(app_model.AppModel):
     pubkey: str
-    organization_name: str
-    organization_logo: str
     info_link: pydantic.HttpUrl
     official_website: pydantic.HttpUrl
     official_email: pydantic.EmailStr
-    organization_id: str
+    organization_id: str = pydantic.Field(min_length=1)
 
     @pydantic.validator("pubkey")
     @classmethod
@@ -34,9 +31,4 @@ class UnverifiedUser(app_model.AppModel):
     @pydantic.validator("organization_id")
     @classmethod
     def organization_id_is_valid_base64(cls, value: str):
-        return utils.image_is_valid_base64(value)
-
-    @pydantic.validator("organization_logo")
-    @classmethod
-    def organization_logo_is_valid_base64(cls, value: str):
         return utils.image_is_valid_base64(value)
