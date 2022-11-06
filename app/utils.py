@@ -8,9 +8,16 @@ from concurrent import futures
 
 import aiohttp
 import orjson
+import pydantic
 import solders.keypair as solders_keypair  # type: ignore # pylint: disable=E0401
+import starlite
 from nacl.bindings import crypto_core
 from solana import publickey
+from sqlalchemy import exc
+from sqlalchemy.ext.asyncio import engine
+
+from app.core import abc
+from app.models.schemas import users
 
 PANIC_EXC = re.compile(r"\((.*?)\)")
 INVALID_CHAR = re.compile(r"(?<=: ).*(?=\s{)")
@@ -24,7 +31,7 @@ def exec_async(
     function: typing.Callable[[typing.Any], typing.Any]
     | typing.Callable[..., typing.Coroutine[typing.Any, typing.Any, str]],
     *args: typing.Any,
-    **kwargs: typing.Any
+    **kwargs: typing.Any,
 ) -> typing.Any:
     """Asynchronously run sync functions or methods outside an event loop.
 
@@ -128,8 +135,29 @@ def image_is_valid_base64(value: str):
         str: The base64 encoded image.
     """
     try:
-        base64.b64decode(value)
+        base64.b64decode(value, validate=True)
     except binascii.Error as error:
         raise ValueError("image is not a valid base64 string") from error
 
     return value
+
+
+async def check_api_key_exists(
+    database: abc.Database,
+    db_engine: engine.AsyncEngine,
+    token: str,
+    /,
+) -> None:
+    user = users.SolanaUsers(
+        api_key=pydantic.UUID5(token),
+    )
+
+    try:
+        result = await database.select(db_engine, user, "api_key", token)
+        result.one()
+    except exc.NoResultFound as no_result:
+        raise starlite.HTTPException(
+            status_code=401,
+            detail=f"User not found: {token}",
+            headers={"WWW-Authenticate": 'Bearer error="invalid_token"'},
+        ) from no_result

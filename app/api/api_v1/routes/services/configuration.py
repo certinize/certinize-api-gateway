@@ -11,16 +11,17 @@ from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 
 from app.core import abc
 from app.models.domain import configuration
-from app.models.schemas import configurations, fonts, templates
+from app.models.schemas import configurations, templates
 
 
 class ConfigurationService:
     async def create_template_config(
         self,
-        configs_schema: type[configurations.Configurations],
         data: configuration.TemplateConfiguration,
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
+        token: str,
+        /,
     ) -> dict[str, typing.Any]:
         template_id = data.template_id
         config_meta = data.dict()
@@ -38,51 +39,51 @@ class ConfigurationService:
         del config_meta["template_id"]
 
         try:
-            certificate_config = await database.select_row(
+            await database.add(
                 engine,
-                configs_schema(template_config_name=""),
-                "template_config_name",
-                template_config_name,
-            )
-
-            return certificate_config.one().dict()
-        except exc.NoResultFound:
-            await database.add_row(
-                engine,
-                configs_schema(
+                configurations.Configurations(
                     template_config_id=template_config_id,
+                    api_key=uuid.UUID(token),
                     config_meta=config_meta,
                     template_config_name=template_config_name,
                     template_id=template_id,
                 ),
             )
+        except exc.IntegrityError as integrity_err:
+            raise starlite.HTTPException(
+                status_code=400,
+                detail=f"Template does not exist: {template_id=}",
+            ) from integrity_err
 
-            return {
-                "template_config_id": template_config_id,
-                "template_config_name": template_config_name,
-                "config_meta": {
-                    "recipient_name_meta": config_meta["recipient_name_meta"],
-                    "issuance_date_meta": config_meta["issuance_date_meta"],
-                },
-                "template_id": template_id,
-            }
+        return {
+            "template_config_id": template_config_id,
+            "template_config_name": template_config_name,
+            "config_meta": {
+                "recipient_name_meta": config_meta["recipient_name_meta"],
+                "issuance_date_meta": config_meta["issuance_date_meta"],
+            },
+            "template_id": template_id,
+        }
 
     async def get_template_config(  # pylint: disable=R0913
         self,
-        configs_schema: type[configurations.Configurations],
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
         template_config_id: pydantic.UUID1,
-        templates_schema: type[templates.Templates],
+        token: str,
+        /,
     ) -> dict[str, typing.Any]:
+
         try:
             results = await database.select_join(
                 engine,
-                configs_schema(
-                    template_config_id=template_config_id, template_config_name=""
+                configurations.Configurations(
+                    template_config_id=template_config_id,
+                    api_key=uuid.UUID(token),
+                    template_config_name="",
                 ),
-                configs_schema,
-                templates_schema,
+                configurations.Configurations,
+                templates.Templates,
             )
             assert results is not None
             results_ = results.one()
@@ -96,14 +97,19 @@ class ConfigurationService:
 
     async def list_template_config(  # pylint: disable=R0913
         self,
-        configs_schema: type[configurations.Configurations],
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        fonts_schema: type[fonts.Fonts],
-        templates_schema: type[templates.Templates],
+        token: str,
+        /,
     ) -> dict[str, list[dict[str, dict[str, typing.Any]]]]:
         results = await database.select_all_join(
-            engine, configs_schema, templates_schema, fonts_schema
+            engine,
+            configurations.Configurations(
+                template_config_id=uuid.uuid1(),
+                api_key=uuid.UUID(token),
+                template_config_name="",
+            ),
+            templates.Templates,
         )
         serialized_results: list[dict[str, dict[str, typing.Any]]] = []
 
@@ -129,7 +135,6 @@ class ConfigurationService:
                 {
                     "template_config_id": template_config_id,
                     "template_config_name": template_config_name,
-                    "font": results["Fonts"].dict(),
                     "template": results["Templates"].dict(),
                     "template_config": template_config,
                 }

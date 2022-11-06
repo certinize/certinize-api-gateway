@@ -20,7 +20,7 @@ class Database(abc.ABC):
         """
 
     @abc.abstractmethod
-    async def add_row(
+    async def add(
         self, engine: sqlalchemy_asyncio.AsyncEngine, table_model: sqlmodel.SQLModel
     ) -> None:
         """Add a row to a database table.
@@ -31,7 +31,7 @@ class Database(abc.ABC):
         """
 
     @abc.abstractmethod
-    async def delete_row(
+    async def delete(
         self,
         engine: sqlalchemy_asyncio.AsyncEngine,
         table_model: sqlmodel.SQLModel,
@@ -47,7 +47,7 @@ class Database(abc.ABC):
         """
 
     @abc.abstractmethod
-    async def select_row(
+    async def select(
         self,
         engine: sqlalchemy_asyncio.AsyncEngine,
         table_model: sqlmodel.SQLModel,
@@ -66,7 +66,7 @@ class Database(abc.ABC):
         """
 
     @abc.abstractmethod
-    async def select_all_row(
+    async def select_all(
         self, engine: sqlalchemy_asyncio.AsyncEngine, table_model: sqlmodel.SQLModel
     ) -> result.ScalarResult[typing.Any]:
         """Fetch all records in a database table.
@@ -108,7 +108,7 @@ class Database(abc.ABC):
     async def select_all_join(
         self,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        *table_models: type[sqlmodel.SQLModel]
+        *table_models: type[sqlmodel.SQLModel] | sqlmodel.SQLModel,
     ) -> sqlalchemy_result.ChunkedIteratorResult | None:
         """Select all rows from multiple tables using a join.
 
@@ -124,7 +124,7 @@ class Database(abc.ABC):
         """
 
     @abc.abstractmethod
-    async def update_row(
+    async def update(
         self,
         engine: sqlalchemy_asyncio.AsyncEngine,
         table_model: sqlmodel.SQLModel,

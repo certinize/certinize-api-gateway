@@ -21,34 +21,16 @@ class DatabaseImpl:
         expression.SelectOfScalar.inherit_cache = True  # type: ignore
         expression.Select.inherit_cache = True  # type: ignore
 
-    @staticmethod
-    async def update(
-        instance: typing.Any, update: dict[typing.Any, typing.Any]
-    ) -> typing.Any:
-        """Overwrite value of class attribute.
-
-        Args:
-            instance (typing.Any): A class instance.
-            update (dict[typing.Any, typing.Any]): A dictionary containing the
-                attributes to be overwritten.
-
-        Returns:
-            typing.Any: A class instance with updated attribute values.
-        """
-        for key, value in update.items():
-            setattr(instance, key, value)
-        return instance
-
     async def create_table(self) -> None:
         async with self._engine.begin() as conn:
             await conn.run_sync(sqlmodel.SQLModel.metadata.create_all)
 
-    async def add_row(self, table_model: sqlmodel.SQLModel) -> None:
+    async def add(self, table_model: sqlmodel.SQLModel) -> None:
         async with AsyncSession(self._engine) as session:
             session.add(table_model)
             await session.commit()
 
-    async def remove_row(self, table_model: sqlmodel.SQLModel, attribute: str) -> None:
+    async def delete(self, table_model: sqlmodel.SQLModel, attribute: str) -> None:
         model = type(table_model)
 
         async with AsyncSession(self._engine) as session:
@@ -63,7 +45,7 @@ class DatabaseImpl:
             await session.delete(row.one())
             await session.commit()
 
-    async def select_row(
+    async def select(
         self, table_model: sqlmodel.SQLModel, attribute: str, query: str
     ) -> ScalarResult[typing.Any]:
         row: ScalarResult[typing.Any]
@@ -81,7 +63,7 @@ class DatabaseImpl:
 
         return row
 
-    async def select_all_row(
+    async def select_all(
         self, table_model: sqlmodel.SQLModel | type[sqlmodel.SQLModel]
     ) -> ScalarResult[typing.Any]:
         if isinstance(table_model, sqlmodel.SQLModel):
@@ -92,7 +74,7 @@ class DatabaseImpl:
         async with AsyncSession(self._engine) as session:
             return await session.exec(sqlmodel.select(model))  # type: ignore
 
-    async def update_row(
+    async def update(
         self, table_model: sqlmodel.SQLModel, attribute: str, primary_key: str | int
     ) -> None:
         model = type(table_model)

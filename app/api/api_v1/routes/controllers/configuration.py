@@ -9,7 +9,6 @@ from app.api.api_v1.dependencies import database as database_deps
 from app.api.api_v1.routes.services import configuration as service
 from app.core import abc
 from app.models.domain import configuration
-from app.models.schemas import configurations, fonts, templates
 
 ListTemplateConfig: typing.TypeAlias = dict[str, list[dict[str, dict[str, typing.Any]]]]
 
@@ -19,59 +18,42 @@ class ConfigurationController(starlite.Controller):
 
     dependencies: dict[str, "starlite.Provide"] | None = {
         "engine": starlite.Provide(database_deps.get_db_engine),
-        "configs_schema": starlite.Provide(
-            database_deps.get_certificate_configs_schema
-        ),
         "configuration_service": starlite.Provide(service.ConfigurationService),
         "database": starlite.Provide(database_deps.get_configurations_repository),
-        "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }
 
     @starlite.post()
     async def create_template_config(  # pylint: disable=R0913
         self,
-        configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
         data: configuration.TemplateConfiguration,
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
+        token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> dict[str, uuid.UUID | typing.Any]:
         return await configuration_service.create_template_config(
-            configs_schema=configs_schema, data=data, database=database, engine=engine
+            data, database, engine, token
         )
 
     @starlite.get(path="/{template_config_id:uuid}")
     async def get_template_config(  # pylint: disable=R0913
         self,
-        configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
         template_config_id: pydantic.UUID1,
-        templates_schema: type[templates.Templates],
+        token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> dict[str, typing.Any]:
         return await configuration_service.get_template_config(
-            configs_schema=configs_schema,
-            database=database,
-            engine=engine,
-            template_config_id=template_config_id,
-            templates_schema=templates_schema,
+            database, engine, template_config_id, token
         )
 
     @starlite.get()
     async def list_template_config(  # pylint: disable=R0913
         self,
-        configs_schema: type[configurations.Configurations],
         configuration_service: service.ConfigurationService,
         database: abc.Database,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        fonts_schema: type[fonts.Fonts],
-        templates_schema: type[templates.Templates],
+        token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> ListTemplateConfig:
-        return await configuration_service.list_template_config(
-            configs_schema=configs_schema,
-            database=database,
-            engine=engine,
-            fonts_schema=fonts_schema,
-            templates_schema=templates_schema,
-        )
+        return await configuration_service.list_template_config(database, engine, token)

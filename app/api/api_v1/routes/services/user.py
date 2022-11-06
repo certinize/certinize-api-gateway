@@ -23,7 +23,7 @@ class UserService:
         user: dict[str, typing.Any] = {}
 
         try:
-            solana_user = await database.select_row(
+            solana_user = await database.select(
                 solana_user_schema(
                     pubkey=pubkey,
                     api_key=uuid.uuid1(),
@@ -41,7 +41,7 @@ class UserService:
             )
             result = schema.copy()
 
-            await database.add_row(schema)
+            await database.add(schema)
 
             user = result.dict() | user
 
@@ -53,11 +53,9 @@ class UserService:
         verification: dict[str, typing.Any] = {}
 
         try:
-            vequest = await database.select_row(
+            vequest = await database.select(
                 users.VerificationRequests(
                     pubkey=pubkey,
-                    organization_name="",
-                    organization_logo="",
                     info_link=pydantic.HttpUrl("", scheme=""),
                     official_website=pydantic.HttpUrl("", scheme=""),
                     official_email=pydantic.EmailStr(""),
@@ -129,9 +127,8 @@ class UserService:
         result = schema.copy()
 
         try:
-            await database.add_row(schema)
+            await database.add(schema)
         except exc.IntegrityError as err:
-            print(str(err))
             raise starlite.ValidationException(
                 f"{data.pubkey} already sent a verification request", status_code=409
             ) from err
@@ -153,7 +150,7 @@ class UserService:
         )
 
         try:
-            await database.update_row(schema, "pubkey", pubkey)
+            await database.update(schema, "pubkey", pubkey)
         except exc.IntegrityError as err:
             raise starlite.ValidationException(
                 str(err),

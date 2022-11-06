@@ -2,9 +2,12 @@ import asyncio
 import typing
 import uuid
 
+import pydantic
 import starlite
+from sqlalchemy.ext.asyncio import engine
 
-from app.db import crud
+from app import utils
+from app.core import abc
 from app.models.domain import template
 from app.models.schemas import templates
 from app.services import object_processor
@@ -31,9 +34,7 @@ class TemplateService:
             raise starlite.HTTPException(status_code=502, detail=str(err))
 
     async def _create_template_schema(
-        self,
-        imagekit_response: dict[str, typing.Any],
-        template_schema: type[templates.Templates],
+        self, imagekit_response: dict[str, typing.Any], token: str, /
     ) -> tuple[templates.Templates, dict[str, typing.Any]]:
         try:
             reusable_result = dict(
@@ -45,6 +46,7 @@ class TemplateService:
                 template_thumbnail_url=imagekit_response["thumbnailUrl"],
                 template_url=imagekit_response["url"],
                 template_width=imagekit_response["width"],
+                api_key=token,
             )
         except KeyError as err:
             raise starlite.HTTPException(
@@ -53,28 +55,28 @@ class TemplateService:
                 extra=imagekit_response.get("detail") or imagekit_response,
             ) from err
 
-        return (template_schema(**reusable_result), reusable_result)
+        return (templates.Templates(**reusable_result), reusable_result)
 
     async def _store_imagekit_response(
         self,
-        database: crud.DatabaseImpl,
-        template_schema: type[templates.Templates],
+        database: abc.Database,
+        db_engine: engine.AsyncEngine,
         imagekit_response: dict[str, typing.Any] | list[dict[str, typing.Any]],
+        token: str,
+        /,
     ) -> ImageKitStoreRes:
         if isinstance(imagekit_response, dict):
-            template_ = await self._create_template_schema(
-                imagekit_response=imagekit_response, template_schema=template_schema
-            )
-            await database.add_row(template_[0])
+            template_ = await self._create_template_schema(imagekit_response, token)
+            await database.add(db_engine, template_[0])
             return template_[1]
 
         templates_ = [
-            await self._create_template_schema(
-                imagekit_response=image, template_schema=template_schema
-            )
+            await self._create_template_schema(image, token)
             for image in imagekit_response
         ]
-        insert_templates_op = [database.add_row(template[0]) for template in templates_]
+        insert_templates_op = [
+            database.add(db_engine, template[0]) for template in templates_
+        ]
 
         await asyncio.gather(*insert_templates_op)
         return {"templates": [template[1] for template in templates_]}
@@ -82,9 +84,11 @@ class TemplateService:
     async def add_certificate_template(
         self,
         data: template.TemplateUpload,
-        database: crud.DatabaseImpl,
+        database: abc.Database,
+        db_engine: engine.AsyncEngine,
         object_processor_: object_processor.ObjectProcessor,
-        template_schema: type[templates.Templates],
+        token: str,
+        /,
     ) -> ImageKitStoreRes:
         image_src = data.templates
         requests = [
@@ -96,12 +100,28 @@ class TemplateService:
         imagekit_resp = await asyncio.gather(*requests)
 
         return await self._store_imagekit_response(
-            database=database,
-            template_schema=template_schema,
-            imagekit_response=imagekit_resp,
+            database, db_engine, imagekit_resp, token
         )
 
     async def list_certificate_templates(
-        self, database: crud.DatabaseImpl, templates_schema: type[templates.Templates]
+        self,
+        database: abc.Database,
+        db_engine: engine.AsyncEngine,
+        token: str,
+        /,
     ):
-        return await database.select_all_row(templates_schema)
+        template_ = templates.Templates(
+            api_key=pydantic.UUID5(token),
+            template_url=pydantic.HttpUrl("", scheme="https"),
+            template_thumbnail_url=pydantic.HttpUrl("", scheme="https"),
+            template_name="",
+            template_path="",
+            template_id=uuid.uuid1(),
+            template_size=pydantic.ByteSize(0),
+            template_width=0,
+            template_height=0,
+        )
+
+        await utils.check_api_key_exists(database, db_engine, token)
+
+        return await database.select_all(db_engine, template_)

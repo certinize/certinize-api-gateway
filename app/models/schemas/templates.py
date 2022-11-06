@@ -7,6 +7,7 @@ class Templates(sqlmodel.SQLModel, table=True):
     template_id: pydantic.UUID1 | None = sqlmodel.Field(  # type: ignore
         default=None, primary_key=True
     )
+    api_key: pydantic.UUID5 | None = sqlmodel.Field(default=None)  # type: ignore
     template_url: pydantic.HttpUrl
     template_height: int
     template_width: int

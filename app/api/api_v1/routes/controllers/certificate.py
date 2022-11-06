@@ -11,7 +11,7 @@ from app.api.api_v1.routes.services import configuration as config_service
 from app.db import crud
 from app.db.repositories import configurations as config_repo_
 from app.models.domain import certificate
-from app.models.schemas import certificates, configurations, templates
+from app.models.schemas import certificates
 from app.services import object_processor
 
 
@@ -19,50 +19,39 @@ class CertificateController(starlite.Controller):
     path = "/certificates"
 
     dependencies: dict[str, "starlite.Provide"] | None = {
-        "certificate_collections_schema": starlite.Provide(
-            database_deps.get_certificate_collections_schema
-        ),
         "engine": starlite.Provide(database_deps.get_db_engine),
         "certificate_service": starlite.Provide(cert_service.CertificateService),
         "config_repo": starlite.Provide(database_deps.get_configurations_repository),
         "config_service_": starlite.Provide(config_service.ConfigurationService),
-        "configs_schema": starlite.Provide(
-            database_deps.get_certificate_configs_schema
-        ),
         "database": starlite.Provide(database_deps.get_db_impl),
         "object_processor_": starlite.Provide(
             associated_services.get_object_processor_client
         ),
-        "templates_schema": starlite.Provide(database_deps.get_templates_schema),
     }
 
     @starlite.post()
     async def generate_certificate(  # pylint: disable=R0913
         self,
-        certificate_collections_schema: type[certificates.Certificates],
         certificate_service: cert_service.CertificateService,
-        config_repo: config_repo_.ConfigurationsRepository,
         config_service_: config_service.ConfigurationService,
-        configs_schema: type[configurations.Configurations],
+        config_repo: config_repo_.ConfigurationsRepository,
         data: certificate.CertificateTemplateMeta,
         database: crud.DatabaseImpl,
         engine: sqlalchemy_asyncio.AsyncEngine,
         object_processor_: object_processor.ObjectProcessor,
-        templates_schema: type[templates.Templates],
+        token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> starlite.Response[dict[str, pydantic.UUID1]]:
         request_id = uuid.uuid1()
 
         await certificate_service.generate_certificate(
-            collections_schema=certificate_collections_schema,
-            config_repo=config_repo,
-            config_service=config_service_,
-            configs_schema=configs_schema,
-            data=data,
-            database=database,
-            engine=engine,
-            object_processor_=object_processor_,
-            templates_schema=templates_schema,
-            request_id=request_id,
+            config_service_,
+            data,
+            database,
+            config_repo,
+            engine,
+            object_processor_,
+            request_id,
+            token,
         )
 
         return starlite.Response(
@@ -72,13 +61,17 @@ class CertificateController(starlite.Controller):
         )
 
     @starlite.get("/{request_id:uuid}")
-    async def get_certificate(
+    async def get_certificate(  # pylint: disable=R0913
         self,
         request_id: uuid.UUID,
         database: crud.DatabaseImpl,
         certificate_service: cert_service.CertificateService,
         certificate_collections_schema: type[certificates.Certificates],
+        token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> starlite.Response[dict[str, str]]:
+        # Temporarily ignore the token until we implement a repository for certificates
+        _ = token
+
         result = await certificate_service.get_certificate(
             request_id, certificate_collections_schema, database
         )
