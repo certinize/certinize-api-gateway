@@ -66,14 +66,13 @@ class CertificateController(starlite.Controller):
         request_id: uuid.UUID,
         database: crud.DatabaseImpl,
         certificate_service: cert_service.CertificateService,
-        certificate_collections_schema: type[certificates.Certificates],
         token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> starlite.Response[dict[str, str]]:
         # Temporarily ignore the token until we implement a repository for certificates
         _ = token
 
         result = await certificate_service.get_certificate(
-            request_id, certificate_collections_schema, database
+            request_id, certificates.Certificates, database
         )
 
         return starlite.Response(
