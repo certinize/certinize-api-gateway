@@ -91,7 +91,7 @@ class TemplatesRepository(abc.Database):
     async def select_all_join(
         self,
         engine: sqlalchemy_asyncio.AsyncEngine,
-        *table_models: type[sqlmodel.SQLModel]
+        *table_models: type[sqlmodel.SQLModel] | sqlmodel.SQLModel,
     ) -> sqlalchemy_result.ChunkedIteratorResult:
         _ = engine
         _ = table_models

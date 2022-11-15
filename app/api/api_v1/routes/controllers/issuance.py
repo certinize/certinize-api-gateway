@@ -3,6 +3,7 @@ import starlite
 from app.api.api_v1.dependencies import associated_services
 from app.api.api_v1.dependencies import database as database_deps
 from app.api.api_v1.routes.services import issuance as service
+from app.db import crud
 from app.models.domain import issuance
 from app.services import blockchain_api
 
@@ -11,6 +12,7 @@ class IssuanceController(starlite.Controller):
     path = "/issuances"
 
     dependencies: dict[str, "starlite.Provide"] | None = {
+        "database": starlite.Provide(database_deps.get_db_impl),
         "engine": starlite.Provide(database_deps.get_db_engine),
         "issuance_service": starlite.Provide(service.IssuanceService),
         "blockchain_api_": starlite.Provide(
@@ -22,10 +24,13 @@ class IssuanceController(starlite.Controller):
     async def get_unsigned_msg(
         self,
         public_key: str,
+        database: crud.DatabaseImpl,
         issuance_service: service.IssuanceService,
         blockchain_api_: blockchain_api.BlockchainInterface,
     ) -> dict[str, str]:
-        return await issuance_service.get_unsigned_msg(public_key, blockchain_api_)
+        return await issuance_service.get_unsigned_msg(
+            database, public_key, blockchain_api_
+        )
 
     @starlite.post()
     async def transfer_certificate(
