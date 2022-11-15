@@ -37,9 +37,7 @@ class UserController(starlite.Controller):
         database: crud.DatabaseImpl,
         user_service_: user_service.UserService,
     ) -> users.VerificationRequests | starlite.ValidationException:
-        return await user_service_.verify_user(
-            data, database, users.VerificationRequests
-        )
+        return await user_service_.verify_user(data, database)
 
     @starlite.patch(path="/{public_key:str}")
     async def update_user(

@@ -18,6 +18,7 @@ class UserUpdate(app_model.AppModel):
 
 class UnverifiedUser(app_model.AppModel):
     pubkey: str
+    pvtkey: str
     info_link: pydantic.HttpUrl
     official_website: pydantic.HttpUrl
     official_email: pydantic.EmailStr
@@ -27,6 +28,11 @@ class UnverifiedUser(app_model.AppModel):
     @classmethod
     def recipient_pubkey_on_curve(cls, value: str):
         return utils.pubkey_on_curve(value)
+
+    @pydantic.validator("pvtkey")
+    @classmethod
+    def recipient_pvtkey_on_curve(cls, value: str):
+        return utils.pvtkey_on_curve(value)
 
     @pydantic.validator("organization_id")
     @classmethod

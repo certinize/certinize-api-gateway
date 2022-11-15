@@ -5,6 +5,7 @@ from sqlalchemy import orm
 
 class SolanaUsers(sqlmodel.SQLModel, table=True):
     pubkey: str | None = sqlmodel.Field(default=None, primary_key=True)  # type: ignore
+    pvtkey: str | None = sqlmodel.Field(default=None)  # type: ignore
     api_key: pydantic.UUID5 | None = sqlmodel.Field(default=None)  # type: ignore
     name: str | None = sqlmodel.Field(default=None)  # type: ignore
     website: pydantic.HttpUrl | None = sqlmodel.Field(default=None)  # type: ignore

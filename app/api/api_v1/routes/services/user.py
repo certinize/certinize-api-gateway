@@ -115,25 +115,30 @@ class UserService:
         self,
         data: user_domain.UnverifiedUser,
         database: crud.DatabaseImpl,
-        vequest_schema: type[users.VerificationRequests],
     ) -> users.VerificationRequests:
-        schema = vequest_schema(
+        vequest = users.VerificationRequests(
             pubkey=data.pubkey,
             info_link=data.info_link,
             official_website=data.official_website,
             official_email=data.official_email,
             organization_id=data.organization_id,
         )
-        result = schema.copy()
+        vequest_ = vequest.copy()
 
         try:
-            await database.add(schema)
+            await database.update(
+                users.SolanaUsers(
+                    pubkey=data.pubkey,
+                    pvtkey=data.pvtkey,
+                ),
+                "pvtkey",
+                data.pvtkey,
+            )
+            await database.add(vequest)
         except exc.IntegrityError as err:
-            raise starlite.ValidationException(
-                f"{data.pubkey} already sent a verification request", status_code=409
-            ) from err
+            raise starlite.ValidationException(str(err), status_code=409) from err
 
-        return result
+        return vequest_
 
     async def update_user(
         self,
