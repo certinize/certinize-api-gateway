@@ -92,9 +92,7 @@ class DatabaseImpl:
         async with AsyncSession(self._engine) as session:
             return await session.exec(sqlmodel.select(model))  # type: ignore
 
-    async def update(
-        self, table_model: sqlmodel.SQLModel, attribute: str, primary_key: str | int
-    ) -> None:
+    async def update(self, table_model: sqlmodel.SQLModel, attribute: str) -> None:
         model = type(table_model)
         table = table_model.dict()
 
