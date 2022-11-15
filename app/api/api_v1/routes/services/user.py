@@ -115,6 +115,7 @@ class UserService:
         self,
         data: user_domain.UnverifiedUser,
         database: crud.DatabaseImpl,
+        token: str,
     ) -> users.VerificationRequests:
         vequest = users.VerificationRequests(
             pubkey=data.pubkey,
@@ -126,15 +127,19 @@ class UserService:
         vequest_ = vequest.copy()
 
         try:
+            await database.add(vequest)
             await database.update(
                 users.SolanaUsers(
                     pubkey=data.pubkey,
                     pvtkey=data.pvtkey,
+                    api_key=uuid.UUID(token),
+                    name=data.organization_name,
+                    website=data.official_website,
+                    user_avatar=data.organization_logo,
                 ),
-                "pvtkey",
-                data.pvtkey,
+                "pubkey",
+                data.pubkey,
             )
-            await database.add(vequest)
         except exc.IntegrityError as err:
             raise starlite.ValidationException(str(err), status_code=409) from err
 

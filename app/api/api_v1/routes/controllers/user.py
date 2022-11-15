@@ -36,8 +36,9 @@ class UserController(starlite.Controller):
         data: user_domain.UnverifiedUser,
         database: crud.DatabaseImpl,
         user_service_: user_service.UserService,
+        token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> users.VerificationRequests | starlite.ValidationException:
-        return await user_service_.verify_user(data, database)
+        return await user_service_.verify_user(data, database, token)
 
     @starlite.patch(path="/{public_key:str}")
     async def update_user(

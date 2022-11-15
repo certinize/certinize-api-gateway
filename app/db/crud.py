@@ -2,7 +2,7 @@ import typing
 
 import sqlmodel
 from sqlalchemy.ext.asyncio import AsyncEngine
-from sqlmodel.engine.result import ScalarResult
+from sqlmodel.engine import result
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel.sql import expression
 
@@ -21,6 +21,24 @@ class DatabaseImpl:
         expression.SelectOfScalar.inherit_cache = True  # type: ignore
         expression.Select.inherit_cache = True  # type: ignore
 
+    @staticmethod
+    def update_attrib(
+        instance: typing.Any, update: dict[typing.Any, typing.Any]
+    ) -> typing.Any:
+        """Overwrite value of class attribute.
+
+        Args:
+            instance (typing.Any): A class instance.
+            update (dict[typing.Any, typing.Any]): A dictionary containing the
+                attributes to be overwritten.
+
+        Returns:
+            typing.Any: A class instance with updated attribute values.
+        """
+        for key, value in update.items():
+            setattr(instance, key, value)
+        return instance
+
     async def create_table(self) -> None:
         async with self._engine.begin() as conn:
             await conn.run_sync(sqlmodel.SQLModel.metadata.create_all)
@@ -37,7 +55,7 @@ class DatabaseImpl:
             # Temp ignore incompatible type passed to `exec()`. See:
             # https://github.com/tiangolo/sqlmodel/issues/54
             # https://github.com/tiangolo/sqlmodel/pull/58
-            row: ScalarResult[typing.Any] = await session.exec(
+            row: result.ScalarResult[typing.Any] = await session.exec(
                 sqlmodel.select(model).where(  # type: ignore
                     getattr(model, attribute) == getattr(table_model, attribute)
                 )  # type: ignore
@@ -47,8 +65,8 @@ class DatabaseImpl:
 
     async def select(
         self, table_model: sqlmodel.SQLModel, attribute: str, query: str
-    ) -> ScalarResult[typing.Any]:
-        row: ScalarResult[typing.Any]
+    ) -> result.ScalarResult[typing.Any]:
+        row: result.ScalarResult[typing.Any]
         model = type(table_model)
 
         async with AsyncSession(self._engine) as session:
@@ -65,7 +83,7 @@ class DatabaseImpl:
 
     async def select_all(
         self, table_model: sqlmodel.SQLModel | type[sqlmodel.SQLModel]
-    ) -> ScalarResult[typing.Any]:
+    ) -> result.ScalarResult[typing.Any]:
         if isinstance(table_model, sqlmodel.SQLModel):
             model = type(table_model)
         else:
@@ -81,9 +99,14 @@ class DatabaseImpl:
         table = table_model.dict()
 
         async with AsyncSession(self._engine) as session:
-            await session.exec(
-                sqlmodel.update(model)
-                .where(getattr(model, attribute) == primary_key)
-                .values(table)  # type: ignore
+            row: result.ScalarResult[typing.Any] = await session.exec(
+                sqlmodel.select(model).where(  # type: ignore
+                    getattr(model, attribute) == getattr(table_model, attribute)
+                )
             )
+            task = row.one()
+            task = self.update_attrib(task, table)
+
+            session.add(task)
             await session.commit()
+            await session.refresh(task)
