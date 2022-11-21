@@ -27,7 +27,6 @@ class CertificateService:  # pylint: disable=R0903
         result = await object_processor_.generate_certificate(
             certificate_meta={
                 "recipient_name_meta": conf_["recipient_name_meta"],
-                "issuance_date_meta": conf_["issuance_date_meta"],
                 "template_url": template_config["template"]["template_url"],
                 "issuance_date": data.issuance_date,
                 "recipients": data.recipients,

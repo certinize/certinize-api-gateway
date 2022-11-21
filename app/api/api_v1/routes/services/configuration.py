@@ -60,7 +60,6 @@ class ConfigurationService:
             "template_config_name": template_config_name,
             "config_meta": {
                 "recipient_name_meta": config_meta["recipient_name_meta"],
-                "issuance_date_meta": config_meta["issuance_date_meta"],
             },
             "template_id": template_id,
         }

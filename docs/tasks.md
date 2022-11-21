@@ -316,13 +316,6 @@ JSON Response:
         },
         "font_size": 24
       },
-      "issuance_date_meta": {
-        "position": {
-          "x": 130,
-          "y": 950
-        },
-        "font_size": 12
-      }
     }
   }
 }
