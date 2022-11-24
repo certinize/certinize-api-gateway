@@ -94,7 +94,6 @@ class UserService:
     async def auth(
         self,
         pubkey: str,
-        solana_user_schema: type[users.SolanaUsers],
         database: crud.DatabaseImpl,
     ) -> dict[str, typing.Any]:
         try:
@@ -106,7 +105,7 @@ class UserService:
             "user": await self._fetch_user(
                 database=database,
                 pubkey=pubkey,
-                solana_user_schema=solana_user_schema,
+                solana_user_schema=users.SolanaUsers,
             ),
             "verification": await self._fetch_verification(database, pubkey),
         }
@@ -135,13 +134,15 @@ class UserService:
                     api_key=uuid.UUID(token),
                     name=data.organization_name,
                     website=data.official_website,
-                    user_avatar=data.organization_logo,
+                    email=data.official_email,
                 ),
                 "pubkey",
-                data.pubkey,
             )
         except exc.IntegrityError as err:
-            raise starlite.ValidationException(str(err), status_code=409) from err
+            raise starlite.ValidationException(
+                f"User already sent a verification request: {data.pubkey}",
+                status_code=409,
+            ) from err
 
         return vequest_
 
@@ -160,7 +161,7 @@ class UserService:
         )
 
         try:
-            await database.update(schema, "pubkey", pubkey)
+            await database.update(schema, "pubkey")
         except exc.IntegrityError as err:
             raise starlite.ValidationException(
                 str(err),
@@ -172,3 +173,38 @@ class UserService:
             ) from err
 
         return schema
+
+    async def get_verification(
+        self,
+        database: crud.DatabaseImpl,
+        pubkey: str,
+    ) -> dict[str, typing.Any]:
+        try:
+            vequest = await database.select(
+                users.VerificationRequests(
+                    pubkey=pubkey,
+                    info_link=pydantic.HttpUrl("", scheme=""),
+                    official_website=pydantic.HttpUrl("", scheme=""),
+                    official_email=pydantic.EmailStr(""),
+                    organization_id="",
+                    approved=False,
+                ),
+                "pubkey",
+                pubkey,
+            )
+            user = await self._fetch_user(
+                database=database,
+                pubkey=pubkey,
+                solana_user_schema=users.SolanaUsers,
+            )
+            verif = vequest.one().dict()
+            verif["name"] = user["name"]
+
+            del verif["info_link"]
+            del verif["organization_id"]
+
+            return verif
+        except exc.NoResultFound as err:
+            raise starlite.ValidationException(
+                f"{pubkey} does not exist", status_code=404
+            ) from err

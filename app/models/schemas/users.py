@@ -9,6 +9,7 @@ class SolanaUsers(sqlmodel.SQLModel, table=True):
     api_key: pydantic.UUID5 | None = sqlmodel.Field(default=None)  # type: ignore
     name: str | None = sqlmodel.Field(default=None)  # type: ignore
     website: pydantic.HttpUrl | None = sqlmodel.Field(default=None)  # type: ignore
+    email: pydantic.EmailStr | None = sqlmodel.Field(default=None)  # type: ignore
     user_avatar: str | None = sqlmodel.Field(default=None)  # type: ignore
 
     @classmethod

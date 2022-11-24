@@ -15,7 +15,6 @@ class UserController(starlite.Controller):
     dependencies: dict[str, "starlite.Provide"] | None = {
         "user_service_": starlite.Provide(user_service.UserService),
         "database": starlite.Provide(database_deps.get_db_impl),
-        "vequest_schema": starlite.Provide(database_deps.get_vequest_schema),
     }
 
     @starlite.get(path="/{public_key:str}")
@@ -28,7 +27,7 @@ class UserController(starlite.Controller):
             description="Authenticate and authorize solana user and provide API key",
         ),
     ) -> dict[str, typing.Any] | starlite.ValidationException:
-        return await user_service_.auth(public_key, users.SolanaUsers, database)
+        return await user_service_.auth(public_key, database)
 
     @starlite.post()
     async def verify_user(
@@ -50,7 +49,18 @@ class UserController(starlite.Controller):
             title="Update Solana User",
             description="Update solana user",
         ),
+        token: str = starlite.Parameter(header="X-API-KEY", min_length=36),
     ) -> users.SolanaUsers | starlite.ValidationException:
+        _ = token
         return await user_service_.update_user(
             data, database, users.SolanaUsers, public_key
         )
+
+    @starlite.get(path="/verification/{public_key:str}")
+    async def get_verification(
+        self,
+        database: crud.DatabaseImpl,
+        user_service_: user_service.UserService,
+        public_key: str = starlite.Parameter(),
+    ) -> dict[str, typing.Any]:
+        return await user_service_.get_verification(database, public_key)

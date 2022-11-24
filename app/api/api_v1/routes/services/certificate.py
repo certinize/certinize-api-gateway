@@ -24,14 +24,14 @@ class CertificateService:  # pylint: disable=R0903
         /,
     ):
         conf_ = template_config["template_config"]["config_meta"]
-        result = await object_processor_.generate_certificate(
-            certificate_meta={
-                "recipient_name_meta": conf_["recipient_name_meta"],
-                "template_url": template_config["template"]["template_url"],
-                "issuance_date": data.issuance_date,
-                "recipients": data.recipients,
-            }
-        )
+        certificate_meta = certificate_meta = {
+            "recipient_name_meta": conf_["recipient_name_meta"],
+            "template_url": template_config["template"]["template_url"],
+            "issuance_date": data.issuance_date,
+            "recipients": data.recipients,
+        }
+        result = await object_processor_.generate_certificate(certificate_meta)
+        print(result)
         content = result[0]
 
         await database.add(
