@@ -31,7 +31,6 @@ class CertificateService:  # pylint: disable=R0903
             "recipients": data.recipients,
         }
         result = await object_processor_.generate_certificate(certificate_meta)
-        print(result)
         content = result[0]
 
         await database.add(
