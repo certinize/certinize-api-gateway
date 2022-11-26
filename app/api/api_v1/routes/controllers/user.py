@@ -40,7 +40,7 @@ class UserController(starlite.Controller):
         return await user_service_.verify_user(data, database, token)
 
     @starlite.patch(path="/{public_key:str}")
-    async def update_user(
+    async def update_user(  # pylint: disable=R0913
         self,
         data: user_domain.UserUpdate,
         database: crud.DatabaseImpl,

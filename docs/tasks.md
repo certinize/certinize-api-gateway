@@ -44,7 +44,6 @@ Request Body:
 ```json
 {
   "template_config_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
-  "issuance_date": "2022-01-31",
   "recipients": [
     {
       "recipient_name": "Juan Cruz"
@@ -67,8 +66,7 @@ JSON Response:
     {
       "certificate_url": "https://...",
       "file_id": "1k-UTikDkXmQomW28VYpWhQDgu2ced0uU",
-      "recipient_name": "Juan Cruz",
-      "issuance_date": "2022-01-30"
+      "recipient_name": "Juan Cruz"
     }
   ],
   "certificate_id": "36b91a30-16fb-11ed-8a9e-00155d3ecff4",
@@ -137,7 +135,6 @@ JSON Response:
               "certificate_url": "https://...",
               "file_id": "1k-UTikDkXmQomW28VYpWhQDgu2ced0uU",
               "recipient_name": "Juan Cruz",
-              "issuance_date": "2022-01-30"
           }
       ]
   }
@@ -190,13 +187,6 @@ Request Body:
     },
     "font_size": 24
   },
-  "issuance_date": {
-    "position": {
-      "x": 130,
-      "y": 950
-    },
-    "font_size": 12
-  },
   "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
   "template_config_name": "example",
   "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
@@ -222,13 +212,6 @@ JSON Response:
         "y": 540
       },
       "font_size": 24
-    },
-    "issuance_date": {
-      "position": {
-        "x": 130,
-        "y": 950
-      },
-      "font_size": 12
     },
     "template_id": "e82fbcd5-3f45-483e-887b-5ffec0194c42",
     "font_id": "8082c1c8-1e33-11ed-b68e-8bb3135194ad"
@@ -396,13 +379,6 @@ JSON Response:
               "y": 540
             },
             "font_size": 24
-          },
-          "issuance_date": {
-            "position": {
-              "x": 130,
-              "y": 950
-            },
-            "font_size": 12
           }
         },
         "font_id": "e632f180-2056-11ed-b912-bb65d3909f61",
