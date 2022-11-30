@@ -33,3 +33,4 @@ class IssuanceRequest(app_model.AppModel):
     signature: str
     issuer_meta: IssuerMeta
     recipient_meta: list[RecipientMeta]
+    event_title: str
